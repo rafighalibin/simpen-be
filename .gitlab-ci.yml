@@ -48,16 +48,16 @@ build-image:
   stage: build-image
   script:
     - echo "Building Docker Image..."
-    - docker build -t $REGISTRY_USERNAME/simpen-backend:$CI_COMMIT_SHORT_SHA .
-    - docker build -t $REGISTRY_USERNAME/simpen-backend:latest .
+    - docker build -t docker.io/$REGISTRY_USERNAME/simpen-backend:$CI_COMMIT_SHORT_SHA .
+    - docker build -t docker.io/$REGISTRY_USERNAME/simpen-backend:latest .
 
 publish-image:
   stage: publish-image
   script:
     - echo "Publishing Docker Image..."
-    - echo $REGISTRY_PASSWORD | docker login --username $REGISTRY_USERNAME --password-stdin
-    - docker push $REGISTRY_USERNAME/simpen-backend:$CI_COMMIT_SHORT_SHA
-    - docker push $REGISTRY_USERNAME/simpen-backend:latest
+    - echo $REGISTRY_PASSWORD | docker login --username docker.io/$REGISTRY_USERNAME --password-stdin
+    - docker push docker.io/$REGISTRY_USERNAME/simpen-backend:$CI_COMMIT_SHORT_SHA
+    - docker push docker.io/$REGISTRY_USERNAME/simpen-backend:latest
 
 deploy:
   stage: deploy
