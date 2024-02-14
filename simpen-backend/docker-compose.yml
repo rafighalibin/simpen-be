@@ -1,8 +1,7 @@
 version: '3.3'
 services:
   web:
-    build:
-      context: .
+    image: /nakahamalabs465/simpen-backend
     restart: always
     ports:
       - "10001:8080"
@@ -10,13 +9,12 @@ services:
       - ./file-storage:/file-storage
       - ./log:/log
     env_file:
-      - simpen-backend/.env
+      - bacabaca/.env
     depends_on:
       - db
     networks:
       - frontend-network
       - backend-network
-
   db:
     image: postgres:14-alpine
     ports:
@@ -30,9 +28,10 @@ services:
     networks:
       - backend-network
 
+
 volumes:
   db:
-    driver: local
+
 
 networks:
   frontend-network:
