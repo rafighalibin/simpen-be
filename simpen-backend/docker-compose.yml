@@ -1,7 +1,7 @@
 version: '3.3'
 services:
   web:
-    image: /nakahamalabs465/simpen-backend
+    image: docker.io/nakahamalabs465/simpen-backend
     restart: always
     ports:
       - "10001:8080"
