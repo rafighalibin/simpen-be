@@ -75,7 +75,7 @@ Publish:
   script:
     - ls
     - docker build
-      -t nakahamalabs465/simpen-backend:$latest .
+      -t nakahamalabs465/simpen-backend:latest .
       # --build-arg PRODUCTION=$PRODUCTION
       # --build-arg JDBC_DATABASE_PASSWORD=$JDBC_DATABASE_PASSWORD
       # --build-arg JDBC_DATABASE_URL=$JDBC_DATABASE_URL
