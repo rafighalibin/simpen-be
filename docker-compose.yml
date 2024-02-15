@@ -9,7 +9,7 @@ services:
       - ./file-storage:/file-storage
       - ./log:/log
     env_file:
-      - bacabaca/.env
+      - .env
     depends_on:
       - db
     networks:
