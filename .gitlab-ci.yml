@@ -53,7 +53,7 @@ build-image:
   script:
     - echo "Building Docker Image..."
     - whoami
-    - sudo usermod -aG docker $USER
+    # - sudo usermod -aG docker $USER
     - docker build -t $REGISTRY_USERNAME/simpen-backend:$CI_COMMIT_SHORT_SHA .
     - docker build -t $REGISTRY_USERNAME/simpen-backend:latest .
 
