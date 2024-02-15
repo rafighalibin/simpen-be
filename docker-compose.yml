@@ -28,10 +28,9 @@ services:
     networks:
       - backend-network
 
-
 volumes:
   db:
-
+    driver: local
 
 networks:
   frontend-network:
