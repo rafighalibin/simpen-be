@@ -75,12 +75,12 @@ Publish:
   script:
     - ls
     - docker build
+      --build-arg PRODUCTION=$PRODUCTION
+      --build-arg JDBC_DATABASE_PASSWORD=$JDBC_DATABASE_PASSWORD
+      --build-arg JDBC_DATABASE_URL=$JDBC_DATABASE_URL
+      --build-arg JDBC_DATABASE_USERNAME=$JDBC_DATABASE_USERNAME
       -t nakahamalabs465/simpen-backend:latest .
-      # --build-arg PRODUCTION=$PRODUCTION
-      # --build-arg JDBC_DATABASE_PASSWORD=$JDBC_DATABASE_PASSWORD
-      # --build-arg JDBC_DATABASE_URL=$JDBC_DATABASE_URL
-      # --build-arg JDBC_DATABASE_USERNAME=$JDBC_DATABASE_USERNAME
-    - docker push $REGISTRY_USER/$IMAGE_NAME:$IMAGE_TAG
+    - docker push nakahamalabs465/simpen-backend:latest
   tags:
     - dind
   only:
