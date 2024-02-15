@@ -52,7 +52,8 @@ build-image:
   stage: build-image
   script:
     - echo "Building Docker Image..."
-    # - ls -la $CI_PROJECT_DIR
+    - whoami
+    - sudo usermod -aG docker $USER
     - docker build -t $REGISTRY_USERNAME/simpen-backend:$CI_COMMIT_SHORT_SHA .
     - docker build -t $REGISTRY_USERNAME/simpen-backend:latest .
 
