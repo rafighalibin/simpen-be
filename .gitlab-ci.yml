@@ -52,7 +52,7 @@ build-image:
   stage: build-image
   script:
     - echo "Building Docker Image..."
-    - ls -la $CI_PROJECT_DIR
+    # - ls -la $CI_PROJECT_DIR
     - docker build -t $REGISTRY_USERNAME/simpen-backend:$CI_COMMIT_SHORT_SHA .
     - docker build -t $REGISTRY_USERNAME/simpen-backend:latest .
 
