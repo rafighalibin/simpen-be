@@ -1,11 +1,11 @@
-package com.nakahama.simpenbackend.controller;
+package com.nakahama.simpenbackend.User.controller;
 
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import java.util.*;
 import java.text.SimpleDateFormat;
-import com.nakahama.simpenbackend.model.Pengajar;
+import com.nakahama.simpenbackend.User.model.Pengajar;
 
 @RestController
 public class PengajarController {

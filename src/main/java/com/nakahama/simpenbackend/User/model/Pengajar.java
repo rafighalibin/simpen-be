@@ -1,4 +1,4 @@
-package com.nakahama.simpenbackend.model;
+package com.nakahama.simpenbackend.User.model;
 
 import java.util.*;
 
