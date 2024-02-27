@@ -39,12 +39,12 @@ public class SesiKelasService {
         return jenisKelasDb.findByPengajar(pengajar);
     }
 
-    public Optional<SesiKelas> getByPengajarPengganti(UserModel pengajar_pengganti) {
-        return jenisKelasDb.findByPengajarPengganti(pengajar_pengganti);
+    public Optional<SesiKelas> getByPengajarPengganti(UserModel pengajarPengganti) {
+        return jenisKelasDb.findByPengajarPengganti(pengajarPengganti);
     }
 
-    public Optional<SesiKelas> getByWaktuPelaksanaan(String waktu_pelaksanaan) {
-        return jenisKelasDb.findByWaktuPelaksanaan(waktu_pelaksanaan);
+    public Optional<SesiKelas> getByWaktuPermintaanBetween(Date startDate, Date endDate) {
+        return jenisKelasDb.findByWaktuPermintaanBetween(startDate, endDate);
     }
 
     public Optional<SesiKelas> getByStatus(String status) {

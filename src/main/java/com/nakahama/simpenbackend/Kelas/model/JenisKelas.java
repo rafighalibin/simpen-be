@@ -19,7 +19,7 @@ import lombok.*;
 @Table(name = "jenis_kelas")
 public class JenisKelas {
     @Id
-    private UUID jenis_kelas_id = UUID.randomUUID();
+    private UUID jenisKelasId = UUID.randomUUID();
 
     @NotNull
     private String nama;
@@ -34,7 +34,7 @@ public class JenisKelas {
     private String bahasa;
 
     @NotNull
-    private UserModel pic_akademik; // need to change after Akademik model is created
+    private UserModel picAkademik; // need to change after Akademik model is created
 
     @ManyToMany
     private List<Program> program;

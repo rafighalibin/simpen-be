@@ -18,19 +18,19 @@ import lombok.*;
 @Table(name = "program")
 public class Program {
     @Id
-    private UUID program_id = UUID.randomUUID();
+    private UUID programId = UUID.randomUUID();
 
     @NotNull
     private String nama;
 
     @NotNull
-    private int jumlah_level;
+    private int jumlahLevel;
 
     @NotNull
-    private int jumlah_pertemuan;
+    private int jumlahPertemuan;
 
     @ManyToMany
-    private List<JenisKelas> jenis_kelas;
+    private List<JenisKelas> jenisKelas;
 
     @OneToMany
     private List<Kelas> kelas;

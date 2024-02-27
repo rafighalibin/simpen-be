@@ -19,7 +19,7 @@ import lombok.*;
 @Table(name = "kelas")
 public class Kelas {
     @Id
-    private int kelas_id;
+    private int kelasId;
 
     @ManyToOne
     @NotNull
@@ -27,7 +27,7 @@ public class Kelas {
 
     @ManyToOne
     @NotNull
-    private JenisKelas jenis_kelas;
+    private JenisKelas jenisKelas;
 
     @NotNull
     private UserModel operasional; // need to change after Operasional model is created
@@ -39,23 +39,23 @@ public class Kelas {
     private int level;
 
     @NotNull
-    private String link_playlist;
+    private String linkPlaylist;
 
     @NotNull
-    private String link_group;
+    private String linkGroup;
 
     @NotNull
-    private Date tanggal_mulai;
+    private Date tanggalMulai;
 
     @NotNull
-    private Date tanggal_selesai;
+    private Date tanggalSelesai;
 
     @NotNull
-    private int jumlah_murid;
+    private int jumlahMurid;
 
     @NotNull
-    private float average_rating;
+    private float averageRating;
 
     @OneToMany
-    private List<SesiKelas> sesi_kelas;
+    private List<SesiKelas> sesiKelas;
 }

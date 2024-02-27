@@ -19,12 +19,12 @@ import lombok.*;
 @Table(name = "sesi_kelas")
 public class SesiKelas {
     @Id
-    private UUID sesi_id = UUID.randomUUID();
+    private UUID sesiId = UUID.randomUUID();
 
     @NotNull
     private UserModel pengajar; // need to change after Pengajar model is created
 
-    private UserModel pengajar_pengganti; // need to change after Pengajar model is created
+    private UserModel pengajarPengganti; // need to change after Pengajar model is created
 
     @ManyToOne
     @NotNull
@@ -34,7 +34,7 @@ public class SesiKelas {
     private String platform; //need to change after platform model is created (Sprint 2)
 
     @NotNull
-    private LocalDateTime waktu_pelaksanaan;
+    private LocalDateTime waktuPelaksanaan;
 
     @NotNull
     private String status;
