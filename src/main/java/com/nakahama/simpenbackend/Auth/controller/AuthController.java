@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 @RestController
-@RequestMapping("/api/auth")
+@RequestMapping("/auth")
 public class AuthController {
 
     @Autowired
@@ -48,6 +48,26 @@ public class AuthController {
             response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase());
             response.setMessage("Internal server error");
         }
+        return ResponseEntity.status(response.getCode()).body(response);
+    }
+
+    // <-- testing security config -->
+
+    @PostMapping("/test")
+    public ResponseEntity<?> testAuthorized() {
+        BaseResponse response = new BaseResponse();
+        response.setCode(HttpStatus.OK.value());
+        response.setStatus(HttpStatus.OK.getReasonPhrase());
+        response.setMessage("Authorized");
+        return ResponseEntity.status(response.getCode()).body(response);
+    }
+
+    @PostMapping("/test-role")
+    public ResponseEntity<?> testRole() {
+        BaseResponse response = new BaseResponse();
+        response.setCode(HttpStatus.OK.value());
+        response.setStatus(HttpStatus.OK.getReasonPhrase());
+        response.setMessage("Role Detected");
         return ResponseEntity.status(response.getCode()).body(response);
     }
 

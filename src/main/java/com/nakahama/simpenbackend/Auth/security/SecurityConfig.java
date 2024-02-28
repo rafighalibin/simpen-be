@@ -28,10 +28,12 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain jwtFilterChain(HttpSecurity http) throws Exception {
         http
-                .securityMatcher("api/**")
+                .securityMatcher("/**")
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> {
-                    auth.requestMatchers("api/**").permitAll();
+                    auth.requestMatchers("auth/login").permitAll();
+                    auth.requestMatchers("auth/test").authenticated();
+                    auth.requestMatchers("auth/test-role").hasAuthority("superadmin");
                 })
                 .sessionManagement(sessionAuthenticationStrategy -> sessionAuthenticationStrategy
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
