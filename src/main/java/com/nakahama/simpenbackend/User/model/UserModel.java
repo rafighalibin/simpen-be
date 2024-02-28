@@ -21,49 +21,33 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-// @JsonIgnoreProperties(value = { "password","createdAt","updatedAt" })
 @Table(name = "user_model")
 public class UserModel implements Serializable {
     @Id
     private UUID id = UUID.randomUUID();
 
     @Size(max = 100)
-    @Column(name = "name")
-    private String name;
+    @Column(name = "nama")
+    private String nama;
 
     @Size(max = 100)
-    @Column(name = "username")
-    private String username;
+    @Column(name = "email_kalananti")
+    private String email;
 
     @Size(max = 100)
     @Column(name = "password")
     private String password;
 
     @Size(max = 100)
-    @Column(name = "email")
-    private String email;
-
-    @Column(name = "balance")
-    private Long balance = (long) 0;
+    @Column(name = "jenis_kelamin")
+    private String jenisKelamin;
 
     @Size(max = 100)
-    @Column(name = "address")
-    private String address;
-
-    @Column(name = "createdAt")
-    private LocalDateTime createdAt;
-
-    @Column(name = "updatedAt")
-    private LocalDateTime updatedAt;
+    @Column(name = "no_telp")
+    private String noTelp;
 
     @Column(name = "isDeleted")
     private boolean isDeleted = false;
-
-    @Column(name = "category")
-    private String category;
-
-    @Column(name = "id_cart")
-    private int idCart;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_role", referencedColumnName = "id", nullable = false)
