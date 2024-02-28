@@ -10,7 +10,7 @@ import com.nakahama.simpenbackend.Kelas.repository.KelasDb;
 
 @Service
 public class KelasService {
-    
+
     @Autowired
     KelasDb kelasDb;
 
@@ -22,11 +22,11 @@ public class KelasService {
         return kelasDb.save(kelas);
     }
 
-    public Optional<Kelas> getById(UUID id) {
+    public Optional<Kelas> getById(int id) {
         return kelasDb.findById(id);
     }
 
-    public void delete(UUID id) {
+    public void delete(int id) {
         kelasDb.deleteById(id);
     }
 }
