@@ -38,7 +38,6 @@ public class Kelas {
     @NotNull
     private int level;
 
-    @NotNull
     private String linkPlaylist;
 
     @NotNull
