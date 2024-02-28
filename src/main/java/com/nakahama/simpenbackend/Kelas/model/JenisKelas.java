@@ -19,7 +19,7 @@ import lombok.*;
 @Table(name = "jenis_kelas")
 public class JenisKelas {
     @Id
-    private UUID jenisKelasId = UUID.randomUUID();
+    private UUID Id = UUID.randomUUID();
 
     @NotNull
     private String nama;
