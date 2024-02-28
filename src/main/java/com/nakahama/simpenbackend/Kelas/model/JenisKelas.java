@@ -34,7 +34,7 @@ public class JenisKelas {
     private String bahasa;
 
     @NotNull
-    private UserModel picAkademik; // need to change after Akademik model is created
+    private UserModel picAkademik; // TODO: need to change after Akademik model is created
 
     @ManyToMany
     private List<Program> program;
