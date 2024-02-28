@@ -40,7 +40,6 @@ public class Kelas {
 
     private String linkPlaylist;
 
-    @NotNull
     private String linkGroup;
 
     @NotNull
@@ -53,7 +52,7 @@ public class Kelas {
     private int jumlahMurid;
 
     @NotNull
-    private float averageRating;
+    private float averageRating = 0;
 
     @OneToMany
     private List<SesiKelas> sesiKelas;

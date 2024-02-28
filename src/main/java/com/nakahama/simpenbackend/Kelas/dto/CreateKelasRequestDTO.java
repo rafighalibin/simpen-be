@@ -30,4 +30,6 @@ public class CreateKelasRequestDTO {
 
     private List<String> listMurid;
 
+    private int level;
+
 }
