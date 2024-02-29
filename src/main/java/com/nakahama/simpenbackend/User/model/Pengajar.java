@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Setter
 @Getter
@@ -91,4 +92,7 @@ public class Pengajar {
     @Size(max = 100)
     @Column(name = "no_telp_darurat")
     private String noTelpDarurat;
+
+    @ManyToMany(mappedBy = "listPengajar", fetch = FetchType.LAZY)
+    List<Tag> listTag;
 }

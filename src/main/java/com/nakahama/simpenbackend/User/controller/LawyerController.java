@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import java.util.*;
-import java.text.SimpleDateFormat;
 import com.nakahama.simpenbackend.User.model.Lawyer;
 import com.nakahama.simpenbackend.User.service.LawyerService;
 import com.nakahama.simpenbackend.util.BaseResponse;
