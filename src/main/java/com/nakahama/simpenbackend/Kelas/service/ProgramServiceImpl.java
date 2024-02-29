@@ -9,8 +9,8 @@ import com.nakahama.simpenbackend.Kelas.model.Program;
 import com.nakahama.simpenbackend.Kelas.repository.ProgramDb;
 
 @Service
-public class ProgramServiceImpl implements ProgramService{
-    
+public class ProgramServiceImpl implements ProgramService {
+
     @Autowired
     ProgramDb programDb;
 
@@ -37,5 +37,15 @@ public class ProgramServiceImpl implements ProgramService{
     @Override
     public Optional<Program> getByNama(String nama) {
         return programDb.findByNama(nama);
+    }
+
+    @Override
+    public Program update(Program programRequest) {
+        Program existingProgram = programDb.findById(programRequest.getId()).orElse(null);
+        existingProgram.setNama(programRequest.getNama());
+        existingProgram.setJumlahLevel(programRequest.getJumlahLevel());
+        existingProgram.setJumlahPertemuan(programRequest.getJumlahPertemuan());
+
+        return programDb.save(existingProgram);
     }
 }

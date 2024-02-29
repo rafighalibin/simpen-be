@@ -29,7 +29,7 @@ public class CreateKelasRequestDTO {
 
     private String linkGroup;
 
-    private List<UUID> listMurid;
+    private List<String> listMurid;
 
     private int level;
 

@@ -9,15 +9,25 @@ import java.util.*;
 
 import com.nakahama.simpenbackend.Kelas.model.*;
 import com.nakahama.simpenbackend.User.model.UserModel;
+import com.nakahama.simpenbackend.User.service.UserService;
+import com.nakahama.simpenbackend.Auth.service.AuthService;
 import com.nakahama.simpenbackend.Kelas.dto.CreateKelasRequestDTO;
 import com.nakahama.simpenbackend.Kelas.service.*;
 import com.nakahama.simpenbackend.util.BaseResponse;
+
+import jakarta.servlet.http.HttpServletRequest;
 
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 @RestController("/kelas")
 public class KelasController {
+
+    @Autowired
+    UserService userService;
+
+    @Autowired
+    AuthService authService;
     
     @Autowired
     KelasServiceImpl kelasService;
@@ -31,14 +41,39 @@ public class KelasController {
     @Autowired
     SesiKelasService sesiKelasService;
 
-    @Autowired
-    MuridService muridService;
+    @GetMapping("/")
+    public BaseResponse getKelas() {
+        List<Kelas> listKelas = kelasService.getAll();
 
-    @Autowired
-    MuridKelasService muridKelasService;
+        BaseResponse response = new BaseResponse();
+        response.setCode(200);
+        response.setStatus("OK");
+        response.setMessage("Success");
+        response.setContent(listKelas);
+        return response;
+    }
 
     @PostMapping("/")
-    public BaseResponse createKelas(@RequestBody CreateKelasRequestDTO kelasDTO) {
+    public BaseResponse createKelas(@RequestBody CreateKelasRequestDTO kelasDTO, HttpServletRequest request) {
+
+        @SuppressWarnings("deprecation")
+        UserModel userLoggedIn = authService.getLoggedUser(request);
+
+        if (userLoggedIn == null) {
+            BaseResponse response = new BaseResponse();
+            response.setCode(401);
+            response.setStatus("Unauthorized");
+            response.setMessage("User not found");
+            return response;
+        }
+
+        if(!userLoggedIn.getRole().equals("operasional")) {
+            BaseResponse response = new BaseResponse();
+            response.setCode(403);
+            response.setStatus("Forbidden");
+            response.setMessage("User not authorized");
+            return response;
+        }
 
         Optional<Program> program = programService.getById(kelasDTO.getProgramId());
 
@@ -61,33 +96,24 @@ public class KelasController {
         }
 
         Kelas kelas = new Kelas();
+        kelas.setKelasId(kelasService.getAll().size() + 1);
         kelas.setProgram(program.get());
         kelas.setJenisKelas(jenisKelas.get());
-        UserModel operasional = new UserModel(); // need to change after service to get user by jwt is created
-        kelas.setOperasional(operasional);
-        UserModel pengajar = new UserModel(); // need to change after Pengajar model is created
+        kelas.setOperasional(userLoggedIn);
+        UserModel pengajar = userService.getUserById(kelasDTO.getPengajarId());
         kelas.setPengajar(pengajar);
         kelas.setLevel(kelasDTO.getLevel());
         kelas.setTanggalMulai(kelasDTO.getTanggalMulai());
         kelas.setTanggalSelesai(kelasDTO.getTanggalSelesai());
+        kelas.setJumlahMurid(kelasDTO.getListMurid().size());
 
         if(kelasDTO.getLinkGroup() != null) {
             kelas.setLinkGroup(kelasDTO.getLinkGroup());
         }
 
+        kelas.setListMurid(kelasDTO.getListMurid());
+
         Kelas createdKelas = kelasService.save(kelas);
-
-        for(UUID e : kelasDTO.getListMurid()){
-            Optional<Murid> murid = muridService.getById(e);
-            if(murid.isPresent()){
-                MuridKelas muridKelas = new MuridKelas();
-                muridKelas.setKelas(kelas);
-                muridKelas.setMurid(murid.get());
-                muridKelasService.save(muridKelas);
-            }
-        }
-
-        kelas.setJumlahMurid(kelasDTO.getListMurid().size());
 
         for(LocalDateTime e : kelasDTO.getJadwalKelas()){
             SesiKelas sesiKelas = new SesiKelas();

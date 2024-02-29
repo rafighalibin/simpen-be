@@ -6,8 +6,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import java.util.*;
 
-import com.nakahama.simpenbackend.Kelas.model.JenisKelas;
-import com.nakahama.simpenbackend.Kelas.service.JenisKelasService;
+import com.nakahama.simpenbackend.Kelas.model.Program;
+import com.nakahama.simpenbackend.Kelas.service.ProgramService;
 import com.nakahama.simpenbackend.util.BaseResponse;
 
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,58 +17,57 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 
 @RestController
-@RequestMapping("/kelas/jenis")
-public class JenisKelasController {
+@RequestMapping("/kelas/program")
+public class ProgramController {
 
     @Autowired
-    JenisKelasService jenisKelasService;
+    ProgramService programService;
 
     @PostMapping("/")
-    public BaseResponse createJenisKelas(@RequestBody JenisKelas jenisKelasRequest,
+    public BaseResponse createProgram(@RequestBody Program programRequest,
             @RequestHeader("Authorization") String token) {
 
-        JenisKelas jenisKelas = jenisKelasService.save(jenisKelasRequest);
+        Program program = programService.save(programRequest);
 
         // TODO: Add error handling
         BaseResponse response = new BaseResponse();
         response.setCode(200);
         response.setStatus("OK");
         response.setMessage("Success");
-        response.setContent(jenisKelas);
+        response.setContent(program);
         return response;
     }
 
     @GetMapping(value = "/")
-    public BaseResponse getJenisKelas(@RequestHeader("Authorization") String token) {
+    public BaseResponse getProgram(@RequestHeader("Authorization") String token) {
 
-        List<JenisKelas> listJenisKelas = jenisKelasService.getAll();
+        List<Program> listProgram = programService.getAll();
 
         BaseResponse response = new BaseResponse();
         response.setCode(200);
         response.setStatus("OK");
         response.setMessage("Success");
-        response.setContent(listJenisKelas);
+        response.setContent(listProgram);
         return response;
     }
 
     @PutMapping("/")
-    public BaseResponse updateJenisKelas(@RequestBody JenisKelas jenisKelasRequest, @RequestBody String entity) {
+    public BaseResponse updateProgram(@RequestBody Program programRequest, @RequestBody String entity) {
 
-        // TODO: Add error handling
+        Program program = programService.update(programRequest);
 
-        JenisKelas jenisKelas = jenisKelasService.update(jenisKelasRequest);
         BaseResponse response = new BaseResponse();
         response.setCode(200);
         response.setStatus("OK");
         response.setMessage("Success");
-        response.setContent(jenisKelas);
+        response.setContent(program);
         return response;
     }
 
     @DeleteMapping(value = "/")
-    public BaseResponse deleteJenisKelas(@RequestBody UUID id) {
+    public BaseResponse deleteProgram(@RequestBody UUID id) {
 
-        jenisKelasService.delete(id);
+        programService.delete(id);
 
         BaseResponse response = new BaseResponse();
         response.setCode(200);

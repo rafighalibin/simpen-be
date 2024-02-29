@@ -18,7 +18,7 @@ import lombok.*;
 @Table(name = "program")
 public class Program {
     @Id
-    private UUID programId = UUID.randomUUID();
+    private UUID Id = UUID.randomUUID();
 
     @NotNull
     private String nama;

@@ -20,11 +20,12 @@ import lombok.*;
 @Table(name = "jenis_kelas")
 public class JenisKelas {
     @Id
-    private UUID jenisKelasId = UUID.randomUUID();
+    private UUID Id = UUID.randomUUID();
 
     @NotNull
     private String nama;
 
+    //0 = Online, 1 = Offline, 2 = Hybrid
     @NotNull
     private int pertemuan;
 

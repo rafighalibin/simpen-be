@@ -11,6 +11,6 @@ import java.util.Optional;
 
 @Repository
 @Transactional
-public interface KelasDb extends JpaRepository<Kelas, Integer>{
-    Optional<Kelas> findById(Integer id);
+public interface KelasDb extends JpaRepository<Kelas, Integer> {
+    Optional<Kelas> findByKelasId(int id);
 }

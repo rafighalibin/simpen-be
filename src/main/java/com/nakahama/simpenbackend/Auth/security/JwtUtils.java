@@ -51,13 +51,13 @@ public class JwtUtils {
 
     @Deprecated
     public String getIdFromJwt(String token) {
-        Claims claim = Jwts.parser().setSigningKey(jwtSecret).build().parseClaimsJwt(token).getBody();
+        Claims claim = Jwts.parser().setSigningKey(jwtSecret).build().parseClaimsJws(token).getBody();
         return (String) claim.get("id");
     }
 
     @Deprecated
     public String getRoleFromJwt(String token) {
-        Claims claim = Jwts.parser().setSigningKey(jwtSecret).build().parseClaimsJwt(token).getBody();
+        Claims claim = Jwts.parser().setSigningKey(jwtSecret).build().parseClaimsJws(token).getBody();
         return (String) claim.get("role");
     }
 

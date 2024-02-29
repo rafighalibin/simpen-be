@@ -22,4 +22,6 @@ public interface JenisKelasService {
     public JenisKelas getByNamaAndPertemuanAndTipeAndBahasa(String nama, int pertemuan, String tipe, String bahasa);
 
     public Optional<JenisKelas> getByProgram(Program program_id);
+
+    public JenisKelas update(JenisKelas jenisKelas);
 }

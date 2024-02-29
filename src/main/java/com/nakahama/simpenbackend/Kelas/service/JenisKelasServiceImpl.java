@@ -48,4 +48,16 @@ public class JenisKelasServiceImpl implements JenisKelasService {
     public Optional<JenisKelas> getByProgram(Program program_id) {
         return jenisKelasDb.findByProgram(program_id);
     }
+
+    @Override
+    public JenisKelas update(JenisKelas jenisKelas) {
+        JenisKelas existingJenisKelas = jenisKelasDb.findById(jenisKelas.getId()).orElse(null);
+        existingJenisKelas.setNama(jenisKelas.getNama());
+        existingJenisKelas.setPertemuan(jenisKelas.getPertemuan());
+        existingJenisKelas.setTipe(jenisKelas.getTipe());
+        existingJenisKelas.setBahasa(jenisKelas.getBahasa());
+        existingJenisKelas.setProgram(jenisKelas.getProgram());
+
+        return jenisKelasDb.save(existingJenisKelas);
+    }
 }

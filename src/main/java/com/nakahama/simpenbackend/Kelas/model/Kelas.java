@@ -63,4 +63,6 @@ public class Kelas {
 
     @OneToMany(mappedBy = "kelas", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<MuridKelas> muridKelas;
+
+    private List<String> listMurid;
 }
