@@ -1,11 +1,15 @@
 package com.nakahama.simpenbackend.Auth.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import com.nakahama.simpenbackend.Auth.dto.LoginReqDTO;
 import com.nakahama.simpenbackend.Auth.security.JwtUtils;
+import com.nakahama.simpenbackend.User.dto.UserContentResponseDTO;
 import com.nakahama.simpenbackend.User.model.UserModel;
 import com.nakahama.simpenbackend.User.repository.UserDb;
 import com.nakahama.simpenbackend.User.service.UserService;
@@ -26,6 +30,8 @@ public class AuthService {
     @Autowired
     UserService userService;
 
+    BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+
     @Deprecated
     public String loginWithJwt(LoginReqDTO loginReqDTO) {
         UserModel user = userDb.findByEmail(loginReqDTO.getEmail());
@@ -37,7 +43,7 @@ public class AuthService {
     }
 
     public boolean authenticate(UserModel userModel, String password) {
-        if (userModel.getPassword().equals(password)) {
+        if (bCryptPasswordEncoder.matches(password, userModel.getPassword())) {
             return true;
         } else {
             return false;
@@ -77,4 +83,43 @@ public class AuthService {
             return null;
         }
     }
+
+    @Deprecated
+    public String getIdLoggedUser(HttpServletRequest request) {
+        String token = getToken(request);
+        if (token != null && jwtUtils.validateToken(token)) {
+            String id = jwtUtils.getIdFromJwt(token);
+            return id;
+        } else {
+            return null;
+        }
+    }
+
+    @Deprecated
+    public String getEmailLoggedUser(HttpServletRequest request) {
+        String token = getToken(request);
+        if (token != null && jwtUtils.validateToken(token)) {
+            String email = jwtUtils.getEmailFromJwt(token);
+            return email;
+        } else {
+            return null;
+        }
+    }
+
+    @Deprecated
+    public String getRoleLoggedUser(HttpServletRequest request) {
+        String token = getToken(request);
+        if (token != null && jwtUtils.validateToken(token)) {
+            String role = jwtUtils.getRoleFromJwt(token);
+            return role;
+        } else {
+            return null;
+        }
+    }
+
+    // public UserContentResponseDTO userResponseMapper(UserModel userModel) {
+    // UserContentResponseDTO userContentResponseDTO = new UserContentResponseDTO();
+    // userContentResponseDTO.setId(userModel.getId());
+    // }
+
 }
