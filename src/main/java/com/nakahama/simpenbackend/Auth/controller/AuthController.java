@@ -4,14 +4,22 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.nakahama.simpenbackend.Auth.dto.LoginReqDTO;
+import com.nakahama.simpenbackend.Auth.security.JwtUtils;
 import com.nakahama.simpenbackend.Auth.service.AuthService;
+import com.nakahama.simpenbackend.User.model.UserModel;
+import com.nakahama.simpenbackend.User.service.UserService;
 import com.nakahama.simpenbackend.util.BaseResponse;
+
+import jakarta.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/auth")
@@ -19,6 +27,12 @@ public class AuthController {
 
     @Autowired
     AuthService authService;
+
+    @Autowired
+    UserService userService;
+
+    @Autowired
+    JwtUtils jwtUtils;
 
     @Deprecated
     @PostMapping("/login")
@@ -46,7 +60,31 @@ public class AuthController {
         } catch (Exception e) {
             response.setCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
             response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase());
-            response.setMessage("Internal server error");
+            response.setMessage("Internal server error: " + e.getMessage());
+        }
+        return ResponseEntity.status(response.getCode()).body(response);
+    }
+
+    @Deprecated
+    @GetMapping("/login")
+    public ResponseEntity<?> getActiveUser(HttpServletRequest request) {
+        BaseResponse response = new BaseResponse();
+        try {
+            UserModel user = authService.getLoggedUser(request);
+            if (user != null) {
+                response.setCode(HttpStatus.OK.value());
+                response.setStatus(HttpStatus.OK.getReasonPhrase());
+                response.setMessage("User found");
+                response.setContent(user);
+            } else {
+                response.setCode(HttpStatus.OK.value());
+                response.setStatus(HttpStatus.OK.getReasonPhrase());
+                response.setMessage("User not found");
+            }
+        } catch (Exception e) {
+            response.setCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
+            response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase());
+            response.setMessage("Internal server error: " + e.getMessage());
         }
         return ResponseEntity.status(response.getCode()).body(response);
     }

@@ -26,7 +26,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         // use email instead of username
         UserModel user = userDb.findByEmail(key);
         Set<GrantedAuthority> grantedAuthority = new HashSet<>();
-        grantedAuthority.add(new SimpleGrantedAuthority(user.getRole().getRole()));
+        grantedAuthority.add(new SimpleGrantedAuthority(String.valueOf(user.getRole())));
         return new User(user.getEmail(), user.getPassword(), grantedAuthority);
     }
 }

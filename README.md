@@ -39,3 +39,8 @@ PBI number.
 
 - Use `kebab-case`
 - Keep it concise
+
+## Get Logged User
+
+- service di auth --> getLoggedUser(HttpServletRequest request)
+- nembak API auth --> Get /login
