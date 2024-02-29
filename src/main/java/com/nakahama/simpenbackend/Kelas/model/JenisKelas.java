@@ -1,5 +1,6 @@
 package com.nakahama.simpenbackend.Kelas.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.nakahama.simpenbackend.User.model.UserModel;
 import java.util.*;
 
@@ -37,11 +38,14 @@ public class JenisKelas {
 
     @NotNull
     @ManyToOne
+    @JsonIgnore
     private UserModel picAkademik; // TODO: need to change after Akademik model is created
 
     @ManyToMany
+    @JsonIgnore
     private List<Program> program;
 
     @OneToMany
+    @JsonIgnore
     private List<Kelas> kelas;
 }

@@ -13,55 +13,55 @@ import com.nakahama.simpenbackend.User.model.UserModel; // need to change after 
 public class SesiKelasServiceImpl implements SesiKelasService {
 
     @Autowired
-    SesiKelasDb jenisKelasDb;
+    SesiKelasDb sesiKelasDb;
 
     @Override
     public List<SesiKelas> getAll() {
-        return jenisKelasDb.findAll();
+        return sesiKelasDb.findAll();
     }
 
     @Override
-    public SesiKelas save(SesiKelas jenisKelas) {
-        return jenisKelasDb.save(jenisKelas);
+    public SesiKelas save(SesiKelas sesiKelas) {
+        return sesiKelasDb.save(sesiKelas);
     }
 
     @Override
     public Optional<SesiKelas> getById(UUID id) {
-        return jenisKelasDb.findById(id);
+        return sesiKelasDb.findById(id);
     }
 
     @Override
     public void delete(UUID id) {
-        jenisKelasDb.deleteById(id);
+        sesiKelasDb.deleteById(id);
     }
 
     @Override
     public Optional<SesiKelas> getByKelas(Kelas kelas) {
-        return jenisKelasDb.findByKelas(kelas);
+        return sesiKelasDb.findByKelas(kelas);
     }
 
     @Override
     public Optional<SesiKelas> getByPengajar(UserModel pengajar) {
-        return jenisKelasDb.findByPengajar(pengajar);
+        return sesiKelasDb.findByPengajar(pengajar);
     }
 
     @Override
     public Optional<SesiKelas> getByPengajarPengganti(UserModel pengajarPengganti) {
-        return jenisKelasDb.findByPengajarPengganti(pengajarPengganti);
+        return sesiKelasDb.findByPengajarPengganti(pengajarPengganti);
     }
 
     @Override
     public Optional<SesiKelas> getByWaktuPermintaanBetween(Date startDate, Date endDate) {
-        return jenisKelasDb.findByWaktuPermintaanBetween(startDate, endDate);
+        return sesiKelasDb.findByWaktuPermintaanBetween(startDate, endDate);
     }
 
     @Override
     public Optional<SesiKelas> getByStatus(String status) {
-        return jenisKelasDb.findByStatus(status);
+        return sesiKelasDb.findByStatus(status);
     }
 
     @Override
     public Optional<SesiKelas> getByPlatform(String platform) {
-        return jenisKelasDb.findByPlatform(platform);
+        return sesiKelasDb.findByPlatform(platform);
     }
 }

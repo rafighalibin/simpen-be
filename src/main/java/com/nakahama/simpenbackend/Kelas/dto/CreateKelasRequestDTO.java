@@ -3,6 +3,8 @@ package com.nakahama.simpenbackend.Kelas.dto;
 import java.time.LocalDateTime;
 import java.util.*;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
@@ -19,6 +21,7 @@ public class CreateKelasRequestDTO {
 
     private UUID jenisKelasId;
 
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private List<LocalDateTime> jadwalKelas;
 
     private Date tanggalMulai;

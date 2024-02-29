@@ -13,7 +13,7 @@ public interface SesiKelasService {
 
     public List<SesiKelas> getAll();
 
-    public SesiKelas save(SesiKelas jenisKelas);
+    public SesiKelas save(SesiKelas sesiKelas);
 
     public Optional<SesiKelas> getById(UUID id);
 

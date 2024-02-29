@@ -1,5 +1,7 @@
 package com.nakahama.simpenbackend.Kelas.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.nakahama.simpenbackend.User.model.Pengajar;
 import com.nakahama.simpenbackend.User.model.UserModel;
 import java.util.*;
 
@@ -37,7 +39,7 @@ public class Kelas {
     
     @NotNull
     @ManyToOne
-    private UserModel pengajar; // need to change after Pengajar model is created
+    private Pengajar pengajar; // need to change after Pengajar model is created
 
     @NotNull
     private int level;
@@ -55,13 +57,13 @@ public class Kelas {
     @NotNull
     private int jumlahMurid;
 
-    @NotNull
-    private float averageRating = 0;
+    private float averageRating;
 
     @OneToMany
     private List<SesiKelas> sesiKelas;
 
     @OneToMany(mappedBy = "kelas", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<MuridKelas> muridKelas;
 
     private List<String> listMurid;

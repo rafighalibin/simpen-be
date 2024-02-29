@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 import java.util.*;
 
 import com.nakahama.simpenbackend.Kelas.model.*;
+import com.nakahama.simpenbackend.User.model.Pengajar;
 import com.nakahama.simpenbackend.User.model.UserModel;
 import com.nakahama.simpenbackend.User.service.UserService;
 import com.nakahama.simpenbackend.Auth.service.AuthService;
@@ -20,7 +21,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-@RestController("/kelas")
+@RestController
 public class KelasController {
 
     @Autowired
@@ -41,7 +42,7 @@ public class KelasController {
     @Autowired
     SesiKelasService sesiKelasService;
 
-    @GetMapping("/")
+    @GetMapping("/kelas")
     public BaseResponse getKelas() {
         List<Kelas> listKelas = kelasService.getAll();
 
@@ -53,8 +54,8 @@ public class KelasController {
         return response;
     }
 
-    @PostMapping("/")
-    public BaseResponse createKelas(@RequestBody CreateKelasRequestDTO kelasDTO, HttpServletRequest request) {
+    @PostMapping("/kelas")
+    public BaseResponse createKelas(@RequestBody CreateKelasRequestDTO kelasDTO, HttpServletRequest request){
 
         @SuppressWarnings("deprecation")
         UserModel userLoggedIn = authService.getLoggedUser(request);
@@ -100,7 +101,8 @@ public class KelasController {
         kelas.setProgram(program.get());
         kelas.setJenisKelas(jenisKelas.get());
         kelas.setOperasional(userLoggedIn);
-        UserModel pengajar = userService.getUserById(kelasDTO.getPengajarId());
+        UserModel pengajarUserModel = userService.getUserById(kelasDTO.getPengajarId());
+        Pengajar pengajar = pengajarUserModel.getPengajar();
         kelas.setPengajar(pengajar);
         kelas.setLevel(kelasDTO.getLevel());
         kelas.setTanggalMulai(kelasDTO.getTanggalMulai());
@@ -112,6 +114,7 @@ public class KelasController {
         }
 
         kelas.setListMurid(kelasDTO.getListMurid());
+        kelas.setSesiKelas(new ArrayList<SesiKelas>());
 
         Kelas createdKelas = kelasService.save(kelas);
 
@@ -123,7 +126,9 @@ public class KelasController {
             sesiKelas.setWaktuPelaksanaan(e);
             sesiKelas.setStatus("Scheduled");
             sesiKelasService.save(sesiKelas);
+            createdKelas.getSesiKelas().add(sesiKelas);
         }
+        createdKelas = kelasService.save(createdKelas);
 
         BaseResponse response = new BaseResponse();
         response.setCode(200);
