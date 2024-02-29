@@ -14,31 +14,50 @@ public class JenisKelasServiceImpl implements JenisKelasService {
     @Autowired
     JenisKelasDb jenisKelasDb;
 
+    @Override
     public List<JenisKelas> getAll() {
         return jenisKelasDb.findAll();
     }
 
+    @Override
     public JenisKelas save(JenisKelas jenisKelas) {
         return jenisKelasDb.save(jenisKelas);
     }
 
+    @Override
     public Optional<JenisKelas> getById(UUID id) {
         return jenisKelasDb.findById(id);
     }
 
+    @Override
     public void delete(UUID id) {
         jenisKelasDb.deleteById(id);
     }
 
+    @Override
     public Optional<JenisKelas> getByNama(String nama) {
         return jenisKelasDb.findByNama(nama);
     }
 
+    @Override
     public JenisKelas getByNamaAndPertemuanAndTipeAndBahasa(String nama, int pertemuan, String tipe, String bahasa) {
         return jenisKelasDb.findByNamaAndPertemuanAndTipeAndBahasa(nama, pertemuan, tipe, bahasa);
     }
 
+    @Override
     public Optional<JenisKelas> getByProgram(Program program_id) {
         return jenisKelasDb.findByProgram(program_id);
+    }
+
+    @Override
+    public JenisKelas update(JenisKelas jenisKelas) {
+        JenisKelas existingJenisKelas = jenisKelasDb.findById(jenisKelas.getId()).orElse(null);
+        existingJenisKelas.setNama(jenisKelas.getNama());
+        existingJenisKelas.setPertemuan(jenisKelas.getPertemuan());
+        existingJenisKelas.setTipe(jenisKelas.getTipe());
+        existingJenisKelas.setBahasa(jenisKelas.getBahasa());
+        existingJenisKelas.setProgram(jenisKelas.getProgram());
+
+        return jenisKelasDb.save(existingJenisKelas);
     }
 }

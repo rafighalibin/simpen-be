@@ -89,15 +89,18 @@ public class UserServiceImpl implements UserService {
                 user.setPengajar(pengajar);
                 user.setOperasional(null);
                 user.setAkademik(null);
+                pengajar.setUser(user);
             }
             if (role.equals("operasional")) {
                 Operasional operasional = new Operasional();
+                operasional.setUser(user);
                 user.setPengajar(null);
                 user.setOperasional(operasional);
                 user.setAkademik(null);
             }
             if (role.equals("akademik")) {
                 Akademik akademik = new Akademik();
+                akademik.setUser(user);
                 user.setPengajar(null);
                 user.setOperasional(null);
                 user.setAkademik(akademik);
@@ -116,18 +119,21 @@ public class UserServiceImpl implements UserService {
 
                 if (role.equals("pengajar")) {
                     Pengajar pengajar = new Pengajar();
+                    pengajar.setUser(user);
                     user.setPengajar(pengajar);
                     user.setOperasional(null);
                     user.setAkademik(null);
                 }
                 if (role.equals("operasional")) {
                     Operasional operasional = new Operasional();
+                    operasional.setUser(user);
                     user.setPengajar(null);
                     user.setOperasional(operasional);
                     user.setAkademik(null);
                 }
                 if (role.equals("akademik")) {
                     Akademik akademik = new Akademik();
+                    akademik.setUser(user);
                     user.setPengajar(null);
                     user.setOperasional(null);
                     user.setAkademik(akademik);

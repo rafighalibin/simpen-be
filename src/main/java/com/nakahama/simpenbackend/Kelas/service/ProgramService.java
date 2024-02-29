@@ -2,35 +2,22 @@ package com.nakahama.simpenbackend.Kelas.service;
 
 import java.util.*;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.nakahama.simpenbackend.Kelas.model.Program;
-import com.nakahama.simpenbackend.Kelas.repository.ProgramDb;
 
 @Service
-public class ProgramService {
-    
-    @Autowired
-    ProgramDb programDb;
+public interface ProgramService {
 
-    public List<Program> getAll() {
-        return programDb.findAll();
-    }
+    public List<Program> getAll();
 
-    public Program save(Program program) {
-        return programDb.save(program);
-    }
+    public Program save(Program program);
 
-    public Optional<Program> getById(UUID id) {
-        return programDb.findById(id);
-    }
+    public Optional<Program> getById(UUID id);
 
-    public void delete(UUID id) {
-        programDb.deleteById(id);
-    }
+    public void delete(UUID id);
 
-    public Optional<Program> getByNama(String nama) {
-        return programDb.findByNama(nama);
-    }
+    public Optional<Program> getByNama(String nama);
+
+    public Program update(Program programRequest);
 }

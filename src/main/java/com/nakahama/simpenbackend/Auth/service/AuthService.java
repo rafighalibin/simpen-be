@@ -9,6 +9,7 @@ import org.springframework.util.StringUtils;
 
 import com.nakahama.simpenbackend.Auth.dto.LoginReqDTO;
 import com.nakahama.simpenbackend.Auth.security.JwtUtils;
+import com.nakahama.simpenbackend.User.dto.UserContentResponseDTO;
 import com.nakahama.simpenbackend.User.model.UserModel;
 import com.nakahama.simpenbackend.User.repository.UserDb;
 import com.nakahama.simpenbackend.User.service.UserService;
@@ -115,4 +116,10 @@ public class AuthService {
             return null;
         }
     }
+
+    // public UserContentResponseDTO userResponseMapper(UserModel userModel) {
+    // UserContentResponseDTO userContentResponseDTO = new UserContentResponseDTO();
+    // userContentResponseDTO.setId(userModel.getId());
+    // }
+
 }
