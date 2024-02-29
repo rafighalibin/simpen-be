@@ -6,6 +6,7 @@ import java.util.*;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.*;
@@ -34,7 +35,8 @@ public class JenisKelas {
     private String bahasa;
 
     @NotNull
-    private UserModel picAkademik; // need to change after Akademik model is created
+    @ManyToOne
+    private UserModel picAkademik; // TODO: need to change after Akademik model is created
 
     @ManyToMany
     private List<Program> program;

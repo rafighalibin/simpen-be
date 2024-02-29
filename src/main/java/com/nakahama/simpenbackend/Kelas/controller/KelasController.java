@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.LocalDateTime;
 import java.util.*;
 
 import com.nakahama.simpenbackend.Kelas.model.*;
@@ -22,10 +23,19 @@ public class KelasController {
     KelasServiceImpl kelasService;
 
     @Autowired
-    ProgramService programService;
+    ProgramServiceImpl programService;
 
     @Autowired
     JenisKelasService jenisKelasService;
+
+    @Autowired
+    SesiKelasService sesiKelasService;
+
+    @Autowired
+    MuridService muridService;
+
+    @Autowired
+    MuridKelasService muridKelasService;
 
     @PostMapping("/")
     public BaseResponse createKelas(@RequestBody CreateKelasRequestDTO kelasDTO) {
@@ -53,7 +63,7 @@ public class KelasController {
         Kelas kelas = new Kelas();
         kelas.setProgram(program.get());
         kelas.setJenisKelas(jenisKelas.get());
-        UserModel operasional = new UserModel(); // need to change after Operasional model is created
+        UserModel operasional = new UserModel(); // need to change after service to get user by jwt is created
         kelas.setOperasional(operasional);
         UserModel pengajar = new UserModel(); // need to change after Pengajar model is created
         kelas.setPengajar(pengajar);
@@ -65,11 +75,29 @@ public class KelasController {
             kelas.setLinkGroup(kelasDTO.getLinkGroup());
         }
 
-        if(kelasDTO.getListMurid() != null) {
-            kelas.setJumlahMurid(kelasDTO.getListMurid().size());
+        Kelas createdKelas = kelasService.save(kelas);
+
+        for(UUID e : kelasDTO.getListMurid()){
+            Optional<Murid> murid = muridService.getById(e);
+            if(murid.isPresent()){
+                MuridKelas muridKelas = new MuridKelas();
+                muridKelas.setKelas(kelas);
+                muridKelas.setMurid(murid.get());
+                muridKelasService.save(muridKelas);
+            }
         }
 
-        Kelas createdKelas = kelasService.save(kelas);
+        kelas.setJumlahMurid(kelasDTO.getListMurid().size());
+
+        for(LocalDateTime e : kelasDTO.getJadwalKelas()){
+            SesiKelas sesiKelas = new SesiKelas();
+            sesiKelas.setKelas(createdKelas);
+            sesiKelas.setPengajar(pengajar);
+            sesiKelas.setPlatform(kelasDTO.getPlatform());  //need to change after platform model is created (Sprint 2)
+            sesiKelas.setWaktuPelaksanaan(e);
+            sesiKelas.setStatus("Scheduled");
+            sesiKelasService.save(sesiKelas);
+        }
 
         BaseResponse response = new BaseResponse();
         response.setCode(200);

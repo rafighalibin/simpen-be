@@ -3,7 +3,9 @@ package com.nakahama.simpenbackend.Kelas.model;
 import com.nakahama.simpenbackend.User.model.UserModel;
 import java.util.*;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
@@ -30,9 +32,11 @@ public class Kelas {
     private JenisKelas jenisKelas;
 
     @NotNull
+    @ManyToOne
     private UserModel operasional; // need to change after Operasional model is created
     
     @NotNull
+    @ManyToOne
     private UserModel pengajar; // need to change after Pengajar model is created
 
     @NotNull
@@ -56,4 +60,7 @@ public class Kelas {
 
     @OneToMany
     private List<SesiKelas> sesiKelas;
+
+    @OneToMany(mappedBy = "kelas", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<MuridKelas> muridKelas;
 }

@@ -1,5 +1,6 @@
 package com.nakahama.simpenbackend.Kelas.dto;
 
+import java.time.LocalDateTime;
 import java.util.*;
 
 import lombok.AllArgsConstructor;
@@ -18,7 +19,7 @@ public class CreateKelasRequestDTO {
 
     private UUID jenisKelasId;
 
-    private List<Date> jadwalKelas;
+    private List<LocalDateTime> jadwalKelas;
 
     private Date tanggalMulai;
 
@@ -28,8 +29,10 @@ public class CreateKelasRequestDTO {
 
     private String linkGroup;
 
-    private List<String> listMurid;
+    private List<UUID> listMurid;
 
     private int level;
+
+    private String platform; //need to delete after platform model created (sprint 2)
 
 }
