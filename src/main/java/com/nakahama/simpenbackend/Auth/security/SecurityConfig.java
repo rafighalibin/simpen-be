@@ -34,6 +34,8 @@ public class SecurityConfig {
                     auth.requestMatchers("auth/test").authenticated();
                     auth.requestMatchers("auth/test-role").hasAuthority("superadmin");
                     auth.requestMatchers("user").hasAuthority("superadmin");
+                    // TODO: set the appropriate authorities for the corresponding endpoints
+                    auth.anyRequest().authenticated();
                 })
                 .sessionManagement(sessionAuthenticationStrategy -> sessionAuthenticationStrategy
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
