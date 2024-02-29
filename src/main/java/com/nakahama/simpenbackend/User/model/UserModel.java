@@ -1,13 +1,7 @@
 package com.nakahama.simpenbackend.User.model;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
 import java.util.UUID;
-
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
@@ -49,9 +43,16 @@ public class UserModel implements Serializable {
     @Column(name = "isDeleted")
     private boolean isDeleted = false;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "id_role", referencedColumnName = "id", nullable = false)
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    @JsonIgnore
-    private Role role;
+    @Size(max = 100)
+    @Column(name = "role")
+    private String role;
+
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    private Pengajar pengajar;
+
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    private Operasional operasional;
+
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    private Akademik akademik;
 }
