@@ -5,6 +5,7 @@ import java.util.Random;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.nakahama.simpenbackend.User.model.Akademik;
@@ -19,6 +20,10 @@ public class UserServiceImpl implements UserService {
     @Autowired
     UserDb userDb;
 
+    BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+
+    // <-- Helper method -->
+
     @Override
     public String generatePassword(int length) {
         String CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
@@ -30,6 +35,21 @@ public class UserServiceImpl implements UserService {
         }
         return password.toString();
     }
+
+    @Override
+    public void addDummySuperadmin() {
+        UserModel user = userDb.findByRole("superadmin");
+
+        if (user == null) {
+            UserModel superadmin = new UserModel();
+            superadmin.setEmail("1234@kalananti.com");
+            superadmin.setPassword(bCryptPasswordEncoder.encode("1234"));
+            superadmin.setRole("superadmin");
+            userDb.save(superadmin);
+        }
+    }
+
+    // <-- Helper method -->
 
     @Override
     public boolean isDeactivate(String email) {
@@ -61,7 +81,7 @@ public class UserServiceImpl implements UserService {
             UserModel user = userDb.findByEmail(email);
 
             user.setNama(nama);
-            user.setPassword(generatePassword(5));
+            user.setPassword(bCryptPasswordEncoder.encode("12345"));
             user.setDeleted(false);
             user.setRole(role);
             if (role.equals("pengajar")) {
@@ -92,7 +112,7 @@ public class UserServiceImpl implements UserService {
                 user.setNama(nama);
                 user.setEmail(email);
                 user.setRole(role);
-                user.setPassword(generatePassword(5));
+                user.setPassword(bCryptPasswordEncoder.encode("12345"));
 
                 if (role.equals("pengajar")) {
                     Pengajar pengajar = new Pengajar();

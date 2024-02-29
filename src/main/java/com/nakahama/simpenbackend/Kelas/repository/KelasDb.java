@@ -13,5 +13,5 @@ import java.util.UUID;
 @Repository
 @Transactional
 public interface KelasDb extends JpaRepository<Kelas, Integer> {
-    Optional<Kelas> findById(UUID id);
+    Optional<Kelas> findByKelasId(int id);
 }
