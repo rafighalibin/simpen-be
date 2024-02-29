@@ -6,6 +6,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.nakahama.simpenbackend.Auth.dto.LoginReqDTO;
 import com.nakahama.simpenbackend.Auth.security.JwtUtils;
 import com.nakahama.simpenbackend.Auth.service.AuthService;
+import com.nakahama.simpenbackend.User.dto.UserContentResponseDTO;
+import com.nakahama.simpenbackend.User.dto.UserMapper;
 import com.nakahama.simpenbackend.User.model.UserModel;
 import com.nakahama.simpenbackend.User.service.UserService;
 import com.nakahama.simpenbackend.util.BaseResponse;
@@ -33,6 +35,9 @@ public class AuthController {
 
     @Autowired
     JwtUtils jwtUtils;
+
+    @Autowired
+    UserMapper userMapper;
 
     @Deprecated
     @PostMapping("/login")
@@ -72,10 +77,11 @@ public class AuthController {
         try {
             UserModel user = authService.getLoggedUser(request);
             if (user != null) {
+                UserContentResponseDTO userContentResponseDTO = userMapper.userModelToUserContentResponseDTO(user);
                 response.setCode(HttpStatus.OK.value());
                 response.setStatus(HttpStatus.OK.getReasonPhrase());
                 response.setMessage("User found");
-                response.setContent(user);
+                response.setContent(userContentResponseDTO);
             } else {
                 response.setCode(HttpStatus.OK.value());
                 response.setStatus(HttpStatus.OK.getReasonPhrase());

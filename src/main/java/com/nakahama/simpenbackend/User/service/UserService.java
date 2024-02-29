@@ -18,4 +18,6 @@ public interface UserService {
 
     public UserModel getUserById(UUID id);
 
+    public void addDummySuperadmin();
+
 }
