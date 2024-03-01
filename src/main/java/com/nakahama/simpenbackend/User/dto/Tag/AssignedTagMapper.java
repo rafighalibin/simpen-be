@@ -2,7 +2,7 @@ package com.nakahama.simpenbackend.User.dto.Tag;
 
 import java.util.*;
 
-import com.nakahama.simpenbackend.User.dto.UserDTO;
+import com.nakahama.simpenbackend.User.dto.User.UserDTO;
 import com.nakahama.simpenbackend.User.model.Pengajar;
 import com.nakahama.simpenbackend.User.model.Tag;
 

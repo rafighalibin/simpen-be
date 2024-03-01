@@ -114,9 +114,4 @@ public class AuthService {
         }
     }
 
-    // public UserContentResponseDTO userResponseMapper(UserModel userModel) {
-    // UserContentResponseDTO userContentResponseDTO = new UserContentResponseDTO();
-    // userContentResponseDTO.setId(userModel.getId());
-    // }
-
 }

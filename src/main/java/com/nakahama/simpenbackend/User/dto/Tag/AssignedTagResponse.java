@@ -2,7 +2,7 @@ package com.nakahama.simpenbackend.User.dto.Tag;
 
 import java.util.List;
 
-import com.nakahama.simpenbackend.User.dto.UserDTO;
+import com.nakahama.simpenbackend.User.dto.User.UserDTO;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
