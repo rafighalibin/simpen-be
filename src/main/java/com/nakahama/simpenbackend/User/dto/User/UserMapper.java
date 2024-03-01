@@ -1,6 +1,5 @@
-package com.nakahama.simpenbackend.User.dto;
+package com.nakahama.simpenbackend.User.dto.User;
 
-import com.nakahama.simpenbackend.User.dto.response.UserContentResponseDTO;
 import com.nakahama.simpenbackend.User.model.Pengajar;
 import com.nakahama.simpenbackend.User.model.UserModel;
 import org.mapstruct.Mapper;

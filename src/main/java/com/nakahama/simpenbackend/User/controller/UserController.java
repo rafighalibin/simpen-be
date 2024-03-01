@@ -10,15 +10,17 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.nakahama.simpenbackend.User.dto.request.AddUserRequestDTO;
-import com.nakahama.simpenbackend.User.dto.request.EditUserRequestDTO;
-import com.nakahama.simpenbackend.User.dto.response.UserGroupedResponseDTO;
+import com.nakahama.simpenbackend.User.dto.User.AddUserRequestDTO;
+import com.nakahama.simpenbackend.User.dto.User.EditUserRequestDTO;
+import com.nakahama.simpenbackend.User.dto.User.UserGroupedResponseDTO;
 import com.nakahama.simpenbackend.User.model.UserModel;
 import com.nakahama.simpenbackend.User.repository.UserDb;
 import com.nakahama.simpenbackend.User.service.UserServiceImpl;
 import com.nakahama.simpenbackend.util.BaseResponse;
 
 import java.util.Map;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.UUID;
@@ -65,18 +67,20 @@ public class UserController {
     public ResponseEntity<BaseResponse> getAllUser() {
         BaseResponse response = new BaseResponse();
         try {
-            UserGroupedResponseDTO content = new UserGroupedResponseDTO();
             Map<String, List<UserModel>> listUser = userService.getAllUsersGroupedByCategory();
             if (listUser != null) {
-                content.setRoles(listUser.entrySet().stream()
-                        .map((Map.Entry<String, List<UserModel>> entry) -> new UserGroupedResponseDTO.CategoryUsers(
-                                entry.getKey(), entry.getValue()))
-                        .collect(Collectors.toList()));
+                List<Map<String, Object>> contentList = new ArrayList<>();
+                for (Map.Entry<String, List<UserModel>> entry : listUser.entrySet()) {
+                    Map<String, Object> roleUserMap = new LinkedHashMap<>();
+                    roleUserMap.put("role", entry.getKey());
+                    roleUserMap.put("user", entry.getValue());
+                    contentList.add(roleUserMap);
+                }
 
                 response.setCode(HttpStatus.OK.value());
                 response.setStatus(HttpStatus.OK.getReasonPhrase());
                 response.setMessage("Users grouped by role");
-                response.setContent(listUser);
+                response.setContent(contentList);
             } else {
                 response.setCode(HttpStatus.NOT_FOUND.value());
                 response.setStatus(HttpStatus.NOT_FOUND.getReasonPhrase());

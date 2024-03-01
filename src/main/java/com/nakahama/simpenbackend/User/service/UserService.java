@@ -1,6 +1,6 @@
 package com.nakahama.simpenbackend.User.service;
 
-import com.nakahama.simpenbackend.User.dto.request.EditUserRequestDTO;
+import com.nakahama.simpenbackend.User.dto.User.EditUserRequestDTO;
 import com.nakahama.simpenbackend.User.model.UserModel;
 import java.util.List;
 import java.util.UUID;
