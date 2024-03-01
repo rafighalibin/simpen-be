@@ -2,6 +2,7 @@ package com.nakahama.simpenbackend.User.controller;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
@@ -9,15 +10,19 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.nakahama.simpenbackend.User.service.TagService;
+import com.nakahama.simpenbackend.User.service.UserService;
 import com.nakahama.simpenbackend.util.BaseResponse;
+
+
+import com.nakahama.simpenbackend.User.dto.request.CreateTagRequestDTO;
 import com.nakahama.simpenbackend.User.model.Pengajar;
 import com.nakahama.simpenbackend.User.model.Tag;
+import com.nakahama.simpenbackend.User.model.UserModel;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
 
 
 @RestController
@@ -27,7 +32,10 @@ public class TagController {
     @Autowired
     private TagService tagService;
 
-    @GetMapping("")
+    @Autowired
+    private UserService userService;
+
+    @GetMapping("/")
     public BaseResponse daftarTag(Model model) {
         List<Tag> listTag = tagService.getAllTag();
 
@@ -50,7 +58,7 @@ public class TagController {
         return response;
     }
 
-    @PostMapping("")
+    @PostMapping("/")
     public BaseResponse createTag(@RequestBody Tag tagRequest) {
         
         // check if tag already exist
@@ -73,17 +81,22 @@ public class TagController {
     }
 
     @PostMapping("/assign")
-    public BaseResponse assignTag(@RequestBody Tag tagRequest) {
+    public BaseResponse assignTag(@RequestBody CreateTagRequestDTO tagRequestDTO) {
 
         //get id tag request and assign it to variable tag
-        Tag tag = tagService.getTagById(tagRequest.getId());
+        Tag tag = tagService.getTagById(tagRequestDTO.getId());
 
           // cek apakah list pengajar kosong, jika kosong buat arrylist baru
-          if (tagRequest.getListPengajar() == null || tagRequest.getListPengajar().isEmpty()){
-            tag.setListPengajar(new ArrayList<Pengajar>());
+        if (tag.getListPengajar() == null || tag.getListPengajar().isEmpty()){
+        tag.setListPengajar(new ArrayList<Pengajar>());
         } 
-        tag.getListPengajar().add(new Pengajar());
-        tag.setJumlahPengajar(tagRequest.getListPengajar().size());
+
+        for (UUID idPengajar : tagRequestDTO.getListIdPengajar()) {
+            UserModel userModel = userService.getUserById(idPengajar);
+            Pengajar pengajar = userModel.getPengajar();
+            tag.getListPengajar().add(pengajar);
+        }
+        tag.setJumlahPengajar(tag.getListPengajar().size());
 
         tagService.updateTag(tag);
 
@@ -98,11 +111,11 @@ public class TagController {
     @GetMapping("/assign")
     public BaseResponse daftarAssignedTag(Model model) {
         List<Tag> listTag = tagService.getAllTag();
-        var listAssignedTag = new ArrayList<Tag>();
+        List<Tag> listAssignedTag = new ArrayList<Tag>();
 
         //check all tag if it has pengajar, if yes, add it to listAssignedTag
         for (Tag tag : listTag) {
-            if (tag.getListPengajar() != null && tag.getListPengajar().isEmpty()){
+            if (tag.getListPengajar() != null && !tag.getListPengajar().isEmpty()){
                 listAssignedTag.add(tag);
             }
         }
@@ -113,7 +126,7 @@ public class TagController {
             response.setCode(404);
             response.setStatus("Not Found");
             response.setMessage("Tag not found");
-            response.setContent(listTag);
+            response.setContent(listAssignedTag);
             return response;
         }
 
@@ -127,16 +140,16 @@ public class TagController {
     }
 
     @DeleteMapping("/assign")
-    public BaseResponse deleteUnassignTag(@RequestParam Tag tagRequest) {
-        var tag = tagService.getTagById(tagRequest.getId());
-        var pengajarAssigned = tag.getListPengajar();
+    public BaseResponse deleteUnassignTag(@RequestBody CreateTagRequestDTO tagRequestDTO) {
+        Tag tag = tagService.getTagById(tagRequestDTO.getId());
         
-        var pengajarToUnassign = tagRequest.getListPengajar();
-        for (Pengajar pengajar : pengajarToUnassign) {
-            pengajarAssigned.remove(pengajar);
+        for(UUID idPengajar : tagRequestDTO.getListIdPengajar()){
+            UserModel userModel = userService.getUserById(idPengajar);
+            Pengajar pengajar = userModel.getPengajar();
+            tag.getListPengajar().remove(pengajar);
         }
-        tag.setListPengajar(pengajarAssigned);
-        tag.setJumlahPengajar(pengajarAssigned.size());
+        tag.setListPengajar(tag.getListPengajar());
+        tag.setJumlahPengajar(tag.getListPengajar().size());
         tagService.updateTag(tag);
         
         BaseResponse response = new BaseResponse();

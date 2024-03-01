@@ -10,6 +10,8 @@ import lombok.Setter;
 import java.time.LocalDate;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Setter
 @Getter
 @NoArgsConstructor
@@ -94,5 +96,6 @@ public class Pengajar {
     private String noTelpDarurat;
 
     @ManyToMany(mappedBy = "listPengajar", fetch = FetchType.LAZY)
+    @JsonIgnore
     List<Tag> listTag;
 }

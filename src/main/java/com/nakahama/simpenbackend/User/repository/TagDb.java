@@ -7,4 +7,5 @@ import com.nakahama.simpenbackend.User.model.Tag;
 @Repository
 public interface TagDb extends JpaRepository<Tag, Long>{
     Tag findById(long id);
+
 }

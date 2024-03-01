@@ -21,7 +21,7 @@ public class TagServiceImpl implements TagService{
         tag.setId(tagRequest.getId());
         tag.setNama(tagRequest.getNama());
         tag.setListPengajar(new ArrayList<Pengajar>());
-        tag.setJumlahPengajar(tagRequest.getListPengajar().size());
+        tag.setJumlahPengajar(0);
         
         return tagDb.save(tag);
     }

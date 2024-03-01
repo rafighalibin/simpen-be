@@ -1,8 +1,8 @@
 package com.nakahama.simpenbackend.User.dto.request;
 
 import java.util.List;
+import java.util.UUID;
 
-import com.nakahama.simpenbackend.User.model.Pengajar;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -12,7 +12,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 public class CreateTagRequestDTO {
-    private String nama;
+    private Long id;
 
-    private List<Pengajar> listPengajar;
+    private List<UUID> listIdPengajar;
+
 }
