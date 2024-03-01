@@ -6,8 +6,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.nakahama.simpenbackend.Auth.dto.LoginReqDTO;
 import com.nakahama.simpenbackend.Auth.security.JwtUtils;
 import com.nakahama.simpenbackend.Auth.service.AuthService;
-import com.nakahama.simpenbackend.User.dto.UserContentResponseDTO;
-import com.nakahama.simpenbackend.User.dto.UserMapper;
+import com.nakahama.simpenbackend.User.dto.User.UserMapper;
+import com.nakahama.simpenbackend.User.dto.User.UserContentResponseDTO;
 import com.nakahama.simpenbackend.User.model.UserModel;
 import com.nakahama.simpenbackend.User.service.UserService;
 import com.nakahama.simpenbackend.util.BaseResponse;
@@ -20,8 +20,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-
-import java.util.UUID;
 
 @RestController
 @RequestMapping("/auth")
@@ -83,8 +81,8 @@ public class AuthController {
                 response.setMessage("User found");
                 response.setContent(userContentResponseDTO);
             } else {
-                response.setCode(HttpStatus.OK.value());
-                response.setStatus(HttpStatus.OK.getReasonPhrase());
+                response.setCode(HttpStatus.NOT_FOUND.value());
+                response.setStatus(HttpStatus.NOT_FOUND.getReasonPhrase());
                 response.setMessage("User not found");
             }
         } catch (Exception e) {

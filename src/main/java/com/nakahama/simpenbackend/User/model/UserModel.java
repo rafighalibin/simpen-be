@@ -12,12 +12,17 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+import org.hibernate.annotations.SQLDelete;
+
 @Setter
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
 @Table(name = "user_model")
+@SQLDelete(sql = "UPDATE user_model SET is_deleted = true WHERE id=?")
 public class UserModel implements Serializable {
     @Id
     private UUID id = UUID.randomUUID();
@@ -42,7 +47,7 @@ public class UserModel implements Serializable {
     @Column(name = "no_telp")
     private String noTelp;
 
-    @Column(name = "isDeleted")
+    @Column(name = "is_deleted")
     private boolean isDeleted = false;
 
     @Size(max = 100)
@@ -51,13 +56,17 @@ public class UserModel implements Serializable {
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     @JsonIgnore
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Pengajar pengajar;
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     @JsonIgnore
+    @OnDelete(action = OnDeleteAction.CASCADE)
+
     private Operasional operasional;
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     @JsonIgnore
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Akademik akademik;
 }

@@ -12,6 +12,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.Customizer;
 
 @Configuration
@@ -33,7 +34,11 @@ public class SecurityConfig {
                     auth.requestMatchers("auth/login").permitAll();
                     auth.requestMatchers("auth/test").authenticated();
                     auth.requestMatchers("auth/test-role").hasAuthority("superadmin");
-                    auth.requestMatchers("user").hasAuthority("superadmin");
+                    auth.requestMatchers(HttpMethod.POST, "user").hasAuthority("superadmin");
+                    auth.requestMatchers(HttpMethod.GET, "user").hasAnyAuthority("operasional", "akademik");
+                    auth.requestMatchers(HttpMethod.DELETE, "user/**").hasAuthority("superadmin");
+                    auth.requestMatchers(HttpMethod.PUT, "user/**").hasAnyAuthority("operasional", "akademik");
+
                     // TODO: set the appropriate authorities for the corresponding endpoints
                     auth.anyRequest().authenticated();
                 })
