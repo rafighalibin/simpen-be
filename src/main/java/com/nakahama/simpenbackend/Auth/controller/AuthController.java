@@ -21,8 +21,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-import java.util.UUID;
-
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
@@ -83,8 +81,8 @@ public class AuthController {
                 response.setMessage("User found");
                 response.setContent(userContentResponseDTO);
             } else {
-                response.setCode(HttpStatus.OK.value());
-                response.setStatus(HttpStatus.OK.getReasonPhrase());
+                response.setCode(HttpStatus.NOT_FOUND.value());
+                response.setStatus(HttpStatus.NOT_FOUND.getReasonPhrase());
                 response.setMessage("User not found");
             }
         } catch (Exception e) {

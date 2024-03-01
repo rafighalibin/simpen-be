@@ -1,8 +1,10 @@
 package com.nakahama.simpenbackend.User.service;
 
+import com.nakahama.simpenbackend.User.dto.EditUserRequestDTO;
 import com.nakahama.simpenbackend.User.model.UserModel;
 import java.util.List;
 import java.util.UUID;
+import java.util.Map;
 
 public interface UserService {
 
@@ -12,12 +14,18 @@ public interface UserService {
 
     public boolean isDeactivate(String email);
 
-    public boolean isExist(String email);
+    public boolean isExistByEmail(String email);
 
     public UserModel addUser(String email, String role, String nama);
 
     public UserModel getUserById(UUID id);
 
     public void addDummySuperadmin();
+
+    public Map<String, List<UserModel>> getAllUsersGroupedByCategory();
+
+    public void deleteUser(UUID id);
+
+    public UserModel updateUser(EditUserRequestDTO editUserRequestDTO);
 
 }
