@@ -1,4 +1,4 @@
-package com.nakahama.simpenbackend.User.dto;
+package com.nakahama.simpenbackend.User.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

@@ -10,9 +10,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.nakahama.simpenbackend.User.dto.AddUserRequestDTO;
-import com.nakahama.simpenbackend.User.dto.EditUserRequestDTO;
-import com.nakahama.simpenbackend.User.dto.UserGroupedResponseDTO;
+import com.nakahama.simpenbackend.User.dto.request.AddUserRequestDTO;
+import com.nakahama.simpenbackend.User.dto.request.EditUserRequestDTO;
+import com.nakahama.simpenbackend.User.dto.response.UserGroupedResponseDTO;
 import com.nakahama.simpenbackend.User.model.UserModel;
 import com.nakahama.simpenbackend.User.repository.UserDb;
 import com.nakahama.simpenbackend.User.service.UserServiceImpl;
