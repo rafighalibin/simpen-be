@@ -1,32 +1,16 @@
 package com.nakahama.simpenbackend.Kelas.service;
 
-import java.util.*;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
+import java.util.List;
+import java.util.Optional;
 import com.nakahama.simpenbackend.Kelas.model.Kelas;
-import com.nakahama.simpenbackend.Kelas.repository.KelasDb;
 
-@Service
-public class KelasService {
+public interface KelasService {
+    
+    public List<Kelas> getAll();
 
-    @Autowired
-    KelasDb kelasDb;
+    public Kelas save(Kelas kelas);
 
-    public List<Kelas> getAll() {
-        return kelasDb.findAll();
-    }
+    public Optional<Kelas> getById(int id);
 
-    public Kelas save(Kelas kelas) {
-        return kelasDb.save(kelas);
-    }
-
-    public Optional<Kelas> getById(int id) {
-        return kelasDb.findById(id);
-    }
-
-    public void delete(int id) {
-        kelasDb.deleteById(id);
-    }
+    public void delete(int id);
 }

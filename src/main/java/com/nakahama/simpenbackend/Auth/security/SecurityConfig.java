@@ -39,6 +39,8 @@ public class SecurityConfig {
                     auth.requestMatchers(HttpMethod.DELETE, "user/**").hasAuthority("superadmin");
                     auth.requestMatchers(HttpMethod.PUT, "user/**").hasAnyAuthority("operasional", "akademik");
 
+                    // TODO: set the appropriate authorities for the corresponding endpoints
+                    auth.anyRequest().authenticated();
                 })
                 .sessionManagement(sessionAuthenticationStrategy -> sessionAuthenticationStrategy
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))

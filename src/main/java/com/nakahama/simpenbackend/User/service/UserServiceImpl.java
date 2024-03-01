@@ -165,11 +165,16 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Map<String, List<UserModel>> getAllUsersGroupedByCategory() {
-        List<UserModel> allUsers = userDb.findAll();
-        Map<String, List<UserModel>> groupedUsers = allUsers.stream()
+        List<UserModel> allUsersExceptSuperadmin = userDb.findAll()
+                .stream()
+                .filter(user -> !"superadmin".equalsIgnoreCase(user.getRole()))
+                .collect(Collectors.toList());
+
+        Map<String, List<UserModel>> groupedUsers = allUsersExceptSuperadmin.stream()
                 .collect(Collectors.groupingBy(UserModel::getRole));
 
-        groupedUsers.forEach((role, userList) -> userList.sort(Comparator.comparing(UserModel::getNama)));
+        groupedUsers.forEach((role, userList) -> userList.sort(
+                Comparator.comparing(user -> user.getNama() != null ? user.getNama() : "")));
 
         return groupedUsers;
     }
