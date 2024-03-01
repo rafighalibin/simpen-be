@@ -23,7 +23,6 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String key) throws UsernameNotFoundException {
-        // use email instead of username
         UserModel user = userDb.findByEmail(key);
         Set<GrantedAuthority> grantedAuthority = new HashSet<>();
         grantedAuthority.add(new SimpleGrantedAuthority(String.valueOf(user.getRole())));
