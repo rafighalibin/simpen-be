@@ -8,6 +8,11 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.nakahama.simpenbackend.Kelas.model.Kelas;
+import com.nakahama.simpenbackend.Kelas.model.SesiKelas;
 
 @Setter
 @Getter
@@ -91,4 +96,12 @@ public class Pengajar {
     @Size(max = 100)
     @Column(name = "no_telp_darurat")
     private String noTelpDarurat;
+
+    @OneToMany
+    @JsonIgnore
+    private List<SesiKelas> sesiKelas;
+
+    @OneToMany
+    @JsonIgnore
+    private List<Kelas> kelas;
 }

@@ -1,57 +1,33 @@
 package com.nakahama.simpenbackend.Kelas.service;
 
-import java.util.*;
+import java.util.Date;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import com.nakahama.simpenbackend.Kelas.model.SesiKelas;
+import com.nakahama.simpenbackend.Kelas.model.Kelas;
+import com.nakahama.simpenbackend.User.model.UserModel;
 
-import com.nakahama.simpenbackend.Kelas.model.*;
-import com.nakahama.simpenbackend.Kelas.repository.SesiKelasDb;
-import com.nakahama.simpenbackend.User.model.UserModel; // need to change after Pengajar model is created
+public interface SesiKelasService {
 
-@Service
-public class SesiKelasService {
+    public List<SesiKelas> getAll();
 
-    @Autowired
-    SesiKelasDb jenisKelasDb;
+    public SesiKelas save(SesiKelas sesiKelas);
 
-    public List<SesiKelas> getAll() {
-        return jenisKelasDb.findAll();
-    }
+    public Optional<SesiKelas> getById(UUID id);
 
-    public SesiKelas save(SesiKelas jenisKelas) {
-        return jenisKelasDb.save(jenisKelas);
-    }
+    public void delete(UUID id);
 
-    public Optional<SesiKelas> getById(UUID id) {
-        return jenisKelasDb.findById(id);
-    }
+    public Optional<SesiKelas> getByKelas(Kelas kelas);
 
-    public void delete(UUID id) {
-        jenisKelasDb.deleteById(id);
-    }
+    public Optional<SesiKelas> getByPengajar(UserModel pengajar);
 
-    public Optional<SesiKelas> getByKelas(Kelas kelas) {
-        return jenisKelasDb.findByKelas(kelas);
-    }
+    public Optional<SesiKelas> getByPengajarPengganti(UserModel pengajarPengganti);
 
-    public Optional<SesiKelas> getByPengajar(UserModel pengajar) {
-        return jenisKelasDb.findByPengajar(pengajar);
-    }
+    public Optional<SesiKelas> getByWaktuPermintaanBetween(Date startDate, Date endDate);
 
-    public Optional<SesiKelas> getByPengajarPengganti(UserModel pengajarPengganti) {
-        return jenisKelasDb.findByPengajarPengganti(pengajarPengganti);
-    }
+    public Optional<SesiKelas> getByStatus(String status);
 
-    public Optional<SesiKelas> getByWaktuPermintaanBetween(Date startDate, Date endDate) {
-        return jenisKelasDb.findByWaktuPermintaanBetween(startDate, endDate);
-    }
-
-    public Optional<SesiKelas> getByStatus(String status) {
-        return jenisKelasDb.findByStatus(status);
-    }
-
-    public Optional<SesiKelas> getByPlatform(String platform) {
-        return jenisKelasDb.findByPlatform(platform);
-    }
+    public Optional<SesiKelas> getByPlatform(String platform);
 }
