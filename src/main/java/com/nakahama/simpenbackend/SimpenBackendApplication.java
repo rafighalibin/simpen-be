@@ -41,28 +41,28 @@ public class SimpenBackendApplication {
 			//Pengajar
 			UserModel pengajar = userService.addUser("pengajar@kalananti.id", "pengajar", "Pengajar");
 			//Jenis Kelas
-			JenisKelas	jenisKelas = new JenisKelas();
-			jenisKelas.setNama("Creator");
-			jenisKelas.setPertemuan(1);
-			jenisKelas.setTipe("Reguler");
-			jenisKelas.setBahasa("Indonesia");
-			jenisKelas.setPicAkademik(akademik);
-			jenisKelasService.save(jenisKelas);
+			// JenisKelas	jenisKelas = new JenisKelas();
+			// jenisKelas.setNama("Creator");
+			// jenisKelas.setPertemuan(1);
+			// jenisKelas.setTipe("Reguler");
+			// jenisKelas.setBahasa("Indonesia");
+			// jenisKelas.setPicAkademik(akademik);
+			// jenisKelasService.save(jenisKelas);
 			
-			//Program
-			Program	program = new Program();
-			program.setNama("Coding Innovation");
-			program.setJumlahLevel(6);
-			program.setJumlahPertemuan(12);
-			List<JenisKelas> jenisKelasList = new ArrayList<>();
-			program.setJenisKelas(jenisKelasList);
-			program.getJenisKelas().add(jenisKelas);
-			programService.save(program);
+			// //Program
+			// Program	program = new Program();
+			// program.setNama("Coding Innovation");
+			// program.setJumlahLevel(6);
+			// program.setJumlahPertemuan(12);
+			// List<JenisKelas> jenisKelasList = new ArrayList<>();
+			// program.setJenisKelas(jenisKelasList);
+			// program.getJenisKelas().add(jenisKelas);
+			// programService.save(program);
 
-			List<Program> programList = new ArrayList<>();
-			jenisKelas.setProgram(programList);
-			jenisKelas.getProgram().add(program);
-			jenisKelasService.save(jenisKelas);
+			// List<Program> programList = new ArrayList<>();
+			// jenisKelas.setProgram(programList);
+			// jenisKelas.getProgram().add(program);
+			// jenisKelasService.save(jenisKelas);
 
 		};
 	}

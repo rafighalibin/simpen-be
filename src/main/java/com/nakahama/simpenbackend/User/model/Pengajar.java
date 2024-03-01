@@ -97,6 +97,10 @@ public class Pengajar {
     @Column(name = "no_telp_darurat")
     private String noTelpDarurat;
 
+    @ManyToMany(mappedBy = "listPengajar", fetch = FetchType.LAZY)
+    @JsonIgnore
+    List<Tag> listTag;
+    
     @OneToMany
     @JsonIgnore
     private List<SesiKelas> sesiKelas;
