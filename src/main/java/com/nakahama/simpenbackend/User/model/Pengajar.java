@@ -11,6 +11,8 @@ import java.time.LocalDate;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.nakahama.simpenbackend.Kelas.model.Kelas;
+import com.nakahama.simpenbackend.Kelas.model.SesiKelas;
 
 @Setter
 @Getter
@@ -98,4 +100,12 @@ public class Pengajar {
     @ManyToMany(mappedBy = "listPengajar", fetch = FetchType.LAZY)
     @JsonIgnore
     List<Tag> listTag;
+    
+    @OneToMany
+    @JsonIgnore
+    private List<SesiKelas> sesiKelas;
+
+    @OneToMany
+    @JsonIgnore
+    private List<Kelas> kelas;
 }

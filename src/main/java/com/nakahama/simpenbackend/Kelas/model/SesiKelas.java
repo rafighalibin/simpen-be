@@ -1,6 +1,7 @@
 package com.nakahama.simpenbackend.Kelas.model;
 
-import com.nakahama.simpenbackend.User.model.UserModel;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.nakahama.simpenbackend.User.model.Pengajar;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -22,12 +23,17 @@ public class SesiKelas {
     private UUID sesiId = UUID.randomUUID();
 
     @NotNull
-    private UserModel pengajar; // need to change after Pengajar model is created
+    @ManyToOne
+    @JsonIgnore
+    private Pengajar pengajar; // need to change after Pengajar model is created
 
-    private UserModel pengajarPengganti; // need to change after Pengajar model is created
+    @ManyToOne
+    @JsonIgnore
+    private Pengajar pengajarPengganti; // need to change after Pengajar model is created
 
     @ManyToOne
     @NotNull
+    @JsonIgnore
     private Kelas kelas;
 
     @NotNull

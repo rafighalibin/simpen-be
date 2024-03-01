@@ -1,11 +1,13 @@
 package com.nakahama.simpenbackend.Kelas.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.nakahama.simpenbackend.User.model.UserModel;
 import java.util.*;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.*;
@@ -24,6 +26,7 @@ public class JenisKelas {
     @NotNull
     private String nama;
 
+    //0 = Online, 1 = Offline, 2 = Hybrid
     @NotNull
     private int pertemuan;
 
@@ -34,11 +37,15 @@ public class JenisKelas {
     private String bahasa;
 
     @NotNull
+    @ManyToOne
+    @JsonIgnore
     private UserModel picAkademik; // TODO: need to change after Akademik model is created
 
     @ManyToMany
+    @JsonIgnore
     private List<Program> program;
 
     @OneToMany
+    @JsonIgnore
     private List<Kelas> kelas;
 }
