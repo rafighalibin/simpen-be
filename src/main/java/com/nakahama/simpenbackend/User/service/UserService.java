@@ -4,6 +4,8 @@ import com.nakahama.simpenbackend.User.model.UserModel;
 import java.util.List;
 import java.util.UUID;
 
+import org.springframework.boot.autoconfigure.security.SecurityProperties.User;
+
 public interface UserService {
 
     public List<UserModel> retrieveAllUser();
@@ -19,5 +21,8 @@ public interface UserService {
     public UserModel getUserById(UUID id);
 
     public void addDummySuperadmin();
+
+    //update user
+    public UserModel updateUser(UserModel user);
 
 }

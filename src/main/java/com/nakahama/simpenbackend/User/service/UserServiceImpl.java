@@ -162,4 +162,20 @@ public class UserServiceImpl implements UserService {
         return userDb.findAll();
     }
 
+    @Override
+    public UserModel updateUser(UserModel user) {
+        UserModel userInDb = getUserById(user.getId());
+        if (userInDb != null) {
+            userInDb.setEmail(user.getEmail());
+            userInDb.setNama(user.getNama());
+            userInDb.setRole(user.getRole());
+            userInDb.setDeleted(user.isDeleted());
+            userInDb.setPengajar(user.getPengajar());
+            userInDb.setOperasional(user.getOperasional());
+            userInDb.setAkademik(user.getAkademik());
+            userDb.save(userInDb);
+        }
+        return userInDb;
+    }
+
 }

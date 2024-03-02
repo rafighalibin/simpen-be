@@ -1,4 +1,4 @@
-package com.nakahama.simpenbackend.User.dto;
+package com.nakahama.simpenbackend.User.dto.request;
 
 import java.util.UUID;
 
@@ -11,9 +11,6 @@ import lombok.Setter;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class AddUserRequestDTO {
-    UUID id;
-    String email;
-    String role;
-    String nama;
+public class UpdateUserRequestDTO {
+    private UUID id;
 }
