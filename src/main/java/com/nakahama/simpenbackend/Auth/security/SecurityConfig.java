@@ -40,7 +40,7 @@ public class SecurityConfig {
                     auth.requestMatchers(HttpMethod.PUT, "user/**").hasAnyAuthority("operasional", "akademik");
 
                     // TODO: set the appropriate authorities for the corresponding endpoints
-                    auth.anyRequest().authenticated();
+                    auth.anyRequest().permitAll();
                 })
                 .sessionManagement(sessionAuthenticationStrategy -> sessionAuthenticationStrategy
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))

@@ -12,13 +12,13 @@ import java.util.UUID;
 
 @Repository
 @Transactional
-public interface JenisKelasDb extends JpaRepository<JenisKelas, UUID>{
+public interface JenisKelasDb extends JpaRepository<JenisKelas, UUID> {
 
     Optional<JenisKelas> findById(UUID id);
 
     Optional<JenisKelas> findByNama(String nama);
 
-    JenisKelas findByNamaAndPertemuanAndTipeAndBahasa(String nama, int pertemuan, String tipe, String bahasa);
+    JenisKelas findByNamaAndPertemuanAndTipeAndBahasa(String nama, String pertemuan, String tipe, String bahasa);
 
     Optional<JenisKelas> findByProgram(Program program);
 }

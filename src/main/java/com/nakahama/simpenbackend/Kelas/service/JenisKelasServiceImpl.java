@@ -5,8 +5,17 @@ import java.util.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.nakahama.simpenbackend.Kelas.dto.JenisKelas.CreateJenisKelas;
+import com.nakahama.simpenbackend.Kelas.dto.JenisKelas.JenisKelasMapper;
+import com.nakahama.simpenbackend.Kelas.dto.JenisKelas.ReadJenisKelas;
+import com.nakahama.simpenbackend.Kelas.dto.JenisKelas.UpdateJenisKelas;
+import com.nakahama.simpenbackend.Kelas.dto.Program.ProgramMapper;
+import com.nakahama.simpenbackend.Kelas.dto.Program.ReadProgram;
 import com.nakahama.simpenbackend.Kelas.model.*;
 import com.nakahama.simpenbackend.Kelas.repository.JenisKelasDb;
+import com.nakahama.simpenbackend.User.model.UserModel;
+import com.nakahama.simpenbackend.User.service.UserService;
+import com.nakahama.simpenbackend.exception.BadRequestException;
 
 @Service
 public class JenisKelasServiceImpl implements JenisKelasService {
@@ -14,14 +23,29 @@ public class JenisKelasServiceImpl implements JenisKelasService {
     @Autowired
     JenisKelasDb jenisKelasDb;
 
+    @Autowired
+    UserService userService;
+
     @Override
-    public List<JenisKelas> getAll() {
-        return jenisKelasDb.findAll();
+    public List<ReadJenisKelas> getAll() {
+        List<ReadJenisKelas> listJenisKelas = new ArrayList<ReadJenisKelas>();
+        for (JenisKelas jenisKelas : jenisKelasDb.findAll()) {
+            ReadJenisKelas response = JenisKelasMapper.toReadDto(jenisKelas);
+            listJenisKelas.add(response);
+        }
+        return listJenisKelas;
     }
 
     @Override
-    public JenisKelas save(JenisKelas jenisKelas) {
-        return jenisKelasDb.save(jenisKelas);
+    public JenisKelas save(CreateJenisKelas jenisKelasRequest) {
+
+        if (!getByNama(jenisKelasRequest.getNama()).isEmpty()) {
+            throw new BadRequestException("Tag with name " + jenisKelasRequest.getNama() + " already exists");
+        }
+
+        UserModel picAkademik = userService.getUserById(jenisKelasRequest.getPicAkademikId());
+
+        return jenisKelasDb.save(JenisKelasMapper.toEntity(jenisKelasRequest, picAkademik));
     }
 
     @Override
@@ -31,6 +55,9 @@ public class JenisKelasServiceImpl implements JenisKelasService {
 
     @Override
     public void delete(UUID id) {
+        if (!getById(id).isPresent())
+            throw new BadRequestException("Jenis Kelas with id " + id + " not found");
+
         jenisKelasDb.deleteById(id);
     }
 
@@ -40,24 +67,22 @@ public class JenisKelasServiceImpl implements JenisKelasService {
     }
 
     @Override
-    public JenisKelas getByNamaAndPertemuanAndTipeAndBahasa(String nama, int pertemuan, String tipe, String bahasa) {
+    public JenisKelas getByNamaAndPertemuanAndTipeAndBahasa(String nama, String pertemuan, String tipe, String bahasa) {
         return jenisKelasDb.findByNamaAndPertemuanAndTipeAndBahasa(nama, pertemuan, tipe, bahasa);
     }
 
     @Override
-    public Optional<JenisKelas> getByProgram(Program program_id) {
-        return jenisKelasDb.findByProgram(program_id);
-    }
+    public ReadJenisKelas update(UpdateJenisKelas jenisKelasRequest) {
+        JenisKelas existingJenisKelas = jenisKelasDb.findById(jenisKelasRequest.getId()).orElse(null);
 
-    @Override
-    public JenisKelas update(JenisKelas jenisKelas) {
-        JenisKelas existingJenisKelas = jenisKelasDb.findById(jenisKelas.getId()).orElse(null);
-        existingJenisKelas.setNama(jenisKelas.getNama());
-        existingJenisKelas.setPertemuan(jenisKelas.getPertemuan());
-        existingJenisKelas.setTipe(jenisKelas.getTipe());
-        existingJenisKelas.setBahasa(jenisKelas.getBahasa());
-        existingJenisKelas.setProgram(jenisKelas.getProgram());
+        if (existingJenisKelas == null)
+            throw new BadRequestException("Jenis Kelas with id " + jenisKelasRequest.getId() + " not found");
 
-        return jenisKelasDb.save(existingJenisKelas);
+        existingJenisKelas.setNama(jenisKelasRequest.getNama());
+        existingJenisKelas.setPertemuan(jenisKelasRequest.getPertemuan());
+        existingJenisKelas.setTipe(jenisKelasRequest.getTipe());
+        existingJenisKelas.setBahasa(jenisKelasRequest.getBahasa());
+
+        return JenisKelasMapper.toReadDto(jenisKelasDb.save(existingJenisKelas));
     }
 }
