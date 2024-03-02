@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class TagRequest {
+public class CreateTagRequest {
 
     @NotBlank(message = "Nama tag required")
     private String nama;

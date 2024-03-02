@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.nakahama.simpenbackend.User.dto.Tag.AssignTagRequestDTO;
-import com.nakahama.simpenbackend.User.dto.Tag.TagRequest;
+import com.nakahama.simpenbackend.User.dto.Tag.CreateTagRequest;
 import com.nakahama.simpenbackend.User.model.Pengajar;
 import com.nakahama.simpenbackend.User.model.Tag;
 import com.nakahama.simpenbackend.User.model.UserModel;
@@ -55,7 +55,7 @@ public class TagServiceImpl implements TagService {
     }
 
     @Override
-    public Tag createTag(TagRequest tagRequest) {
+    public Tag createTag(CreateTagRequest tagRequest) {
         if (isNamaExist(tagRequest.getNama())) {
             throw new BadRequestException("Tag with name " + tagRequest.getNama() + " already exists");
         }
