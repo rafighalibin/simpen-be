@@ -1,14 +1,21 @@
 package com.nakahama.simpenbackend.Kelas.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import java.util.*;
 
+import com.nakahama.simpenbackend.Kelas.dto.Program.CreateProgram;
+import com.nakahama.simpenbackend.Kelas.dto.Program.DeleteProgram;
+import com.nakahama.simpenbackend.Kelas.dto.Program.ReadProgram;
+import com.nakahama.simpenbackend.Kelas.dto.Program.UpdateProgram;
 import com.nakahama.simpenbackend.Kelas.model.Program;
 import com.nakahama.simpenbackend.Kelas.service.ProgramService;
-import com.nakahama.simpenbackend.util.BaseResponse;
+import com.nakahama.simpenbackend.util.ResponseUtil;
+
+import jakarta.validation.Valid;
 
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -23,57 +30,29 @@ public class ProgramController {
     @Autowired
     ProgramService programService;
 
-    @PostMapping("/")
-    public BaseResponse createProgram(@RequestBody Program programRequest,
+    @PostMapping("")
+    public ResponseEntity<Object> createProgram(@Valid @RequestBody CreateProgram programRequest,
             @RequestHeader("Authorization") String token) {
-
         Program program = programService.save(programRequest);
-
-        // TODO: Add error handling
-        BaseResponse response = new BaseResponse();
-        response.setCode(200);
-        response.setStatus("OK");
-        response.setMessage("Success");
-        response.setContent(program);
-        return response;
+        return ResponseUtil.okResponse(program, "Program with name " + program.getNama() + " has been created");
     }
 
-    @GetMapping(value = "/")
-    public BaseResponse getProgram(@RequestHeader("Authorization") String token) {
-
-        List<Program> listProgram = programService.getAll();
-
-        BaseResponse response = new BaseResponse();
-        response.setCode(200);
-        response.setStatus("OK");
-        response.setMessage("Success");
-        response.setContent(listProgram);
-        return response;
+    @GetMapping(value = "")
+    public ResponseEntity<Object> getProgram(@RequestHeader("Authorization") String token) {
+        List<ReadProgram> listProgram = programService.getAll();
+        return ResponseUtil.okResponse(listProgram, "Success");
     }
 
-    @PutMapping("/")
-    public BaseResponse updateProgram(@RequestBody Program programRequest, @RequestBody String entity) {
-
-        Program program = programService.update(programRequest);
-
-        BaseResponse response = new BaseResponse();
-        response.setCode(200);
-        response.setStatus("OK");
-        response.setMessage("Success");
-        response.setContent(program);
-        return response;
+    @PutMapping("")
+    public ResponseEntity<Object> updateProgram(@Valid @RequestBody UpdateProgram programRequest) {
+        ReadProgram program = programService.update(programRequest);
+        return ResponseUtil.okResponse(program, "Program with name " + program.getNama() + " has been updated");
     }
 
-    @DeleteMapping(value = "/")
-    public BaseResponse deleteProgram(@RequestBody UUID id) {
-
-        programService.delete(id);
-
-        BaseResponse response = new BaseResponse();
-        response.setCode(200);
-        response.setStatus("OK");
-        response.setMessage("Success");
-        return response;
+    @DeleteMapping(value = "")
+    public ResponseEntity<Object> deleteProgram(@Valid @RequestBody DeleteProgram programRequest) {
+        programService.delete(programRequest);
+        return ResponseUtil.okResponse(null, "Program with id " + programRequest.getId() + " has been deleted");
     }
 
 }

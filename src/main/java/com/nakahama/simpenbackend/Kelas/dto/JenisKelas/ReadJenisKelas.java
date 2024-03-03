@@ -1,0 +1,30 @@
+package com.nakahama.simpenbackend.Kelas.dto.JenisKelas;
+
+import java.util.UUID;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Data
+@Setter
+@Getter
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+public class ReadJenisKelas {
+    private UUID id;
+
+    private String nama;
+
+    private String pertemuan;
+
+    private String tipe;
+
+    private String bahasa;
+
+    private UUID picAkademikId;
+}
