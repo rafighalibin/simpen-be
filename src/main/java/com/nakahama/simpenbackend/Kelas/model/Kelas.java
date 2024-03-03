@@ -1,8 +1,8 @@
 package com.nakahama.simpenbackend.Kelas.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.nakahama.simpenbackend.User.model.Operasional;
 import com.nakahama.simpenbackend.User.model.Pengajar;
-import com.nakahama.simpenbackend.User.model.UserModel;
 import java.util.*;
 
 import jakarta.persistence.CascadeType;
@@ -35,7 +35,7 @@ public class Kelas {
 
     @NotNull
     @ManyToOne
-    private UserModel operasional; // need to change after Operasional model is created
+    private Operasional operasional; // need to change after Operasional model is created
     
     @NotNull
     @ManyToOne

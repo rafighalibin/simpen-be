@@ -19,9 +19,11 @@ public interface JenisKelasService {
 
     public Optional<JenisKelas> getByNama(String nama);
 
-    public JenisKelas getByNamaAndPertemuanAndTipeAndBahasa(String nama, int pertemuan, String tipe, String bahasa);
+    public JenisKelas getByNamaAndPertemuanAndTipeAndBahasa(String nama, String pertemuan, String tipe, String bahasa);
 
     public Optional<JenisKelas> getByProgram(Program program_id);
 
     public JenisKelas update(JenisKelas jenisKelas);
+
+    public List<String> findDistinctModaPertemuan();
 }

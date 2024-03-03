@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 import java.util.*;
 
 import com.nakahama.simpenbackend.Kelas.model.*;
+import com.nakahama.simpenbackend.User.model.Operasional;
 import com.nakahama.simpenbackend.User.model.Pengajar;
 import com.nakahama.simpenbackend.User.model.UserModel;
 import com.nakahama.simpenbackend.User.service.UserService;
@@ -76,6 +77,8 @@ public class KelasController {
             return response;
         }
 
+        Operasional operasional = userLoggedIn.getOperasional();
+
         Optional<Program> program = programService.getById(kelasDTO.getProgramId());
 
         if (program.isEmpty()) {
@@ -100,7 +103,7 @@ public class KelasController {
         kelas.setKelasId(kelasService.getAll().size() + 1);
         kelas.setProgram(program.get());
         kelas.setJenisKelas(jenisKelas.get());
-        kelas.setOperasional(userLoggedIn);
+        kelas.setOperasional(operasional);
         UserModel pengajarUserModel = userService.getUserById(kelasDTO.getPengajarId());
         Pengajar pengajar = pengajarUserModel.getPengajar();
         kelas.setPengajar(pengajar);

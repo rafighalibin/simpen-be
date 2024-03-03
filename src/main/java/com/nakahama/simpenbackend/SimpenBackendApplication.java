@@ -10,6 +10,7 @@ import com.nakahama.simpenbackend.Kelas.model.Program;
 import com.nakahama.simpenbackend.Kelas.service.JenisKelasService;
 import com.nakahama.simpenbackend.Kelas.service.KelasService;
 import com.nakahama.simpenbackend.Kelas.service.ProgramService;
+import com.nakahama.simpenbackend.User.model.Akademik;
 import com.nakahama.simpenbackend.User.model.UserModel;
 import com.nakahama.simpenbackend.User.service.UserService;
 import jakarta.transaction.Transactional;
@@ -36,6 +37,7 @@ public class SimpenBackendApplication {
 			//Dummy data for testing
 			//Akademik
 			UserModel akademik = userService.addUser("akademik@kalananti.id", "akademik", "Akademik");
+			Akademik akademikRole = akademik.getAkademik();
 			//Operasional
 			UserModel operasional = userService.addUser("operasional@kalananti.id", "operasional", "Operasional");
 			//Pengajar
@@ -43,11 +45,25 @@ public class SimpenBackendApplication {
 			//Jenis Kelas
 			JenisKelas	jenisKelas = new JenisKelas();
 			jenisKelas.setNama("Creator");
-			jenisKelas.setPertemuan(1);
+			jenisKelas.setModaPertemuan("Offline");
 			jenisKelas.setTipe("Reguler");
 			jenisKelas.setBahasa("Indonesia");
-			jenisKelas.setPicAkademik(akademik);
+			jenisKelas.setPicAkademik(akademikRole);
 			jenisKelasService.save(jenisKelas);
+			// JenisKelas	jenisKelas2 = new JenisKelas();
+			// jenisKelas2.setNama("Maker");
+			// jenisKelas2.setModaPertemuan("Offline");
+			// jenisKelas2.setTipe("Reguler");
+			// jenisKelas2.setBahasa("Indonesia");
+			// jenisKelas2.setPicAkademik(akademikRole);
+			// jenisKelasService.save(jenisKelas2);
+			// JenisKelas	jenisKelas3 = new JenisKelas();
+			// jenisKelas3.setNama("Creator");
+			// jenisKelas3.setModaPertemuan("Online");
+			// jenisKelas3.setTipe("Reguler");
+			// jenisKelas3.setBahasa("Indonesia");
+			// jenisKelas3.setPicAkademik(akademikRole);
+			// jenisKelasService.save(jenisKelas3);
 			
 			//Program
 			Program	program = new Program();

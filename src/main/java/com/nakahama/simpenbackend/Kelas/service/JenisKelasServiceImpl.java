@@ -40,8 +40,8 @@ public class JenisKelasServiceImpl implements JenisKelasService {
     }
 
     @Override
-    public JenisKelas getByNamaAndPertemuanAndTipeAndBahasa(String nama, int pertemuan, String tipe, String bahasa) {
-        return jenisKelasDb.findByNamaAndPertemuanAndTipeAndBahasa(nama, pertemuan, tipe, bahasa);
+    public JenisKelas getByNamaAndPertemuanAndTipeAndBahasa(String nama, String pertemuan, String tipe, String bahasa) {
+        return jenisKelasDb.findByNamaAndModaPertemuanAndTipeAndBahasa(nama, pertemuan, tipe, bahasa);
     }
 
     @Override
@@ -53,11 +53,16 @@ public class JenisKelasServiceImpl implements JenisKelasService {
     public JenisKelas update(JenisKelas jenisKelas) {
         JenisKelas existingJenisKelas = jenisKelasDb.findById(jenisKelas.getId()).orElse(null);
         existingJenisKelas.setNama(jenisKelas.getNama());
-        existingJenisKelas.setPertemuan(jenisKelas.getPertemuan());
+        existingJenisKelas.setModaPertemuan(jenisKelas.getModaPertemuan());
         existingJenisKelas.setTipe(jenisKelas.getTipe());
         existingJenisKelas.setBahasa(jenisKelas.getBahasa());
         existingJenisKelas.setProgram(jenisKelas.getProgram());
 
         return jenisKelasDb.save(existingJenisKelas);
+    }
+
+    @Override
+    public List<String> findDistinctModaPertemuan() {
+        return jenisKelasDb.findDistinctModaPertemuan();
     }
 }
