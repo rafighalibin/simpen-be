@@ -90,15 +90,19 @@ public class JenisKelasServiceImpl implements JenisKelasService {
     }
 
     @Override
-    public Optional<JenisKelas> getById(UUID id) {
-        return jenisKelasDb.findById(id);
+    public JenisKelas getById(UUID id) {
+
+        Optional<JenisKelas> jenisKelas = jenisKelasDb.findById(id);
+        if (jenisKelas.isEmpty()) {
+            throw new BadRequestException("Jenis Kelas with id " + id + " not found");
+        }
+
+        return jenisKelas.get();
     }
 
     @Override
     public void delete(UUID id) {
-        if (!getById(id).isPresent())
-            throw new BadRequestException("Jenis Kelas with id " + id + " not found");
-
+        getById(id);
         jenisKelasDb.deleteById(id);
     }
 

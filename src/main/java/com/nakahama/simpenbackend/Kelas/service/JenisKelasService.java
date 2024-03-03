@@ -16,7 +16,7 @@ public interface JenisKelasService {
 
     public void save(CreateJenisKelas jenisKelasRequest);
 
-    public Optional<JenisKelas> getById(UUID id);
+    public JenisKelas getById(UUID id);
 
     public void delete(UUID uuid);
 

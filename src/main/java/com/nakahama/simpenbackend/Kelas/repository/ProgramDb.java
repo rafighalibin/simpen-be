@@ -12,7 +12,7 @@ import java.util.UUID;
 
 @Repository
 @Transactional
-public interface ProgramDb extends JpaRepository<Program, UUID>{
+public interface ProgramDb extends JpaRepository<Program, UUID> {
 
     Optional<Program> findById(UUID id);
 
