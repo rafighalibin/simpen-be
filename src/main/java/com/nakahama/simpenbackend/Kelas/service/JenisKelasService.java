@@ -14,15 +14,15 @@ public interface JenisKelasService {
 
     public List<ReadJenisKelas> getAll();
 
-    public JenisKelas save(CreateJenisKelas jenisKelasRequest);
+    public void save(CreateJenisKelas jenisKelasRequest);
 
     public Optional<JenisKelas> getById(UUID id);
 
     public void delete(UUID uuid);
 
-    public Optional<JenisKelas> getByNama(String nama);
-
-    public JenisKelas getByNamaAndPertemuanAndTipeAndBahasa(String nama, String pertemuan, String tipe, String bahasa);
+    public List<JenisKelas> getByNama(String nama);
 
     public ReadJenisKelas update(UpdateJenisKelas jenisKelasRequest);
+
+    public Map<String, List<String>> getExistingAttributes();
 }

@@ -1,8 +1,9 @@
 package com.nakahama.simpenbackend.Kelas.dto.JenisKelas;
 
-import java.util.UUID;
+import java.util.*;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -18,22 +19,19 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UpdateJenisKelas {
-    @NotNull(message = "Id Jenis required")
-    private UUID id;
 
     @NotBlank(message = "Nama Jenis required")
     private String nama;
 
-    @NotBlank(message = "Bentuk Pertemuan required")
-    private String pertemuan;
+    @NotEmpty(message = "Bentuk Pertemuan required")
+    private List<String> modaPertemuan;
 
-    @NotBlank(message = "Tipe required")
-    private String tipe;
+    @NotEmpty(message = "Tipe required")
+    private List<String> tipe;
 
-    @NotBlank(message = "Bahasa required")
-    private String bahasa;
+    @NotEmpty(message = "Bahasa required")
+    private List<String> bahasa;
 
-    @NotNull(message = "PIC Akademik required")
-    private UUID idPicAkademik;
-
+    @NotNull(message = "Pic Akademik id required")
+    private UUID picAkademikId;
 }

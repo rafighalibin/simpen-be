@@ -10,6 +10,7 @@ import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 import jakarta.validation.constraints.*;
 import lombok.*;
 
@@ -18,7 +19,9 @@ import lombok.*;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "jenis_kelas")
+@Table(name = "jenis_kelas", uniqueConstraints = @UniqueConstraint(columnNames = { "Id", "nama", "modaPertemuan",
+        "tipe",
+        "bahasa" }))
 public class JenisKelas {
     @Id
     private UUID Id = UUID.randomUUID();
@@ -26,9 +29,8 @@ public class JenisKelas {
     @NotNull
     private String nama;
 
-    // 0 = Online, 1 = Offline, 2 = Hybrid
     @NotNull
-    private String pertemuan;
+    private String modaPertemuan;
 
     @NotNull
     private String tipe;
