@@ -10,10 +10,8 @@ import java.util.*;
 import com.nakahama.simpenbackend.Auth.service.AuthService;
 import com.nakahama.simpenbackend.Kelas.dto.JenisKelas.CreateJenisKelas;
 import com.nakahama.simpenbackend.Kelas.dto.JenisKelas.DeleteJenisKelas;
-import com.nakahama.simpenbackend.Kelas.dto.JenisKelas.JenisKelasDTO;
 import com.nakahama.simpenbackend.Kelas.dto.JenisKelas.ReadJenisKelas;
 import com.nakahama.simpenbackend.Kelas.dto.JenisKelas.UpdateJenisKelas;
-import com.nakahama.simpenbackend.Kelas.model.JenisKelas;
 import com.nakahama.simpenbackend.Kelas.service.JenisKelasService;
 import com.nakahama.simpenbackend.util.ResponseUtil;
 
@@ -39,13 +37,13 @@ public class JenisKelasController {
     @PostMapping("")
     public ResponseEntity<Object> createJenisKelas(@Valid @RequestBody CreateJenisKelas jenisKelasRequest,
             HttpServletRequest request) {
-        JenisKelas jenisKelas = jenisKelasService.save(jenisKelasRequest);
-        return ResponseUtil.okResponse(jenisKelas,
-                "Jenis Kelas with name " + jenisKelas.getNama() + " has been created");
+        jenisKelasService.save(jenisKelasRequest);
+        return ResponseUtil.okResponse(null,
+                "Jenis Kelas with name " + jenisKelasRequest.getNama() + " has been created");
     }
 
     @GetMapping(value = "")
-    public ResponseEntity<Object> getJenisKelas(@RequestHeader("Authorization") String token) {
+    public ResponseEntity<Object> getAllJenisKelas(@RequestHeader("Authorization") String token) {
         List<ReadJenisKelas> listJenisKelas = jenisKelasService.getAll();
         return ResponseUtil.okResponse(listJenisKelas, "Success");
     }
@@ -63,5 +61,11 @@ public class JenisKelasController {
         return ResponseUtil.okResponse(null,
                 "Jenis Kelas dengan ID " + jenisKelasRequest.getId() + " has been deleted");
 
+    }
+
+    @GetMapping("/existing-attributes")
+    public ResponseEntity<Object> getExistingAttributes() {
+        Map<String, List<String>> existingAttributes = jenisKelasService.getExistingAttributes();
+        return ResponseUtil.okResponse(existingAttributes, "Success");
     }
 }
