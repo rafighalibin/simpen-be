@@ -1,10 +1,8 @@
-package com.nakahama.simpenbackend.Kelas.dto;
+package com.nakahama.simpenbackend.Kelas.dto.Kelas;
 
-import java.time.LocalDateTime;
 import java.util.*;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-
+import com.nakahama.simpenbackend.Kelas.dto.SesiKelas.SesiKelasDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
@@ -16,13 +14,13 @@ import lombok.Setter;
 @Data
 @Getter
 @Setter
-public class CreateKelasRequestDTO {
-    private UUID programId;
+public class ReadDetailKelas {
 
-    private UUID jenisKelasId;
+    private String programName;
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private List<LocalDateTime> jadwalKelas;
+    private String jenisKelasName;
+
+    private List<SesiKelasDTO> listSesi;
 
     private Date tanggalMulai;
 
@@ -36,6 +34,6 @@ public class CreateKelasRequestDTO {
 
     private int level;
 
-    private String platform; //need to delete after platform model created (sprint 2)
+    private String platform; // need to delete after platform model created (sprint 2)
 
 }

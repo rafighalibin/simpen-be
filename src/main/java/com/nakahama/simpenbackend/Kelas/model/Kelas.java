@@ -36,7 +36,7 @@ public class Kelas {
     @NotNull
     @ManyToOne
     private UserModel operasional; // need to change after Operasional model is created
-    
+
     @NotNull
     @ManyToOne
     private Pengajar pengajar; // need to change after Pengajar model is created
@@ -60,11 +60,13 @@ public class Kelas {
     private float averageRating;
 
     @OneToMany
-    private List<SesiKelas> sesiKelas;
+    private List<SesiKelas> listsesiKelas;
 
     @OneToMany(mappedBy = "kelas", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JsonIgnore
     private List<MuridKelas> muridKelas;
 
     private List<String> listMurid;
+
+    private String status = "Scheduled";
 }

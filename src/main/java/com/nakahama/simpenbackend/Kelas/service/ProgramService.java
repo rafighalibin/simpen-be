@@ -17,7 +17,7 @@ public interface ProgramService {
 
     public Program save(CreateProgram programRequest);
 
-    public Optional<Program> getById(UUID id);
+    public Program getById(UUID id);
 
     public void delete(DeleteProgram programRequest);
 
