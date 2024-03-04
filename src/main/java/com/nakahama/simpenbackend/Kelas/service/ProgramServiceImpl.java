@@ -45,7 +45,7 @@ public class ProgramServiceImpl implements ProgramService {
         Program program = ProgramMapper.toEntity(programRequest);
         program.setJenisKelas(new ArrayList<JenisKelas>());
         for (UUID jenisKelasId : programRequest.getJenisKelas()) {
-            JenisKelas jenisKelas = jenisKelasService.getById(jenisKelasId).orElse(null);
+            JenisKelas jenisKelas = jenisKelasService.getById(jenisKelasId);
             if (jenisKelas == null) {
                 throw new BadRequestException("Jenis Kelas with id " + jenisKelasId + " not found");
             }
@@ -55,8 +55,12 @@ public class ProgramServiceImpl implements ProgramService {
     }
 
     @Override
-    public Optional<Program> getById(UUID id) {
-        return programDb.findById(id);
+    public Program getById(UUID id) {
+        Optional<Program> program = programDb.findById(id);
+        if (!program.isPresent()) {
+            throw new BadRequestException("Program with id " + id + " not found");
+        }
+        return program.get();
     }
 
     @Override
