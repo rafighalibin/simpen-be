@@ -1,5 +1,6 @@
 package com.nakahama.simpenbackend.User.service;
 
+import com.nakahama.simpenbackend.User.dto.User.EditDataUserRequestDTO;
 import com.nakahama.simpenbackend.User.dto.User.EditUserRequestDTO;
 import com.nakahama.simpenbackend.User.model.UserModel;
 import java.util.List;
@@ -27,5 +28,7 @@ public interface UserService {
     public void deleteUser(UUID id);
 
     public UserModel updateUser(EditUserRequestDTO editUserRequestDTO);
+
+    public UserModel editDataUser(EditDataUserRequestDTO editDataUserRequestDTO);
 
 }

@@ -7,12 +7,13 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.nakahama.simpenbackend.User.dto.User.AddUserRequestDTO;
+import com.nakahama.simpenbackend.User.dto.User.EditDataUserRequestDTO;
 import com.nakahama.simpenbackend.User.dto.User.EditUserRequestDTO;
-import com.nakahama.simpenbackend.User.dto.User.UserGroupedResponseDTO;
 import com.nakahama.simpenbackend.User.model.UserModel;
 import com.nakahama.simpenbackend.User.repository.UserDb;
 import com.nakahama.simpenbackend.User.service.UserServiceImpl;
@@ -22,9 +23,7 @@ import java.util.Map;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.stream.Collectors;
 import java.util.UUID;
-import org.springframework.web.bind.annotation.PutMapping;
 
 @RestController
 public class UserController {
@@ -126,6 +125,31 @@ public class UserController {
                 response.setCode(HttpStatus.OK.value());
                 response.setStatus(HttpStatus.OK.getReasonPhrase());
                 response.setMessage("User updated");
+                response.setContent(user);
+            } else {
+                response.setCode(HttpStatus.NOT_FOUND.value());
+                response.setStatus(HttpStatus.NOT_FOUND.getReasonPhrase());
+                response.setMessage("No users found");
+            }
+        } catch (Exception e) {
+            response.setCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
+            response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase());
+            response.setMessage("Internal server error: " + e.getMessage());
+        }
+
+        return ResponseEntity.status(response.getCode()).body(response);
+
+    }
+
+    @PutMapping("/user")
+    public ResponseEntity<?> editDataUser(@RequestBody EditDataUserRequestDTO editDataUserRequestDTO) {
+        BaseResponse response = new BaseResponse();
+        try {
+            if (userService.editDataUser(editDataUserRequestDTO) != null) {
+                UserModel user = userService.getUserById(editDataUserRequestDTO.getId());
+                response.setCode(HttpStatus.OK.value());
+                response.setStatus(HttpStatus.OK.getReasonPhrase());
+                response.setMessage("User data updated");
                 response.setContent(user);
             } else {
                 response.setCode(HttpStatus.NOT_FOUND.value());
