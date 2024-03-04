@@ -21,7 +21,7 @@ import lombok.Setter;
 @Data
 @Getter
 @Setter
-public class CreateKelasRequestDTO {
+public class CreateKelas {
     @NotBlank(message = "Program ID is mandatory")
     private UUID programId;
 
@@ -38,7 +38,7 @@ public class CreateKelasRequestDTO {
     @NotNull(message = "Tanggal Selesai is mandatory")
     private Date tanggalSelesai;
 
-    @NotBlank(message = "Pengajar ID is mandatory")
+    @NotNull(message = "Pengajar ID is mandatory")
     private UUID pengajarId;
 
     @NotBlank(message = "Link Group is mandatory")

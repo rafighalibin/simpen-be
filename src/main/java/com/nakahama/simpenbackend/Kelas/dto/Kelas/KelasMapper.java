@@ -12,7 +12,7 @@ import java.util.*;
 
 public class KelasMapper {
 
-    public static Kelas toEntity(CreateKelasRequestDTO request, Program program, JenisKelas jenisKelas,
+    public static Kelas toEntity(CreateKelas request, Program program, JenisKelas jenisKelas,
             Pengajar pengajar, int kelasId) {
         Kelas response = new Kelas();
         response.setKelasId(kelasId);
@@ -32,6 +32,18 @@ public class KelasMapper {
 
         response.setListMurid(request.getListMurid());
         response.setListsesiKelas(new ArrayList<SesiKelas>());
+        return response;
+    }
+
+    public static Kelas toEntity(UpdateKelas request, Kelas existingKelas, Pengajar pengajar) {
+        Kelas response = existingKelas;
+        response.setTanggalMulai(request.getTanggalMulai());
+        response.setTanggalSelesai(request.getTanggalSelesai());
+        response.setPengajar(pengajar);
+        response.setLinkGroup(request.getLinkGroup());
+        response.setListMurid(request.getListMurid());
+        response.setJumlahMurid(request.getListMurid().size());
+        response.setLevel(request.getLevel());
         return response;
     }
 
