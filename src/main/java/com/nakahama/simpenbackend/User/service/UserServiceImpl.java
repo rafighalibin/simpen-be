@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.nakahama.simpenbackend.User.dto.User.EditDataUserRequestDTO;
 import com.nakahama.simpenbackend.User.dto.User.EditUserRequestDTO;
 import com.nakahama.simpenbackend.User.model.Akademik;
 import com.nakahama.simpenbackend.User.model.Operasional;
@@ -220,6 +221,37 @@ public class UserServiceImpl implements UserService {
                 }
                 user.setRole(editUserRequestDTO.getRole());
             }
+
+            userDb.save(user);
+            return user;
+        } else {
+            return null;
+        }
+    }
+
+    @Override
+    public UserModel editDataUser(EditDataUserRequestDTO editDataUserRequestDTO) {
+        UserModel user = getUserById(editDataUserRequestDTO.getId());
+        if (user != null) {
+            user.setPassword(editDataUserRequestDTO.getPassword());
+            user.setAlamatKTP(editDataUserRequestDTO.getAlamatKTP());
+            user.setDomisiliKota(editDataUserRequestDTO.getDomisiliKota());
+            user.setFotoDiri(editDataUserRequestDTO.getFotoDiri());
+            user.setEmailPribadi(editDataUserRequestDTO.getEmailPribadi());
+            user.setBackupPhoneNum(editDataUserRequestDTO.getBackupPhoneNum());
+            user.setNoRekeningBank(editDataUserRequestDTO.getNoRekeningBank());
+            user.setNamaBank(editDataUserRequestDTO.getNamaBank());
+            user.setNamaPemilikRekening(editDataUserRequestDTO.getNamaPemilikRekening());
+            user.setFotoBukuTabungan(editDataUserRequestDTO.getFotoBukuTabungan());
+            user.setPendidikanTerakhir(editDataUserRequestDTO.getPendidikanTerakhir());
+            user.setTanggalMasukKontrak(editDataUserRequestDTO.getTanggalMasukKontrak());
+            user.setPekerjaanLainnya(editDataUserRequestDTO.getPekerjaanLainnya());
+            user.setNIK(editDataUserRequestDTO.getNIK());
+            user.setFotoKTP(editDataUserRequestDTO.getFotoKTP());
+            user.setNPWP(editDataUserRequestDTO.getNPWP());
+            user.setFotoNPWP(editDataUserRequestDTO.getFotoNPWP());
+            user.setNamaKontakDarurat(editDataUserRequestDTO.getNamaKontakDarurat());
+            user.setNomorTelpKontakDarurat(editDataUserRequestDTO.getNomorTelpKontakDarurat());
 
             userDb.save(user);
             return user;
