@@ -6,8 +6,9 @@ import java.time.LocalDateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.nakahama.simpenbackend.Kelas.dto.Kelas.CreateKelasRequestDTO;
+import com.nakahama.simpenbackend.Kelas.dto.Kelas.CreateKelas;
 import com.nakahama.simpenbackend.Kelas.dto.Kelas.KelasMapper;
+import com.nakahama.simpenbackend.Kelas.dto.Kelas.UpdateKelas;
 import com.nakahama.simpenbackend.Kelas.model.JenisKelas;
 import com.nakahama.simpenbackend.Kelas.model.Kelas;
 import com.nakahama.simpenbackend.Kelas.model.Program;
@@ -40,7 +41,7 @@ public class KelasServiceImpl implements KelasService {
     }
 
     @Override
-    public Kelas save(CreateKelasRequestDTO request) {
+    public Kelas save(CreateKelas request) {
 
         Program program = programService.getById(request.getProgramId());
         JenisKelas jenisKelas = jenisKelasService.getById(request.getJenisKelasId());
@@ -67,18 +68,33 @@ public class KelasServiceImpl implements KelasService {
     private int generateKelasId() {
         List<Kelas> listKelas = kelasDb.findAll();
         if (listKelas.isEmpty()) {
-            return 1;
+            return 1000;
         }
-        return listKelas.size() + 1;
+        return 1000 + listKelas.size() + 1;
     }
 
     @Override
-    public Optional<Kelas> getById(int id) {
-        return kelasDb.findById(id);
+    public Kelas getById(int id) {
+        Kelas kelas = kelasDb.findById(id).get();
+        if (kelas == null) {
+            throw new NoSuchElementException("Kelas with id " + id + " not found");
+        }
+        return kelas;
     }
 
     @Override
     public void delete(int id) {
-        kelasDb.deleteById(id);
+        throw new UnsupportedOperationException("Not implemented yet");
     }
+
+    @Override
+    public Kelas update(UpdateKelas kelasRequest) {
+
+        Kelas updatedKelas = kelasDb.findById(kelasRequest.getId()).get();
+        Pengajar pengajar = userService.getUserById(kelasRequest.getPengajarId()).getPengajar();
+        KelasMapper.toEntity(kelasRequest, updatedKelas, pengajar);
+
+        return kelasDb.save(updatedKelas);
+    }
+
 }
