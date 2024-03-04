@@ -26,9 +26,9 @@ public class JenisKelas {
     @NotNull
     private String nama;
 
-    //0 = Online, 1 = Offline, 2 = Hybrid
+    // 0 = Online, 1 = Offline, 2 = Hybrid
     @NotNull
-    private int pertemuan;
+    private String pertemuan;
 
     @NotNull
     private String tipe;
@@ -36,7 +36,7 @@ public class JenisKelas {
     @NotNull
     private String bahasa;
 
-    @NotNull
+    @NotNull(message = "PIC Akademik required")
     @ManyToOne
     @JsonIgnore
     private UserModel picAkademik; // TODO: need to change after Akademik model is created

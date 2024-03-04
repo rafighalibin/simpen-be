@@ -1,10 +1,11 @@
 package com.nakahama.simpenbackend.User.service;
 
+import com.nakahama.simpenbackend.User.dto.User.EditDataUserRequestDTO;
+import com.nakahama.simpenbackend.User.dto.User.EditUserRequestDTO;
 import com.nakahama.simpenbackend.User.model.UserModel;
 import java.util.List;
 import java.util.UUID;
-
-import org.springframework.boot.autoconfigure.security.SecurityProperties.User;
+import java.util.Map;
 
 public interface UserService {
 
@@ -14,7 +15,7 @@ public interface UserService {
 
     public boolean isDeactivate(String email);
 
-    public boolean isExist(String email);
+    public boolean isExistByEmail(String email);
 
     public UserModel addUser(String email, String role, String nama);
 
@@ -22,7 +23,12 @@ public interface UserService {
 
     public void addDummySuperadmin();
 
-    //update user
-    public UserModel updateUser(UserModel user);
+    public Map<String, List<UserModel>> getAllUsersGroupedByCategory();
+
+    public void deleteUser(UUID id);
+
+    public UserModel updateUser(EditUserRequestDTO editUserRequestDTO);
+
+    public UserModel editDataUser(EditDataUserRequestDTO editDataUserRequestDTO);
 
 }

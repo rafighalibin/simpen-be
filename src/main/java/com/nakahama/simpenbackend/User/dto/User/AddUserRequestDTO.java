@@ -1,4 +1,4 @@
-package com.nakahama.simpenbackend.User.dto;
+package com.nakahama.simpenbackend.User.dto.User;
 
 import java.util.UUID;
 

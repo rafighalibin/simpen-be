@@ -19,8 +19,6 @@ public class LawyerController {
 
     @GetMapping("/lawyer")
     public BaseResponse getSampleLawyer() {
-        // Create a sample Lawyer object
-
         List<Lawyer> lawyers = lawyerService.getAll();
         BaseResponse response = new BaseResponse();
         response.setCode(200);
