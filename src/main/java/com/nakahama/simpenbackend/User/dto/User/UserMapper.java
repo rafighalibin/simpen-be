@@ -2,6 +2,7 @@ package com.nakahama.simpenbackend.User.dto.User;
 
 import com.nakahama.simpenbackend.User.model.Pengajar;
 import com.nakahama.simpenbackend.User.model.UserModel;
+
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
@@ -49,5 +50,42 @@ public interface UserMapper {
             return child;
         }
         return null;
+    }
+
+    public static UserModel toEntity(EditDataUserRequestDTO request, UserModel userExisting) {
+        if (request.getAlamatKTP() != null)
+            userExisting.setAlamatKTP(request.getAlamatKTP());
+        if (request.getDomisiliKota() != null)
+            userExisting.setDomisiliKota(request.getDomisiliKota());
+        if (request.getFotoDiri() != null)
+            userExisting.setFotoDiri(request.getFotoDiri());
+        if (request.getEmailPribadi() != null)
+            userExisting.setEmailPribadi(request.getEmailPribadi());
+        if (request.getBackupPhoneNum() != null)
+            userExisting.setBackupPhoneNum(request.getBackupPhoneNum());
+        if (request.getNoRekeningBank() != null)
+            userExisting.setNoRekeningBank(request.getNoRekeningBank());
+        if (request.getNamaBank() != null)
+            userExisting.setNamaBank(request.getNamaBank());
+        if (request.getNamaPemilikRekening() != null)
+            userExisting.setNamaPemilikRekening(request.getNamaPemilikRekening());
+        if (request.getFotoBukuTabungan() != null)
+            userExisting.setFotoBukuTabungan(request.getFotoBukuTabungan());
+        if (request.getPendidikanTerakhir() != null)
+            userExisting.setPendidikanTerakhir(request.getPendidikanTerakhir());
+        if (request.getPekerjaanLainnya() != null)
+            userExisting.setPekerjaanLainnya(request.getPekerjaanLainnya());
+        if (request.getNIK() != null)
+            userExisting.setNIK(request.getNIK());
+        if (request.getFotoKTP() != null)
+            userExisting.setFotoKTP(request.getFotoKTP());
+        if (request.getNPWP() != null)
+            userExisting.setNPWP(request.getNPWP());
+        if (request.getFotoNPWP() != null)
+            userExisting.setFotoNPWP(request.getFotoNPWP());
+        if (request.getNamaKontakDarurat() != null)
+            userExisting.setNamaKontakDarurat(request.getNamaKontakDarurat());
+
+        return userExisting;
     }
 }

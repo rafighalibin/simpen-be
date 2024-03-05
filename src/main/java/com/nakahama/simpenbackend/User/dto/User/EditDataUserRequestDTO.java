@@ -24,7 +24,6 @@ public class EditDataUserRequestDTO {
     String namaPemilikRekening;
     byte[] fotoBukuTabungan;
     String pendidikanTerakhir;
-    String tanggalMasukKontrak;
     String pekerjaanLainnya;
     String NIK;
     byte[] fotoKTP;

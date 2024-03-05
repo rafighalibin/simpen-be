@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import com.nakahama.simpenbackend.User.dto.User.EditDataUserRequestDTO;
 import com.nakahama.simpenbackend.User.dto.User.EditUserRequestDTO;
+import com.nakahama.simpenbackend.User.dto.User.UserMapper;
 import com.nakahama.simpenbackend.User.model.Akademik;
 import com.nakahama.simpenbackend.User.model.Operasional;
 import com.nakahama.simpenbackend.User.model.Pengajar;
@@ -21,6 +22,7 @@ import com.nakahama.simpenbackend.User.repository.AkademikDb;
 import com.nakahama.simpenbackend.User.repository.OperasionalDb;
 import com.nakahama.simpenbackend.User.repository.PengajarDb;
 import com.nakahama.simpenbackend.User.repository.UserDb;
+import com.nakahama.simpenbackend.exception.BadRequestException;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -144,7 +146,7 @@ public class UserServiceImpl implements UserService {
 
                 return user;
             } else {
-                return null;
+                throw new BadRequestException("email " + email + " already exist");
             }
         }
     }
@@ -156,7 +158,7 @@ public class UserServiceImpl implements UserService {
                 return user;
             }
         }
-        return null;
+        throw new BadRequestException("User with id " + id + " not found");
     }
 
     @Override
@@ -188,76 +190,22 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserModel updateUser(EditUserRequestDTO editUserRequestDTO) {
         UserModel user = getUserById(editUserRequestDTO.getId());
-        if (user != null) {
-            user.setNama(editUserRequestDTO.getNama());
-            user.setEmail(editUserRequestDTO.getEmail());
-            user.setPassword(editUserRequestDTO.getPassword());
-            user.setJenisKelamin(editUserRequestDTO.getJenisKelamin());
-            user.setNoTelp(editUserRequestDTO.getNoTelp());
+        user.setNama(editUserRequestDTO.getNama());
+        user.setEmail(editUserRequestDTO.getEmail());
+        user.setPassword(editUserRequestDTO.getPassword());
+        user.setJenisKelamin(editUserRequestDTO.getJenisKelamin());
+        user.setNoTelp(editUserRequestDTO.getNoTelp());
 
-            if (!user.getRole().equals(editUserRequestDTO.getRole())) {
-                if (user.getAkademik() != null) {
-                    akademikDb.deleteById(user.getAkademik().getId());
-                }
-                if (user.getPengajar() != null) {
-                    pengajarDb.deleteById(user.getPengajar().getId());
-                }
-                if (user.getOperasional() != null) {
-                    operasionalDb.deleteById(user.getOperasional().getId());
-                }
-
-                if (editUserRequestDTO.getRole().equals("pengajar")) {
-                    Pengajar pengajar = new Pengajar();
-                    pengajar.setUser(user);
-                    user.setPengajar(pengajar);
-                } else if (editUserRequestDTO.getRole().equals("operasional")) {
-                    Operasional operasional = new Operasional();
-                    operasional.setUser(user);
-                    user.setOperasional(operasional);
-                } else if (editUserRequestDTO.getRole().equals("akademik")) {
-                    Akademik akademik = new Akademik();
-                    akademik.setUser(user);
-                    user.setAkademik(akademik);
-                }
-                user.setRole(editUserRequestDTO.getRole());
-            }
-
-            userDb.save(user);
-            return user;
-        } else {
-            return null;
-        }
+        userDb.save(user);
+        return user;
     }
 
     @Override
     public UserModel editDataUser(EditDataUserRequestDTO editDataUserRequestDTO) {
-        UserModel user = getUserById(editDataUserRequestDTO.getId());
-        if (user != null) {
-            user.setPassword(editDataUserRequestDTO.getPassword());
-            user.setAlamatKTP(editDataUserRequestDTO.getAlamatKTP());
-            user.setDomisiliKota(editDataUserRequestDTO.getDomisiliKota());
-            user.setFotoDiri(editDataUserRequestDTO.getFotoDiri());
-            user.setEmailPribadi(editDataUserRequestDTO.getEmailPribadi());
-            user.setBackupPhoneNum(editDataUserRequestDTO.getBackupPhoneNum());
-            user.setNoRekeningBank(editDataUserRequestDTO.getNoRekeningBank());
-            user.setNamaBank(editDataUserRequestDTO.getNamaBank());
-            user.setNamaPemilikRekening(editDataUserRequestDTO.getNamaPemilikRekening());
-            user.setFotoBukuTabungan(editDataUserRequestDTO.getFotoBukuTabungan());
-            user.setPendidikanTerakhir(editDataUserRequestDTO.getPendidikanTerakhir());
-            user.setTanggalMasukKontrak(editDataUserRequestDTO.getTanggalMasukKontrak());
-            user.setPekerjaanLainnya(editDataUserRequestDTO.getPekerjaanLainnya());
-            user.setNIK(editDataUserRequestDTO.getNIK());
-            user.setFotoKTP(editDataUserRequestDTO.getFotoKTP());
-            user.setNPWP(editDataUserRequestDTO.getNPWP());
-            user.setFotoNPWP(editDataUserRequestDTO.getFotoNPWP());
-            user.setNamaKontakDarurat(editDataUserRequestDTO.getNamaKontakDarurat());
-            user.setNomorTelpKontakDarurat(editDataUserRequestDTO.getNomorTelpKontakDarurat());
-
-            userDb.save(user);
-            return user;
-        } else {
-            return null;
-        }
+        UserModel userTobeUpdated = getUserById(editDataUserRequestDTO.getId());
+        userTobeUpdated = UserMapper.toEntity(editDataUserRequestDTO, userTobeUpdated);
+        userDb.save(userTobeUpdated);
+        return userTobeUpdated;
     }
 
 }
