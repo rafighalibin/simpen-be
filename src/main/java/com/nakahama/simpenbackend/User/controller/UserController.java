@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.nakahama.simpenbackend.Auth.service.AuthService;
 import com.nakahama.simpenbackend.User.dto.User.AddUserRequestDTO;
 import com.nakahama.simpenbackend.User.dto.User.EditDataUserRequestDTO;
 import com.nakahama.simpenbackend.User.dto.User.EditUserRequestDTO;
@@ -20,6 +21,7 @@ import com.nakahama.simpenbackend.User.repository.UserDb;
 import com.nakahama.simpenbackend.User.service.UserServiceImpl;
 import com.nakahama.simpenbackend.util.ResponseUtil;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 
 import java.util.Map;
@@ -40,6 +42,9 @@ public class UserController {
 
     @Autowired
     UserMapper userMapper;
+
+    @Autowired
+    AuthService authService;
 
     @PostMapping("")
     public ResponseEntity<Object> AddUser(@Valid @RequestBody AddUserRequestDTO addUserRequestDTO) {
@@ -77,7 +82,9 @@ public class UserController {
     }
 
     @PutMapping("")
-    public ResponseEntity<Object> editDataUser(@RequestBody EditDataUserRequestDTO editDataUserRequestDTO) {
+    public ResponseEntity<Object> editDataUser(@RequestBody EditDataUserRequestDTO editDataUserRequestDTO,
+            HttpServletRequest request) {
+        authService.checkOwnership(request, editDataUserRequestDTO.getId());
         UserModel user = userService.editDataUser(editDataUserRequestDTO);
         return ResponseUtil.okResponse(userMapper.userModelToUserContentResponseDTO(user), "User berhasil diupdate");
     }
