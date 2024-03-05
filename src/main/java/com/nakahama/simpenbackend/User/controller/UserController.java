@@ -82,4 +82,29 @@ public class UserController {
         return ResponseUtil.okResponse(userMapper.userModelToUserContentResponseDTO(user), "User berhasil diupdate");
     }
 
+    @PutMapping("/user")
+    public ResponseEntity<?> editDataUser(@RequestBody EditDataUserRequestDTO editDataUserRequestDTO) {
+        BaseResponse response = new BaseResponse();
+        try {
+            if (userService.editDataUser(editDataUserRequestDTO) != null) {
+                UserModel user = userService.getUserById(editDataUserRequestDTO.getId());
+                response.setCode(HttpStatus.OK.value());
+                response.setStatus(HttpStatus.OK.getReasonPhrase());
+                response.setMessage("User data updated");
+                response.setContent(user);
+            } else {
+                response.setCode(HttpStatus.NOT_FOUND.value());
+                response.setStatus(HttpStatus.NOT_FOUND.getReasonPhrase());
+                response.setMessage("No users found");
+            }
+        } catch (Exception e) {
+            response.setCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
+            response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase());
+            response.setMessage("Internal server error: " + e.getMessage());
+        }
+
+        return ResponseEntity.status(response.getCode()).body(response);
+
+    }
+
 }
