@@ -208,35 +208,4 @@ public class UserServiceImpl implements UserService {
         return userTobeUpdated;
     }
 
-    @Override
-    public UserModel editDataUser(EditDataUserRequestDTO editDataUserRequestDTO) {
-        UserModel user = getUserById(editDataUserRequestDTO.getId());
-        if (user != null) {
-            user.setPassword(editDataUserRequestDTO.getPassword());
-            user.setAlamatKTP(editDataUserRequestDTO.getAlamatKTP());
-            user.setDomisiliKota(editDataUserRequestDTO.getDomisiliKota());
-            user.setFotoDiri(editDataUserRequestDTO.getFotoDiri());
-            user.setEmailPribadi(editDataUserRequestDTO.getEmailPribadi());
-            user.setBackupPhoneNum(editDataUserRequestDTO.getBackupPhoneNum());
-            user.setNoRekeningBank(editDataUserRequestDTO.getNoRekeningBank());
-            user.setNamaBank(editDataUserRequestDTO.getNamaBank());
-            user.setNamaPemilikRekening(editDataUserRequestDTO.getNamaPemilikRekening());
-            user.setFotoBukuTabungan(editDataUserRequestDTO.getFotoBukuTabungan());
-            user.setPendidikanTerakhir(editDataUserRequestDTO.getPendidikanTerakhir());
-            user.setTanggalMasukKontrak(editDataUserRequestDTO.getTanggalMasukKontrak());
-            user.setPekerjaanLainnya(editDataUserRequestDTO.getPekerjaanLainnya());
-            user.setNIK(editDataUserRequestDTO.getNIK());
-            user.setFotoKTP(editDataUserRequestDTO.getFotoKTP());
-            user.setNPWP(editDataUserRequestDTO.getNPWP());
-            user.setFotoNPWP(editDataUserRequestDTO.getFotoNPWP());
-            user.setNamaKontakDarurat(editDataUserRequestDTO.getNamaKontakDarurat());
-            user.setNomorTelpKontakDarurat(editDataUserRequestDTO.getNomorTelpKontakDarurat());
-
-            userDb.save(user);
-            return user;
-        } else {
-            return null;
-        }
-    }
-
 }
