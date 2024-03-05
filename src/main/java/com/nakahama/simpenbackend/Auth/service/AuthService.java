@@ -10,6 +10,7 @@ import com.nakahama.simpenbackend.Auth.security.JwtUtils;
 import com.nakahama.simpenbackend.User.model.UserModel;
 import com.nakahama.simpenbackend.User.repository.UserDb;
 import com.nakahama.simpenbackend.User.service.UserService;
+import com.nakahama.simpenbackend.exception.AuthException;
 
 import jakarta.servlet.http.HttpServletRequest;
 
@@ -112,6 +113,14 @@ public class AuthService {
         } else {
             return null;
         }
+    }
+
+    public Boolean checkOwnership(HttpServletRequest request, UUID id) {
+        UserModel user = getLoggedUser(request);
+        if (!user.getId().equals(id)) {
+            throw new AuthException("You are not authorized to access this resource");
+        }
+        return true;
     }
 
 }
