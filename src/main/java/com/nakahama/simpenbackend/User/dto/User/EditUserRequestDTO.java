@@ -34,4 +34,7 @@ public class EditUserRequestDTO {
 
     @NotBlank(message = "Nomor Telepon required")
     String noTelp;
+
+    @NotBlank(message = "Role required")
+    String role;
 }
