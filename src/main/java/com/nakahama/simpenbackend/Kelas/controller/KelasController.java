@@ -1,25 +1,30 @@
 package com.nakahama.simpenbackend.Kelas.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.time.LocalDateTime;
 import java.util.*;
 
 import com.nakahama.simpenbackend.Kelas.model.*;
-import com.nakahama.simpenbackend.User.model.Pengajar;
-import com.nakahama.simpenbackend.User.model.UserModel;
 import com.nakahama.simpenbackend.User.service.UserService;
 import com.nakahama.simpenbackend.Auth.service.AuthService;
-import com.nakahama.simpenbackend.Kelas.dto.CreateKelasRequestDTO;
+import com.nakahama.simpenbackend.Kelas.dto.Kelas.CreateKelas;
+import com.nakahama.simpenbackend.Kelas.dto.Kelas.KelasMapper;
+import com.nakahama.simpenbackend.Kelas.dto.Kelas.ReadKelas;
+import com.nakahama.simpenbackend.Kelas.dto.Kelas.UpdateKelas;
 import com.nakahama.simpenbackend.Kelas.service.*;
-import com.nakahama.simpenbackend.util.BaseResponse;
+import com.nakahama.simpenbackend.util.ResponseUtil;
 
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 @RestController
 public class KelasController {
@@ -29,7 +34,7 @@ public class KelasController {
 
     @Autowired
     AuthService authService;
-    
+
     @Autowired
     KelasServiceImpl kelasService;
 
@@ -43,98 +48,47 @@ public class KelasController {
     SesiKelasService sesiKelasService;
 
     @GetMapping("/kelas")
-    public BaseResponse getKelas() {
-        List<Kelas> listKelas = kelasService.getAll();
+    public ResponseEntity<Object> getKelas() {
 
-        BaseResponse response = new BaseResponse();
-        response.setCode(200);
-        response.setStatus("OK");
-        response.setMessage("Success");
-        response.setContent(listKelas);
-        return response;
+        List<ReadKelas> listKelas = new ArrayList<ReadKelas>();
+        for (Kelas kelas : kelasService.getAll()) {
+            listKelas.add(KelasMapper.toReadDto(kelas));
+        }
+        return ResponseUtil.okResponse(listKelas, "Success");
     }
 
+    @SuppressWarnings("deprecation")
     @PostMapping("/kelas")
-    public BaseResponse createKelas(@RequestBody CreateKelasRequestDTO kelasDTO, HttpServletRequest request){
+    public ResponseEntity<Object> createKelas(@Valid @RequestBody CreateKelas createKelasRequest,
+            HttpServletRequest request) {
+        createKelasRequest.setOperasional(authService.getLoggedUser(request));
+        Kelas createdKelas = kelasService.save(createKelasRequest);
+        return ResponseUtil.okResponse(KelasMapper.toDetailDto(createdKelas, createdKelas.getListsesiKelas()),
+                "Kelas dengan id " + createdKelas.getKelasId() + " berhasil dibuat");
+    }
 
-        @SuppressWarnings("deprecation")
-        UserModel userLoggedIn = authService.getLoggedUser(request);
+    @GetMapping("/kelas/{kelasId}")
+    public ResponseEntity<Object> detailKelas(@PathVariable int kelasId) {
 
-        if (userLoggedIn == null) {
-            BaseResponse response = new BaseResponse();
-            response.setCode(401);
-            response.setStatus("Unauthorized");
-            response.setMessage("User not found");
-            return response;
-        }
+        Kelas updatedKelas = kelasService.getById(kelasId);
+        return ResponseUtil.okResponse(KelasMapper.toDetailDto(updatedKelas, updatedKelas.getListsesiKelas()),
+                "Success");
+    }
 
-        if(!userLoggedIn.getRole().equals("operasional")) {
-            BaseResponse response = new BaseResponse();
-            response.setCode(403);
-            response.setStatus("Forbidden");
-            response.setMessage("User not authorized");
-            return response;
-        }
+    @PutMapping("/kelas/{kelasId}")
+    public ResponseEntity<Object> updateKelas(@Valid @RequestBody UpdateKelas updateKelasRequest,
+            @PathVariable int kelasId) {
 
-        Optional<Program> program = programService.getById(kelasDTO.getProgramId());
+        updateKelasRequest.setId(kelasId);
+        Kelas updatedKelas = kelasService.update(updateKelasRequest);
+        return ResponseUtil.okResponse(KelasMapper.toDetailDto(updatedKelas, updatedKelas.getListsesiKelas()),
+                "Kelas dengan id " + updatedKelas.getKelasId() + " berhasil diupdate");
+    }
 
-        if (program.isEmpty()) {
-            BaseResponse response = new BaseResponse();
-            response.setCode(404);
-            response.setStatus("Not Found");
-            response.setMessage("Program not found");
-            return response;
-        }
+    @DeleteMapping("/kelas/{kelasId}")
+    public ResponseEntity<Object> deleteKelas(@PathVariable int kelasId) {
 
-        Optional<JenisKelas> jenisKelas = jenisKelasService.getById(kelasDTO.getJenisKelasId());
-
-        if (jenisKelas.isEmpty()) {
-            BaseResponse response = new BaseResponse();
-            response.setCode(404);
-            response.setStatus("Not Found");
-            response.setMessage("Jenis Kelas not found");
-            return response;
-        }
-
-        Kelas kelas = new Kelas();
-        kelas.setKelasId(kelasService.getAll().size() + 1);
-        kelas.setProgram(program.get());
-        kelas.setJenisKelas(jenisKelas.get());
-        kelas.setOperasional(userLoggedIn);
-        UserModel pengajarUserModel = userService.getUserById(kelasDTO.getPengajarId());
-        Pengajar pengajar = pengajarUserModel.getPengajar();
-        kelas.setPengajar(pengajar);
-        kelas.setLevel(kelasDTO.getLevel());
-        kelas.setTanggalMulai(kelasDTO.getTanggalMulai());
-        kelas.setTanggalSelesai(kelasDTO.getTanggalSelesai());
-        kelas.setJumlahMurid(kelasDTO.getListMurid().size());
-
-        if(kelasDTO.getLinkGroup() != null) {
-            kelas.setLinkGroup(kelasDTO.getLinkGroup());
-        }
-
-        kelas.setListMurid(kelasDTO.getListMurid());
-        kelas.setSesiKelas(new ArrayList<SesiKelas>());
-
-        Kelas createdKelas = kelasService.save(kelas);
-
-        for(LocalDateTime e : kelasDTO.getJadwalKelas()){
-            SesiKelas sesiKelas = new SesiKelas();
-            sesiKelas.setKelas(createdKelas);
-            sesiKelas.setPengajar(pengajar);
-            sesiKelas.setPlatform(kelasDTO.getPlatform());  //need to change after platform model is created (Sprint 2)
-            sesiKelas.setWaktuPelaksanaan(e);
-            sesiKelas.setStatus("Scheduled");
-            sesiKelasService.save(sesiKelas);
-            createdKelas.getSesiKelas().add(sesiKelas);
-        }
-        createdKelas = kelasService.save(createdKelas);
-
-        BaseResponse response = new BaseResponse();
-        response.setCode(200);
-        response.setStatus("OK");
-        response.setMessage("Success");
-        response.setContent(createdKelas);
-        return response;
+        kelasService.delete(kelasId);
+        return ResponseUtil.okResponse(null, "Kelas dengan id " + kelasId + " berhasil dihapus");
     }
 }

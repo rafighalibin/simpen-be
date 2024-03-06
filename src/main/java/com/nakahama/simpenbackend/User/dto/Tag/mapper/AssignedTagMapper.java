@@ -1,7 +1,8 @@
-package com.nakahama.simpenbackend.User.dto.Tag;
+package com.nakahama.simpenbackend.User.dto.Tag.mapper;
 
 import java.util.*;
 
+import com.nakahama.simpenbackend.User.dto.Tag.AssignedTagResponse;
 import com.nakahama.simpenbackend.User.dto.User.UserDTO;
 import com.nakahama.simpenbackend.User.model.Pengajar;
 import com.nakahama.simpenbackend.User.model.Tag;
@@ -20,8 +21,8 @@ public class AssignedTagMapper {
 
             for (Pengajar pengajar : tag.getListPengajar()) {
                 UserDTO userDTO = new UserDTO();
-                userDTO.setId(pengajar.getUser().getId());
-                userDTO.setNama(pengajar.getUser().getNama());
+                userDTO.setId(pengajar.getId());
+                userDTO.setNama(pengajar.getNama());
                 listUser.add(userDTO);
             }
 

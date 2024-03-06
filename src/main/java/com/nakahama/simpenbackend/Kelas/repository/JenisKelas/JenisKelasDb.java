@@ -1,4 +1,4 @@
-package com.nakahama.simpenbackend.Kelas.repository;
+package com.nakahama.simpenbackend.Kelas.repository.JenisKelas;
 
 import com.nakahama.simpenbackend.Kelas.model.*;
 
@@ -9,16 +9,15 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 import java.util.UUID;
+import java.util.List;
 
 @Repository
 @Transactional
-public interface JenisKelasDb extends JpaRepository<JenisKelas, UUID>{
+public interface JenisKelasDb extends JpaRepository<JenisKelas, UUID> {
 
     Optional<JenisKelas> findById(UUID id);
 
-    Optional<JenisKelas> findByNama(String nama);
-
-    JenisKelas findByNamaAndPertemuanAndTipeAndBahasa(String nama, int pertemuan, String tipe, String bahasa);
+    List<JenisKelas> findAllByNama(String nama);
 
     Optional<JenisKelas> findByProgram(Program program);
 }

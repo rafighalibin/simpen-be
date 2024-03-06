@@ -1,17 +1,24 @@
-package com.nakahama.simpenbackend.User.dto.Tag;
+package com.nakahama.simpenbackend.Kelas.dto.JenisKelas;
 
-import jakarta.validation.constraints.NotBlank;
+import java.util.UUID;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Data
+@Setter
+@Getter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class TagRequest {
+public class JenisKelasDTO {
 
-    @NotBlank(message = "Nama tag required")
+    private UUID id;
+
     private String nama;
+
 }

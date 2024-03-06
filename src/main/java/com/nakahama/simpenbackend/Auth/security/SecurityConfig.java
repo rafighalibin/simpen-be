@@ -35,12 +35,12 @@ public class SecurityConfig {
                     auth.requestMatchers("auth/test").authenticated();
                     auth.requestMatchers("auth/test-role").hasAuthority("superadmin");
                     auth.requestMatchers(HttpMethod.POST, "user").hasAuthority("superadmin");
-                    auth.requestMatchers(HttpMethod.GET, "user").hasAnyAuthority("operasional", "akademik");
+                    auth.requestMatchers(HttpMethod.GET, "user").hasAnyAuthority("operasional", "superadmin");
                     auth.requestMatchers(HttpMethod.DELETE, "user/**").hasAuthority("superadmin");
-                    auth.requestMatchers(HttpMethod.PUT, "user/**").hasAnyAuthority("operasional", "akademik");
+                    auth.requestMatchers(HttpMethod.PUT, "user/**").hasAnyAuthority("operasional", "superadmin");
 
                     // TODO: set the appropriate authorities for the corresponding endpoints
-                    auth.anyRequest().authenticated();
+                    auth.anyRequest().permitAll();
                 })
                 .sessionManagement(sessionAuthenticationStrategy -> sessionAuthenticationStrategy
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))

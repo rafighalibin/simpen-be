@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.nakahama.simpenbackend.User.dto.User.EditDataUserRequestDTO;
 import com.nakahama.simpenbackend.User.dto.User.EditUserRequestDTO;
 import com.nakahama.simpenbackend.User.model.Akademik;
 import com.nakahama.simpenbackend.User.model.Operasional;
@@ -20,6 +21,7 @@ import com.nakahama.simpenbackend.User.repository.AkademikDb;
 import com.nakahama.simpenbackend.User.repository.OperasionalDb;
 import com.nakahama.simpenbackend.User.repository.PengajarDb;
 import com.nakahama.simpenbackend.User.repository.UserDb;
+import com.nakahama.simpenbackend.exception.BadRequestException;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -90,62 +92,33 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserModel addUser(String email, String role, String nama) {
-        if (isDeactivate(email)) {
-            UserModel user = userDb.findByEmailIncludingDeleted(email);
+        if (!isExistByEmail(email)) {
+            UserModel user = new UserModel();
 
-            user.setNama(nama);
-            user.setPassword(bCryptPasswordEncoder.encode("12345"));
-            user.setDeleted(false);
-            user.setRole(role);
             if (role.equals("pengajar")) {
                 Pengajar pengajar = new Pengajar();
-                user.setPengajar(pengajar);
-                pengajar.setUser(user);
+                user = pengajar;
             }
             if (role.equals("operasional")) {
                 Operasional operasional = new Operasional();
-                operasional.setUser(user);
-                user.setOperasional(operasional);
+                user = operasional;
             }
             if (role.equals("akademik")) {
                 Akademik akademik = new Akademik();
-                akademik.setUser(user);
-                user.setAkademik(akademik);
+                user = akademik;
             }
+
+            user.setNama(nama);
+            user.setEmail(email);
+            user.setRole(role);
+            user.setPassword(bCryptPasswordEncoder.encode("12345"));
             userDb.save(user);
 
             return user;
         } else {
-            if (!isExistByEmail(email)) {
-                UserModel user = new UserModel();
-
-                user.setNama(nama);
-                user.setEmail(email);
-                user.setRole(role);
-                user.setPassword(bCryptPasswordEncoder.encode("12345"));
-
-                if (role.equals("pengajar")) {
-                    Pengajar pengajar = new Pengajar();
-                    pengajar.setUser(user);
-                    user.setPengajar(pengajar);
-                }
-                if (role.equals("operasional")) {
-                    Operasional operasional = new Operasional();
-                    operasional.setUser(user);
-                    user.setOperasional(operasional);
-                }
-                if (role.equals("akademik")) {
-                    Akademik akademik = new Akademik();
-                    akademik.setUser(user);
-                    user.setAkademik(akademik);
-                }
-                userDb.save(user);
-
-                return user;
-            } else {
-                return null;
-            }
+            throw new BadRequestException("email " + email + " already exist");
         }
+
     }
 
     @Override
@@ -155,7 +128,7 @@ public class UserServiceImpl implements UserService {
                 return user;
             }
         }
-        return null;
+        throw new BadRequestException("User with id " + id + " not found");
     }
 
     @Override
@@ -187,45 +160,25 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserModel updateUser(EditUserRequestDTO editUserRequestDTO) {
         UserModel user = getUserById(editUserRequestDTO.getId());
-        if (user != null) {
-            user.setNama(editUserRequestDTO.getNama());
-            user.setEmail(editUserRequestDTO.getEmail());
-            user.setPassword(bCryptPasswordEncoder.encode(editUserRequestDTO.getPassword()));
-            user.setJenisKelamin(editUserRequestDTO.getJenisKelamin());
-            user.setNoTelp(editUserRequestDTO.getNoTelp());
+        user.setNama(editUserRequestDTO.getNama());
+        user.setEmail(editUserRequestDTO.getEmail());
+        user.setPassword(bCryptPasswordEncoder.encode(editUserRequestDTO.getPassword()));
+        user.setJenisKelamin(editUserRequestDTO.getJenisKelamin());
+        user.setNoTelp(editUserRequestDTO.getNoTelp());
 
-            if (!user.getRole().equals(editUserRequestDTO.getRole())) {
-                if (user.getAkademik() != null) {
-                    akademikDb.deleteById(user.getAkademik().getId());
-                }
-                if (user.getPengajar() != null) {
-                    pengajarDb.deleteById(user.getPengajar().getId());
-                }
-                if (user.getOperasional() != null) {
-                    operasionalDb.deleteById(user.getOperasional().getId());
-                }
+        userDb.save(user);
+        return user;
+    }
 
-                if (editUserRequestDTO.getRole().equals("pengajar")) {
-                    Pengajar pengajar = new Pengajar();
-                    pengajar.setUser(user);
-                    user.setPengajar(pengajar);
-                } else if (editUserRequestDTO.getRole().equals("operasional")) {
-                    Operasional operasional = new Operasional();
-                    operasional.setUser(user);
-                    user.setOperasional(operasional);
-                } else if (editUserRequestDTO.getRole().equals("akademik")) {
-                    Akademik akademik = new Akademik();
-                    akademik.setUser(user);
-                    user.setAkademik(akademik);
-                }
-                user.setRole(editUserRequestDTO.getRole());
-            }
+    @Override
+    public UserModel editDataUser(EditDataUserRequestDTO editDataUserRequestDTO) {
+        // UserModel userTobeUpdated = getUserById(editDataUserRequestDTO.getId());
+        // userTobeUpdated = UserMapper.toEntity(editDataUserRequestDTO,
+        // userTobeUpdated);
+        // userDb.save(userTobeUpdated);
+        // return userTobeUpdated;
+        return null;
 
-            userDb.save(user);
-            return user;
-        } else {
-            return null;
-        }
     }
 
 }
