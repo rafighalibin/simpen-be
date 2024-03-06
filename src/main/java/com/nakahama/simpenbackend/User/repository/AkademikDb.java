@@ -1,5 +1,6 @@
 package com.nakahama.simpenbackend.User.repository;
 
+import java.util.UUID;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -12,8 +13,8 @@ import jakarta.transaction.Transactional;
 
 @Repository
 @Transactional
-public interface AkademikDb extends JpaRepository<Akademik, Long> {
+public interface AkademikDb extends JpaRepository<Akademik, UUID> {
     @Modifying
     @Query("DELETE FROM Akademik a WHERE a.id = :id")
-    void deleteById(@Param("id") Long id);
+    void deleteById(@Param("id") UUID id);
 }
