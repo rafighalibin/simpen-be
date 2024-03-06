@@ -25,10 +25,10 @@ public interface UserDb extends JpaRepository<UserModel, UUID> {
     @Query("FROM UserModel WHERE isDeleted = false")
     List<UserModel> findAll();
 
-    @Query("FROM UserModel")
-    List<UserModel> findAllIncludingDeleted();
+    @Query("FROM UserModel WHERE isDeleted = true")
+    List<UserModel> findAllDeleted();
 
-    @Query("FROM UserModel WHERE email = :email")
+    @Query("FROM UserModel WHERE email = :email AND isDeleted = false")
     UserModel findByEmailIncludingDeleted(@Param("email") String email);
 
 }

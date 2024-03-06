@@ -69,7 +69,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean isDeactivate(String email) {
-        for (UserModel user : userDb.findAllIncludingDeleted()) {
+        for (UserModel user : userDb.findAllDeleted()) {
             if (user.getEmail().equals(email)) {
                 return true;
             }
@@ -190,7 +190,7 @@ public class UserServiceImpl implements UserService {
         if (user != null) {
             user.setNama(editUserRequestDTO.getNama());
             user.setEmail(editUserRequestDTO.getEmail());
-            user.setPassword(editUserRequestDTO.getPassword());
+            user.setPassword(bCryptPasswordEncoder.encode(editUserRequestDTO.getPassword()));
             user.setJenisKelamin(editUserRequestDTO.getJenisKelamin());
             user.setNoTelp(editUserRequestDTO.getNoTelp());
 
