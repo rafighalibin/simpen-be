@@ -159,7 +159,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void deleteUser(UUID id) {
-        userDb.delete(getUserById(id));
+        UserModel user = getUserById(id);
+        if (user != null) {
+            user.setDeleted(true);
+            userDb.save(user);
+        }
     }
 
     @Override
