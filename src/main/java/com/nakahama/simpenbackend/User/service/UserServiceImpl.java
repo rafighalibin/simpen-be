@@ -108,6 +108,11 @@ public class UserServiceImpl implements UserService {
                 user = akademik;
             }
 
+            if (!role.equals("superadmin") && !role.equals("pengajar") && !role.equals("operasional")
+                    && !role.equals("akademik")) {
+                throw new BadRequestException("Role " + role + " not found");
+            }
+
             user.setNama(nama);
             user.setEmail(email);
             user.setRole(role);
