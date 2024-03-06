@@ -21,8 +21,8 @@ public class AssignedTagMapper {
 
             for (Pengajar pengajar : tag.getListPengajar()) {
                 UserDTO userDTO = new UserDTO();
-                userDTO.setId(pengajar.getUser().getId());
-                userDTO.setNama(pengajar.getUser().getNama());
+                userDTO.setId(pengajar.getId());
+                userDTO.setNama(pengajar.getNama());
                 listUser.add(userDTO);
             }
 

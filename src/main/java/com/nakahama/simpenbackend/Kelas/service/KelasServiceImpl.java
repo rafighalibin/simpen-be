@@ -45,16 +45,17 @@ public class KelasServiceImpl implements KelasService {
 
         Program program = programService.getById(request.getProgramId());
         JenisKelas jenisKelas = jenisKelasService.getById(request.getJenisKelasId());
-        Pengajar pengajar = userService.getUserById(request.getPengajarId()).getPengajar();
+        Pengajar pengajar = (Pengajar) userService.getUserById(request.getPengajarId());
 
-        Kelas createdKelas = KelasMapper.toEntity(request, program, jenisKelas, pengajar, generateKelasId());
+        Kelas createdKelas = KelasMapper.toEntity(request, program, jenisKelas,
+                pengajar, generateKelasId());
 
         kelasDb.save(createdKelas);
 
         for (LocalDateTime e : request.getJadwalKelas()) {
             SesiKelas sesiKelas = new SesiKelas();
             sesiKelas.setKelas(createdKelas);
-            sesiKelas.setPengajar(pengajar);
+            // sesiKelas.setPengajar(pengajar);
             sesiKelas.setPlatform(request.getPlatform());
             sesiKelas.setWaktuPelaksanaan(e);
             sesiKelas.setStatus("Scheduled");
@@ -63,6 +64,7 @@ public class KelasServiceImpl implements KelasService {
         }
 
         return kelasDb.save(createdKelas);
+
     }
 
     private int generateKelasId() {
@@ -91,7 +93,7 @@ public class KelasServiceImpl implements KelasService {
     public Kelas update(UpdateKelas kelasRequest) {
 
         Kelas updatedKelas = kelasDb.findById(kelasRequest.getId()).get();
-        Pengajar pengajar = userService.getUserById(kelasRequest.getPengajarId()).getPengajar();
+        Pengajar pengajar = (Pengajar) userService.getUserById(kelasRequest.getPengajarId());
         KelasMapper.toEntity(kelasRequest, updatedKelas, pengajar);
 
         return kelasDb.save(updatedKelas);

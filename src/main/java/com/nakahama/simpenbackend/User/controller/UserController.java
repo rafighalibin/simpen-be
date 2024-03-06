@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.nakahama.simpenbackend.User.dto.User.AddUserRequestDTO;
 import com.nakahama.simpenbackend.User.dto.User.EditDataUserRequestDTO;
 import com.nakahama.simpenbackend.User.dto.User.EditUserRequestDTO;
-import com.nakahama.simpenbackend.User.dto.User.UserMapper;
 import com.nakahama.simpenbackend.User.model.UserModel;
 import com.nakahama.simpenbackend.User.repository.UserDb;
 import com.nakahama.simpenbackend.User.service.UserServiceImpl;
@@ -37,9 +36,6 @@ public class UserController {
 
     @Autowired
     UserDb userDb;
-
-    @Autowired
-    UserMapper userMapper;
 
     @PostMapping("")
     public ResponseEntity<Object> AddUser(@Valid @RequestBody AddUserRequestDTO addUserRequestDTO) {
@@ -73,13 +69,15 @@ public class UserController {
             @RequestBody EditUserRequestDTO editUserRequestDTO) {
         editUserRequestDTO.setId(UUID.fromString(id));
         UserModel user = userService.updateUser(editUserRequestDTO);
-        return ResponseUtil.okResponse(userMapper.userModelToUserContentResponseDTO(user), "User berhasil diupdate");
+        return ResponseUtil.okResponse((user),
+                "User berhasil diupdate");
     }
 
     @PutMapping("")
     public ResponseEntity<Object> editDataUser(@RequestBody EditDataUserRequestDTO editDataUserRequestDTO) {
         UserModel user = userService.editDataUser(editDataUserRequestDTO);
-        return ResponseUtil.okResponse(userMapper.userModelToUserContentResponseDTO(user), "User berhasil diupdate");
+        return ResponseUtil.okResponse(user,
+                "User berhasil diupdate");
     }
 
 }

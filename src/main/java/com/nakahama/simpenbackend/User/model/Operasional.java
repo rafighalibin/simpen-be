@@ -8,16 +8,9 @@ import lombok.Setter;
 
 @Setter
 @Getter
-@NoArgsConstructor
-@AllArgsConstructor
+// @NoArgsConstructor
+// @AllArgsConstructor
 @Entity
-@Table(name = "operasional")
-public class Operasional {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
-
-    @OneToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
-    private UserModel user;
+@DiscriminatorValue("Operasional")
+public class Operasional extends UserModel {
 }
