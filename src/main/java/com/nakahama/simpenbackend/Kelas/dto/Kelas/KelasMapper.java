@@ -58,7 +58,7 @@ public class KelasMapper {
         }
         response.setTanggalMulai(createdKelas.getTanggalMulai());
         response.setTanggalSelesai(createdKelas.getTanggalSelesai());
-        response.setPengajarId(createdKelas.getPengajar().getUser().getId());
+        response.setPengajarId(createdKelas.getPengajar().getId());
         response.setLinkGroup(createdKelas.getLinkGroup());
         response.setListMurid(createdKelas.getListMurid());
         response.setLevel(createdKelas.getLevel());
@@ -72,7 +72,7 @@ public class KelasMapper {
     public static ReadKelas toReadDto(Kelas kelas) {
         ReadKelas response = new ReadKelas();
         response.setId(kelas.getKelasId());
-        response.setPengajar(kelas.getPengajar().getUser().getNama());
+        response.setPengajar(kelas.getPengajar().getNama());
         response.setJumlah_murid(kelas.getListMurid().size());
         response.setStatus(kelas.getStatus());
         return response;

@@ -19,16 +19,8 @@ import com.nakahama.simpenbackend.Kelas.model.SesiKelas;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "pengajar")
-public class Pengajar {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
-
-    @OneToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
-    private UserModel user;
+@DiscriminatorValue("Pengajar")
+public class Pengajar extends UserModel {
 
     @Size(max = 100)
     @Column(name = "alamat_ktp")

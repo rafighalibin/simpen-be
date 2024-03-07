@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 
 import com.nakahama.simpenbackend.User.dto.User.EditDataUserRequestDTO;
 import com.nakahama.simpenbackend.User.dto.User.EditUserRequestDTO;
-import com.nakahama.simpenbackend.User.dto.User.UserMapper;
 import com.nakahama.simpenbackend.User.model.Akademik;
 import com.nakahama.simpenbackend.User.model.Operasional;
 import com.nakahama.simpenbackend.User.model.Pengajar;
@@ -72,7 +71,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean isDeactivate(String email) {
-        for (UserModel user : userDb.findAllIncludingDeleted()) {
+        for (UserModel user : userDb.findAllDeleted()) {
             if (user.getEmail().equals(email)) {
                 return true;
             }
@@ -93,62 +92,38 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserModel addUser(String email, String role, String nama) {
-        if (isDeactivate(email)) {
-            UserModel user = userDb.findByEmailIncludingDeleted(email);
+        if (!isExistByEmail(email)) {
+            UserModel user = new UserModel();
 
-            user.setNama(nama);
-            user.setPassword(bCryptPasswordEncoder.encode("12345"));
-            user.setDeleted(false);
-            user.setRole(role);
             if (role.equals("pengajar")) {
                 Pengajar pengajar = new Pengajar();
-                user.setPengajar(pengajar);
-                pengajar.setUser(user);
+                user = pengajar;
             }
             if (role.equals("operasional")) {
                 Operasional operasional = new Operasional();
-                operasional.setUser(user);
-                user.setOperasional(operasional);
+                user = operasional;
             }
             if (role.equals("akademik")) {
                 Akademik akademik = new Akademik();
-                akademik.setUser(user);
-                user.setAkademik(akademik);
+                user = akademik;
             }
+
+            if (!role.equals("superadmin") && !role.equals("pengajar") && !role.equals("operasional")
+                    && !role.equals("akademik")) {
+                throw new BadRequestException("Role " + role + " not found");
+            }
+
+            user.setNama(nama);
+            user.setEmail(email);
+            user.setRole(role);
+            user.setPassword(bCryptPasswordEncoder.encode("12345"));
             userDb.save(user);
 
             return user;
         } else {
-            if (!isExistByEmail(email)) {
-                UserModel user = new UserModel();
-
-                user.setNama(nama);
-                user.setEmail(email);
-                user.setRole(role);
-                user.setPassword(bCryptPasswordEncoder.encode("12345"));
-
-                if (role.equals("pengajar")) {
-                    Pengajar pengajar = new Pengajar();
-                    pengajar.setUser(user);
-                    user.setPengajar(pengajar);
-                }
-                if (role.equals("operasional")) {
-                    Operasional operasional = new Operasional();
-                    operasional.setUser(user);
-                    user.setOperasional(operasional);
-                }
-                if (role.equals("akademik")) {
-                    Akademik akademik = new Akademik();
-                    akademik.setUser(user);
-                    user.setAkademik(akademik);
-                }
-                userDb.save(user);
-
-                return user;
-            } else {
-                throw new BadRequestException("email " + email + " already exist");
-            }
+            throw new BadRequestException("email " + email + " already exist");
         }
+
     }
 
     @Override
@@ -184,7 +159,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void deleteUser(UUID id) {
-        userDb.delete(getUserById(id));
+        UserModel user = getUserById(id);
+        if (user != null) {
+            user.setDeleted(true);
+            userDb.save(user);
+        }
     }
 
     @Override
@@ -192,7 +171,7 @@ public class UserServiceImpl implements UserService {
         UserModel user = getUserById(editUserRequestDTO.getId());
         user.setNama(editUserRequestDTO.getNama());
         user.setEmail(editUserRequestDTO.getEmail());
-        user.setPassword(editUserRequestDTO.getPassword());
+        user.setPassword(bCryptPasswordEncoder.encode(editUserRequestDTO.getPassword()));
         user.setJenisKelamin(editUserRequestDTO.getJenisKelamin());
         user.setNoTelp(editUserRequestDTO.getNoTelp());
 
@@ -202,10 +181,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserModel editDataUser(EditDataUserRequestDTO editDataUserRequestDTO) {
-        UserModel userTobeUpdated = getUserById(editDataUserRequestDTO.getId());
-        userTobeUpdated = UserMapper.toEntity(editDataUserRequestDTO, userTobeUpdated);
-        userDb.save(userTobeUpdated);
-        return userTobeUpdated;
+        // UserModel userTobeUpdated = getUserById(editDataUserRequestDTO.getId());
+        // userTobeUpdated = UserMapper.toEntity(editDataUserRequestDTO,
+        // userTobeUpdated);
+        // userDb.save(userTobeUpdated);
+        // return userTobeUpdated;
+        return null;
+
     }
 
 }

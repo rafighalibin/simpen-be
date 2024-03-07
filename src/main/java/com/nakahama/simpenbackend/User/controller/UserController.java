@@ -15,7 +15,6 @@ import com.nakahama.simpenbackend.Auth.service.AuthService;
 import com.nakahama.simpenbackend.User.dto.User.AddUserRequestDTO;
 import com.nakahama.simpenbackend.User.dto.User.EditDataUserRequestDTO;
 import com.nakahama.simpenbackend.User.dto.User.EditUserRequestDTO;
-import com.nakahama.simpenbackend.User.dto.User.UserMapper;
 import com.nakahama.simpenbackend.User.model.UserModel;
 import com.nakahama.simpenbackend.User.repository.UserDb;
 import com.nakahama.simpenbackend.User.service.UserServiceImpl;
@@ -39,9 +38,6 @@ public class UserController {
 
     @Autowired
     UserDb userDb;
-
-    @Autowired
-    UserMapper userMapper;
 
     @Autowired
     AuthService authService;
@@ -78,7 +74,8 @@ public class UserController {
             @RequestBody EditUserRequestDTO editUserRequestDTO) {
         editUserRequestDTO.setId(UUID.fromString(id));
         UserModel user = userService.updateUser(editUserRequestDTO);
-        return ResponseUtil.okResponse(userMapper.userModelToUserContentResponseDTO(user), "User berhasil diupdate");
+        return ResponseUtil.okResponse((user),
+                "User berhasil diupdate");
     }
 
     @PutMapping("")
@@ -86,6 +83,7 @@ public class UserController {
             HttpServletRequest request) {
         authService.checkOwnership(request, editDataUserRequestDTO.getId());
         UserModel user = userService.editDataUser(editDataUserRequestDTO);
-        return ResponseUtil.okResponse(userMapper.userModelToUserContentResponseDTO(user), "User berhasil diupdate");
+        return ResponseUtil.okResponse(user,
+                "User berhasil diupdate");
     }
 }
