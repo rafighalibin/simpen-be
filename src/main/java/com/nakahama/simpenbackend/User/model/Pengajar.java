@@ -92,7 +92,7 @@ public class Pengajar extends UserModel {
     @ManyToMany(mappedBy = "listPengajar", fetch = FetchType.LAZY)
     @JsonIgnore
     List<Tag> listTag;
-
+    
     @OneToMany
     @JsonIgnore
     private List<SesiKelas> sesiKelas;
