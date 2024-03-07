@@ -28,13 +28,13 @@ public class TagController {
     @Autowired
     private TagService tagService;
 
-    @GetMapping("/")
+    @GetMapping("")
     public ResponseEntity<Object> daftarTag() {
         List<Tag> listTag = tagService.getAllTag();
         return ResponseUtil.okResponse(listTag, "Success");
     }
 
-    @PostMapping("/")
+    @PostMapping("")
     public ResponseEntity<Object> createTag(@Valid @RequestBody CreateTagRequest tagRequest) {
         Tag tag = tagService.createTag(tagRequest);
         return ResponseUtil.okResponse(tag, "Tag with name " + tagRequest.getNama() + " has been created");
