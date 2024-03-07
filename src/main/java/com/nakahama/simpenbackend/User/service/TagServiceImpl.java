@@ -73,16 +73,16 @@ public class TagServiceImpl implements TagService {
         // TODO: ini UserModel diganti Pengajar
         Tag tag = getTagById(assignTagRequestDTO.getId());
         for (UUID id : assignTagRequestDTO.getListIdPengajar()) {
-            UserModel pengajar = userService.getUserById(id);
-            if (pengajar.getPengajar() == null) {
+            UserModel user = userService.getUserById(id);
+            if (user instanceof Pengajar) {
                 throw new BadRequestException("User with id " + id + " is not a pengajar");
             }
 
-            if (tag.getListPengajar().contains(pengajar.getPengajar())) {
+            if (tag.getListPengajar().contains(user)) {
                 throw new BadRequestException(
                         "User with id " + id + " is already assigned to tag with id " + tag.getId());
             }
-            tag.getListPengajar().add(pengajar.getPengajar());
+            tag.getListPengajar().add((Pengajar) user);
             tag.setJumlahPengajar(tag.getListPengajar().size());
         }
         return tagDb.save(tag);
@@ -94,16 +94,16 @@ public class TagServiceImpl implements TagService {
 
         Tag tag = getTagById(tagRequestDTO.getId());
         for (UUID id : tagRequestDTO.getListIdPengajar()) {
-            UserModel pengajar = userService.getUserById(id);
-            if (pengajar.getPengajar() == null) {
+            UserModel user = userService.getUserById(id);
+            if (user instanceof Pengajar) {
                 throw new BadRequestException("User with id " + id + " is not a pengajar");
             }
 
-            if (!tag.getListPengajar().contains(pengajar.getPengajar())) {
+            if (!tag.getListPengajar().contains(user)) {
                 throw new BadRequestException(
                         "User with id " + id + " is not assigned to tag with id " + tag.getId());
             }
-            tag.getListPengajar().remove(pengajar.getPengajar());
+            tag.getListPengajar().remove(user);
         }
         tag.setJumlahPengajar(tag.getListPengajar().size());
         return tagDb.save(tag);

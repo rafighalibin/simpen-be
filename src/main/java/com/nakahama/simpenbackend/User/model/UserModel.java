@@ -3,8 +3,6 @@ package com.nakahama.simpenbackend.User.model;
 import java.io.Serializable;
 import java.util.UUID;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
@@ -12,8 +10,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
 import org.hibernate.annotations.SQLDelete;
 
 @Setter
@@ -36,6 +32,10 @@ public class UserModel implements Serializable {
     private String email;
 
     @Size(max = 100)
+    @Column(name = "email_pribadi")
+    private String emailPribadi;
+
+    @Size(max = 100)
     @Column(name = "password")
     private String password;
 
@@ -54,19 +54,20 @@ public class UserModel implements Serializable {
     @Column(name = "role")
     private String role;
 
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
-    @JsonIgnore
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    private Pengajar pengajar;
+    // @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    // @JsonIgnore
+    // @OnDelete(action = OnDeleteAction.CASCADE)
+    // private Pengajar pengajar;
 
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
-    @JsonIgnore
-    @OnDelete(action = OnDeleteAction.CASCADE)
+    // @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    // @JsonIgnore
+    // @OnDelete(action = OnDeleteAction.CASCADE)
 
-    private Operasional operasional;
+    // private Operasional operasional;
 
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
-    @JsonIgnore
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    private Akademik akademik;
+    // @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    // @JsonIgnore
+    // @OnDelete(action = OnDeleteAction.CASCADE)
+    // private Akademik akademik;
+
 }

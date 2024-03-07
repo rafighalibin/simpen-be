@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.nakahama.simpenbackend.User.service.TagService;
-import com.nakahama.simpenbackend.User.service.UserService;
 import com.nakahama.simpenbackend.util.ResponseUtil;
 
 import jakarta.validation.Valid;
