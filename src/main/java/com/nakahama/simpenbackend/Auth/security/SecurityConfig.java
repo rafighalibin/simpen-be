@@ -38,6 +38,7 @@ public class SecurityConfig {
                     auth.requestMatchers(HttpMethod.GET, "user").hasAnyAuthority("operasional", "superadmin");
                     auth.requestMatchers(HttpMethod.DELETE, "user/**").hasAuthority("superadmin");
                     auth.requestMatchers(HttpMethod.PUT, "user/**").hasAnyAuthority("operasional", "superadmin");
+                    auth.requestMatchers(HttpMethod.PUT, "user").hasAnyAuthority("operasional", "akademik", "pengajar");
 
                     // TODO: set the appropriate authorities for the corresponding endpoints
                     auth.anyRequest().permitAll();
