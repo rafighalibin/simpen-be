@@ -11,8 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.nakahama.simpenbackend.User.dto.User.EditDataUserRequestDTO;
+import com.nakahama.simpenbackend.User.dto.User.EditDataPengajarRequestDTO;
 import com.nakahama.simpenbackend.User.dto.User.EditUserRequestDTO;
+import com.nakahama.simpenbackend.User.dto.User.mapper.PengajarMapper;
 import com.nakahama.simpenbackend.User.model.Akademik;
 import com.nakahama.simpenbackend.User.model.Operasional;
 import com.nakahama.simpenbackend.User.model.Pengajar;
@@ -37,6 +38,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     PengajarDb pengajarDb;
+
+    @Autowired
+    PengajarMapper pengajarMapper;
 
     BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
 
@@ -169,25 +173,35 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserModel updateUser(EditUserRequestDTO editUserRequestDTO) {
         UserModel user = getUserById(editUserRequestDTO.getId());
-        user.setNama(editUserRequestDTO.getNama());
-        user.setEmail(editUserRequestDTO.getEmail());
-        user.setPassword(bCryptPasswordEncoder.encode(editUserRequestDTO.getPassword()));
-        user.setJenisKelamin(editUserRequestDTO.getJenisKelamin());
-        user.setNoTelp(editUserRequestDTO.getNoTelp());
+        if (editUserRequestDTO.getNama() != null) {
+            user.setNama(editUserRequestDTO.getNama());
+        }
+        if (editUserRequestDTO.getEmail() != null) {
+            user.setEmail(editUserRequestDTO.getEmail());
+        }
+        if (editUserRequestDTO.getPassword() != null) {
+            user.setPassword(bCryptPasswordEncoder.encode(editUserRequestDTO.getPassword()));
+        }
+        if (editUserRequestDTO.getJenisKelamin() != null) {
+            user.setJenisKelamin(editUserRequestDTO.getJenisKelamin());
+        }
+        if (editUserRequestDTO.getNoTelp() != null) {
+            user.setNoTelp(editUserRequestDTO.getNoTelp());
+        }
 
         userDb.save(user);
         return user;
     }
 
     @Override
-    public UserModel editDataUser(EditDataUserRequestDTO editDataUserRequestDTO) {
-        // UserModel userTobeUpdated = getUserById(editDataUserRequestDTO.getId());
-        // userTobeUpdated = UserMapper.toEntity(editDataUserRequestDTO,
-        // userTobeUpdated);
-        // userDb.save(userTobeUpdated);
-        // return userTobeUpdated;
-        return null;
+    public Pengajar editDataPengajar(EditDataPengajarRequestDTO pengajarRequestDTO) {
+        Pengajar pengajar = pengajarDb.findById(pengajarRequestDTO.getId())
+                .orElseThrow(() -> new BadRequestException("Pengajar with id " + pengajarRequestDTO.getId() + " not found"));
+        
+        pengajar = PengajarMapper.toEntity(pengajarRequestDTO, pengajar);
 
+        pengajarDb.save(pengajar);
+        return pengajar;
     }
 
 }

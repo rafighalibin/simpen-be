@@ -1,5 +1,6 @@
 package com.nakahama.simpenbackend.User.dto.User;
 
+import java.time.LocalDate;
 import java.util.UUID;
 
 import lombok.AllArgsConstructor;
@@ -11,7 +12,7 @@ import lombok.Setter;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class EditDataUserRequestDTO {
+public class EditDataPengajarRequestDTO {
     UUID id;
     String password;
     String alamatKTP;
@@ -19,16 +20,17 @@ public class EditDataUserRequestDTO {
     byte[] fotoDiri;
     String emailPribadi;
     String backupPhoneNum;
-    String noRekeningBank;
+    String noRekBank;
     String namaBank;
-    String namaPemilikRekening;
+    String namaPemilikRek;
     byte[] fotoBukuTabungan;
     String pendidikanTerakhir;
     String pekerjaanLainnya;
-    String NIK;
-    byte[] fotoKTP;
-    String NPWP;
-    byte[] fotoNPWP;
+    LocalDate tglMasukKontrak;
+    String nik;
+    byte[] fotoKtp;
+    String Npwp;
+    byte[] fotoNpwp;
     String namaKontakDarurat;
-    String nomorTelpKontakDarurat;
+    String noTelpDarurat;
 }
