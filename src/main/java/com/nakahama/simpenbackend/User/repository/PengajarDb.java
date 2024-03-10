@@ -17,4 +17,5 @@ public interface PengajarDb extends JpaRepository<Pengajar, UUID> {
     @Modifying
     @Query("DELETE FROM Pengajar a WHERE a.id = :id")
     void deleteById(@Param("id") UUID id);
+
 }

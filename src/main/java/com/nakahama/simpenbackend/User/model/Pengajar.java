@@ -24,7 +24,7 @@ public class Pengajar extends UserModel {
 
     @Size(max = 100)
     @Column(name = "alamat_ktp")
-    private String alamatKtp;
+    private String alamatKTP;
 
     @Size(max = 100)
     @Column(name = "domisili_kota")
@@ -83,7 +83,7 @@ public class Pengajar extends UserModel {
 
     @Size(max = 100)
     @Column(name = "nama_kontak_darurat")
-    private String namaKontakDarutat;
+    private String namaKontakDarurat;
 
     @Size(max = 100)
     @Column(name = "no_telp_darurat")
