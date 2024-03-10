@@ -160,11 +160,21 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserModel updateUser(EditUserRequestDTO editUserRequestDTO) {
         UserModel user = getUserById(editUserRequestDTO.getId());
-        user.setNama(editUserRequestDTO.getNama());
-        user.setEmail(editUserRequestDTO.getEmail());
-        user.setPassword(bCryptPasswordEncoder.encode(editUserRequestDTO.getPassword()));
-        user.setJenisKelamin(editUserRequestDTO.getJenisKelamin());
-        user.setNoTelp(editUserRequestDTO.getNoTelp());
+        if (editUserRequestDTO.getNama() != null) {
+            user.setNama(editUserRequestDTO.getNama());
+        }
+        if (editUserRequestDTO.getEmail() != null) {
+            user.setEmail(editUserRequestDTO.getEmail());
+        }
+        if (editUserRequestDTO.getPassword() != null) {
+            user.setPassword(bCryptPasswordEncoder.encode(editUserRequestDTO.getPassword()));
+        }
+        if (editUserRequestDTO.getJenisKelamin() != null) {
+            user.setJenisKelamin(editUserRequestDTO.getJenisKelamin());
+        }
+        if (editUserRequestDTO.getNoTelp() != null) {
+            user.setNoTelp(editUserRequestDTO.getNoTelp());
+        }
 
         userDb.save(user);
         return user;
@@ -172,12 +182,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserModel editDataUser(EditDataUserRequestDTO editDataUserRequestDTO) {
-        // UserModel userTobeUpdated = getUserById(editDataUserRequestDTO.getId());
+        UserModel userTobeUpdated = getUserById(editDataUserRequestDTO.getId());
         // userTobeUpdated = UserMapper.toEntity(editDataUserRequestDTO,
         // userTobeUpdated);
-        // userDb.save(userTobeUpdated);
-        // return userTobeUpdated;
-        return null;
+        userDb.save(userTobeUpdated);
+        return userTobeUpdated;
+        // return null;
 
     }
 

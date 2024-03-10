@@ -37,6 +37,7 @@ public class SecurityConfig {
                     auth.requestMatchers(HttpMethod.POST, "user").hasAuthority("superadmin");
                     auth.requestMatchers(HttpMethod.GET, "user").hasAnyAuthority("operasional", "superadmin");
                     auth.requestMatchers(HttpMethod.DELETE, "user/**").hasAuthority("superadmin");
+                    auth.requestMatchers(HttpMethod.PUT, "user").hasAnyAuthority("pengajar");
                     auth.requestMatchers(HttpMethod.PUT, "user/**").hasAnyAuthority("operasional", "superadmin");
 
                     // TODO: set the appropriate authorities for the corresponding endpoints
