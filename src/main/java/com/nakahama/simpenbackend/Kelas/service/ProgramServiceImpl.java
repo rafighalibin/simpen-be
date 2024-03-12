@@ -11,6 +11,7 @@ import com.nakahama.simpenbackend.Kelas.dto.Program.CreateProgram;
 import com.nakahama.simpenbackend.Kelas.dto.Program.DeleteProgram;
 import com.nakahama.simpenbackend.Kelas.dto.Program.UpdateProgram;
 import com.nakahama.simpenbackend.Kelas.dto.Program.ProgramMapper;
+import com.nakahama.simpenbackend.Kelas.dto.Program.ReadDistinctJenisKelasProgram;
 import com.nakahama.simpenbackend.Kelas.dto.Program.ReadProgram;
 import com.nakahama.simpenbackend.Kelas.model.JenisKelas;
 import com.nakahama.simpenbackend.Kelas.model.Program;
@@ -91,5 +92,24 @@ public class ProgramServiceImpl implements ProgramService {
             response.getJenisKelas().add(JenisKelasMapper.toDto(jenisKelas));
         }
         return response;
+    }
+
+    @Override
+    public List<ReadDistinctJenisKelasProgram> getDistinctJenisKelas(UUID id) {
+        List<String> jenisKelas = programDb.findDistinctJenisKelasByProgramId(id);
+
+        if (jenisKelas.isEmpty()) {
+            throw new BadRequestException("Program with id " + id + " not found");
+        }
+
+        List<ReadDistinctJenisKelasProgram> listJenisKelas = new ArrayList<ReadDistinctJenisKelasProgram>();
+
+        for (String jenisKelasValue : jenisKelas) {
+            ReadDistinctJenisKelasProgram response = new ReadDistinctJenisKelasProgram();
+            response.setNama(jenisKelasValue);
+            listJenisKelas.add(response);
+        }
+
+        return listJenisKelas;
     }
 }

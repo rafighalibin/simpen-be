@@ -64,8 +64,8 @@ public class UserServiceImpl implements UserService {
 
         if (user == null) {
             UserModel superadmin = new UserModel();
-            superadmin.setEmail("1234@kalananti.com");
-            superadmin.setPassword(bCryptPasswordEncoder.encode("1234"));
+            superadmin.setEmail("superadmin@kalananti.id");
+            superadmin.setPassword(bCryptPasswordEncoder.encode("12345"));
             superadmin.setRole("superadmin");
             userDb.save(superadmin);
         }
