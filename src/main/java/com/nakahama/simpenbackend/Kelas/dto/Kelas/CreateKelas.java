@@ -29,7 +29,7 @@ public class CreateKelas {
     private UUID jenisKelasId;
 
     @NotEmpty(message = "Minimum 1 jadwal kelas")
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "MM-dd-yyyy HH:mm:ss")
     private List<LocalDateTime> jadwalKelas;
 
     @NotNull(message = "Tanggal Mulai is mandatory")

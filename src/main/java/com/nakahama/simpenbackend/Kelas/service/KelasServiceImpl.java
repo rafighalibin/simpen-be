@@ -55,7 +55,7 @@ public class KelasServiceImpl implements KelasService {
         for (LocalDateTime e : request.getJadwalKelas()) {
             SesiKelas sesiKelas = new SesiKelas();
             sesiKelas.setKelas(createdKelas);
-            // sesiKelas.setPengajar(pengajar);
+            sesiKelas.setPengajar(pengajar);
             sesiKelas.setPlatform(request.getPlatform());
             sesiKelas.setWaktuPelaksanaan(e);
             sesiKelas.setStatus("Scheduled");
