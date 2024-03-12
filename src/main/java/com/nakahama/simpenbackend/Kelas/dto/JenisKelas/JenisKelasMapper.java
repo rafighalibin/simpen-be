@@ -62,6 +62,7 @@ public class JenisKelasMapper {
         jenisKelasDTO.setNama(jenisKelas.getNama());
         jenisKelasDTO.setPertemuan(jenisKelas.getModaPertemuan());
         jenisKelasDTO.setTipe(jenisKelas.getTipe());
+        jenisKelasDTO.setPicAkademikId(jenisKelas.getPicAkademik().getId());
 
         return jenisKelasDTO;
     }
