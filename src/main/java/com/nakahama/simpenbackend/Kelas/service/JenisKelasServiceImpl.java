@@ -10,16 +10,21 @@ import com.nakahama.simpenbackend.Kelas.dto.JenisKelas.JenisKelasMapper;
 import com.nakahama.simpenbackend.Kelas.dto.JenisKelas.ReadJenisKelas;
 import com.nakahama.simpenbackend.Kelas.dto.JenisKelas.UpdateJenisKelas;
 import com.nakahama.simpenbackend.Kelas.model.*;
+import com.nakahama.simpenbackend.Kelas.repository.ProgramDb;
 import com.nakahama.simpenbackend.Kelas.repository.JenisKelas.BahasaDb;
 import com.nakahama.simpenbackend.Kelas.repository.JenisKelas.JenisKelasDb;
 import com.nakahama.simpenbackend.Kelas.repository.JenisKelas.ModaPertemuanDb;
 import com.nakahama.simpenbackend.Kelas.repository.JenisKelas.TipeDb;
+import com.nakahama.simpenbackend.User.model.Akademik;
 import com.nakahama.simpenbackend.User.model.UserModel;
 import com.nakahama.simpenbackend.User.service.UserService;
 import com.nakahama.simpenbackend.exception.BadRequestException;
 
 @Service
 public class JenisKelasServiceImpl implements JenisKelasService {
+
+    @Autowired
+    ProgramDb  programDb;
 
     @Autowired
     JenisKelasDb jenisKelasDb;
@@ -53,7 +58,8 @@ public class JenisKelasServiceImpl implements JenisKelasService {
             throw new BadRequestException("Tag with name " + jenisKelasRequest.getNama() + " already exists");
         }
 
-        UserModel picAkademik = userService.getUserById(jenisKelasRequest.getPicAkademikId());
+        UserModel picAkademikUserModel = userService.getUserById(jenisKelasRequest.getPicAkademikId());
+        Akademik picAkademik = (Akademik) picAkademikUserModel;
         List<JenisKelas> listJenisKelas = JenisKelasMapper.toEntity(jenisKelasRequest, picAkademik);
 
         saveJenisAttr(jenisKelasRequest.getModaPertemuan(), jenisKelasRequest.getTipe(), jenisKelasRequest.getBahasa());
@@ -118,7 +124,8 @@ public class JenisKelasServiceImpl implements JenisKelasService {
         if (existingJenisKelas == null)
             throw new BadRequestException("Jenis Kelas with nama " + jenisKelasRequest.getNama() + " not found");
 
-        UserModel picAkademik = userService.getUserById(jenisKelasRequest.getPicAkademikId());
+        UserModel picAkademikUserModel = userService.getUserById(jenisKelasRequest.getPicAkademikId());
+        Akademik picAkademik = (Akademik) picAkademikUserModel;
         List<JenisKelas> listJenisKelas = JenisKelasMapper.toEntity(jenisKelasRequest, picAkademik);
 
         List<JenisKelas> addedJenisKelas = new ArrayList<JenisKelas>();
@@ -140,7 +147,7 @@ public class JenisKelasServiceImpl implements JenisKelasService {
     }
 
     @Override
-    public Map<String, List<String>> getExistingAttributes() {
+    public Map<String, List<String>> getAllExistingAttributes() {
         Map<String, List<String>> existingAttributes = new HashMap<String, List<String>>();
         List<ModaPertemuan> modaPertemuan = modaPertemuanDb.findAll();
         List<Tipe> tipe = tipeDb.findAll();
@@ -167,5 +174,32 @@ public class JenisKelasServiceImpl implements JenisKelasService {
         existingAttributes.put("bahasa", bahasaList);
 
         return existingAttributes;
+    }
+
+    @Override
+    public Map<String, List<String>> getExistingAttributes(String nama){
+
+        Map<String, List<String>> existingAttributes = new HashMap<String, List<String>>();
+
+        List<String> modaPertemuanList = jenisKelasDb.findDistinctModaPertemuanByNama(nama);
+        List<String> tipeList = jenisKelasDb.findDistinctTipeByNama(nama);
+        List<String> bahasaList = jenisKelasDb.findDistinctBahasaByNama(nama);
+        
+        existingAttributes.put("modaPertemuan", modaPertemuanList);
+        existingAttributes.put("tipe", tipeList);
+        existingAttributes.put("bahasa", bahasaList);
+
+        return existingAttributes;
+    }
+
+    @Override
+    public ReadJenisKelas findJenisKelas(String nama, String tipe, String modaPertemuan, String bahasa) {
+        List<JenisKelas> jenisKelas = jenisKelasDb.findAllByNama(nama);
+        for (JenisKelas jk : jenisKelas) {
+            if (jk.getTipe().equals(tipe) && jk.getModaPertemuan().equals(modaPertemuan) && jk.getBahasa().equals(bahasa)) {
+                return JenisKelasMapper.toReadDto(jk);
+            }
+        }
+        throw new BadRequestException("Jenis Kelas with name " + nama + " not found");
     }
 }

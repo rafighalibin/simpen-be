@@ -24,5 +24,9 @@ public interface JenisKelasService {
 
     public ReadJenisKelas update(UpdateJenisKelas jenisKelasRequest);
 
-    public Map<String, List<String>> getExistingAttributes();
+    public Map<String, List<String>> getAllExistingAttributes();
+
+    public Map<String, List<String>> getExistingAttributes(String nama);
+
+    public ReadJenisKelas findJenisKelas(String nama, String tipe, String modaPertemuan, String bahasa);
 }
