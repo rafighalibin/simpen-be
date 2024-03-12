@@ -81,12 +81,17 @@ public class KelasServiceImpl implements KelasService {
         if (kelas == null) {
             throw new NoSuchElementException("Kelas with id " + id + " not found");
         }
+        if (kelas.getIsDeleted()) {
+            throw new NoSuchElementException("Kelas with id " + id + " is deleted");
+        }
         return kelas;
     }
 
     @Override
     public void delete(int id) {
-        throw new UnsupportedOperationException("Not implemented yet");
+        Kelas kelas = getById(id);
+        kelas.setIsDeleted(true);
+        kelasDb.save(kelas);
     }
 
     @Override

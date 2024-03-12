@@ -69,4 +69,6 @@ public class Kelas {
     private List<String> listMurid;
 
     private String status = "Scheduled";
+
+    private Boolean isDeleted = false;
 }
