@@ -52,7 +52,9 @@ public class KelasMapper {
 
         ReadDetailKelas response = new ReadDetailKelas();
         response.setProgramName(createdKelas.getProgram().getNama());
+        response.setProgramId(createdKelas.getProgram().getId());
         response.setJenisKelasName(createdKelas.getJenisKelas().getNama());
+        response.setJenisKelasId(createdKelas.getJenisKelas().getId());
         response.setListSesi(new ArrayList<SesiKelasDTO>());
         for (SesiKelas sesiKelas : listSesiKelas) {
             response.getListSesi().add(SesiKelasMapper.toDto(sesiKelas));

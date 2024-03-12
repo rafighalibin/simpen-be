@@ -18,7 +18,11 @@ public class ReadDetailKelas {
 
     private String programName;
 
+    private UUID programId;
+
     private String jenisKelasName;
+
+    private UUID jenisKelasId;
 
     private List<SesiKelasDTO> listSesi;
 
