@@ -28,6 +28,8 @@ public class ReadDetailKelas {
 
     private UUID pengajarId;
 
+    private String namaPengajar;
+
     private String linkGroup;
 
     private List<String> listMurid;
