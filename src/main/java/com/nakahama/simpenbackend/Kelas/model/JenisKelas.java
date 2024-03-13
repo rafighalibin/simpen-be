@@ -1,7 +1,7 @@
 package com.nakahama.simpenbackend.Kelas.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.nakahama.simpenbackend.User.model.UserModel;
+import com.nakahama.simpenbackend.User.model.Akademik;
 import java.util.*;
 
 import jakarta.persistence.Entity;
@@ -41,7 +41,7 @@ public class JenisKelas {
     @NotNull(message = "PIC Akademik required")
     @ManyToOne
     @JsonIgnore
-    private UserModel picAkademik; // TODO: need to change after Akademik model is created
+    private Akademik picAkademik;
 
     @ManyToMany
     @JsonIgnore

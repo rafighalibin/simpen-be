@@ -7,6 +7,7 @@ import com.nakahama.simpenbackend.Kelas.model.Kelas;
 import com.nakahama.simpenbackend.Kelas.model.Program;
 import com.nakahama.simpenbackend.Kelas.model.SesiKelas;
 import com.nakahama.simpenbackend.User.model.Pengajar;
+import com.nakahama.simpenbackend.User.model.UserModel;
 
 import java.util.*;
 
@@ -47,15 +48,18 @@ public class KelasMapper {
         return response;
     }
 
-    public static ReadDetailKelas toDetailDto(Kelas createdKelas, List<SesiKelas> listSesiKelas) {
+    public static ReadDetailKelas toDetailDto(Kelas createdKelas, List<SesiKelas> listSesiKelas, UserModel pengajar) {
 
         ReadDetailKelas response = new ReadDetailKelas();
         response.setProgramName(createdKelas.getProgram().getNama());
+        response.setProgramId(createdKelas.getProgram().getId());
         response.setJenisKelasName(createdKelas.getJenisKelas().getNama());
+        response.setJenisKelasId(createdKelas.getJenisKelas().getId());
         response.setListSesi(new ArrayList<SesiKelasDTO>());
         for (SesiKelas sesiKelas : listSesiKelas) {
             response.getListSesi().add(SesiKelasMapper.toDto(sesiKelas));
         }
+        response.setNamaPengajar(pengajar.getNama());
         response.setTanggalMulai(createdKelas.getTanggalMulai());
         response.setTanggalSelesai(createdKelas.getTanggalSelesai());
         response.setPengajarId(createdKelas.getPengajar().getId());

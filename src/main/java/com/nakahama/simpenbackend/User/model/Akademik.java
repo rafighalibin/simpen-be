@@ -5,6 +5,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import java.util.List;
+
+import com.nakahama.simpenbackend.Kelas.model.JenisKelas;
 
 @Setter
 @Getter
@@ -13,4 +16,7 @@ import lombok.Setter;
 @Entity
 @DiscriminatorValue("Akademik")
 public class Akademik extends UserModel {
+
+    @OneToMany(mappedBy = "picAkademik", cascade = CascadeType.ALL)
+    private List<JenisKelas> jenisKelas;
 }

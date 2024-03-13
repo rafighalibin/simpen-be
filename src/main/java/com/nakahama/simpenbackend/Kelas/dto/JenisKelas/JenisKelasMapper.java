@@ -1,14 +1,14 @@
 package com.nakahama.simpenbackend.Kelas.dto.JenisKelas;
 
 import com.nakahama.simpenbackend.Kelas.model.JenisKelas;
-import com.nakahama.simpenbackend.User.model.UserModel;
+import com.nakahama.simpenbackend.User.model.Akademik;
 
 import java.util.List;
 import java.util.ArrayList;
 
 public class JenisKelasMapper {
 
-    public static List<JenisKelas> toEntity(CreateJenisKelas jenisKelasRequest, UserModel picAkademik) {
+    public static List<JenisKelas> toEntity(CreateJenisKelas jenisKelasRequest, Akademik picAkademik) {
         List<JenisKelas> listJenisKelas = new ArrayList<>();
 
         for (String pertemuanValue : jenisKelasRequest.getModaPertemuan()) {
@@ -28,7 +28,7 @@ public class JenisKelasMapper {
         return listJenisKelas;
     }
 
-    public static List<JenisKelas> toEntity(UpdateJenisKelas jenisKelasRequest, UserModel picAkademik) {
+    public static List<JenisKelas> toEntity(UpdateJenisKelas jenisKelasRequest, Akademik picAkademik) {
         List<JenisKelas> listJenisKelas = new ArrayList<>();
 
         for (String pertemuanValue : jenisKelasRequest.getModaPertemuan()) {

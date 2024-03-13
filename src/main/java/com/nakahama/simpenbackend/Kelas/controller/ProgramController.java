@@ -4,11 +4,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 import java.util.*;
 
 import com.nakahama.simpenbackend.Kelas.dto.Program.CreateProgram;
 import com.nakahama.simpenbackend.Kelas.dto.Program.DeleteProgram;
+import com.nakahama.simpenbackend.Kelas.dto.Program.ReadDistinctJenisKelasProgram;
 import com.nakahama.simpenbackend.Kelas.dto.Program.ReadProgram;
 import com.nakahama.simpenbackend.Kelas.dto.Program.UpdateProgram;
 import com.nakahama.simpenbackend.Kelas.model.Program;
@@ -53,6 +55,15 @@ public class ProgramController {
     public ResponseEntity<Object> deleteProgram(@Valid @RequestBody DeleteProgram programRequest) {
         programService.delete(programRequest);
         return ResponseUtil.okResponse(null, "Program with id " + programRequest.getId() + " has been deleted");
+    }
+
+    @GetMapping(value = "{id}/jenis-kelas")
+    public ResponseEntity<Object> getJenisKelasByProgramId(@RequestHeader("Authorization") String token, @PathVariable(value="id") UUID id) {
+        if(programService.getById(id) == null) {
+            return ResponseUtil.okResponse(new ReadDistinctJenisKelasProgram(), "Program with id " + id + " not found");
+        }
+        List<ReadDistinctJenisKelasProgram> listProgram = programService.getDistinctJenisKelas(id);
+        return ResponseUtil.okResponse(listProgram, "Success");
     }
 
 }
