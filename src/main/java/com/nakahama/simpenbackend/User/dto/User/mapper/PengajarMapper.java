@@ -10,16 +10,22 @@ import com.nakahama.simpenbackend.User.model.Pengajar;
 @Mapper(componentModel = "spring")
 public interface PengajarMapper {
   static Pengajar toEntity(EditDataPengajarRequestDTO request, Pengajar pengajarExisting) {
-    if (request.getPassword() != null)
-        pengajarExisting.setPassword(request.getPassword());
     if (request.getAlamatKTP() != null)
         pengajarExisting.setAlamatKTP(request.getAlamatKTP());
     if (request.getDomisiliKota() != null)
         pengajarExisting.setDomisiliKota(request.getDomisiliKota());
+    if (request.getNama() != null)
+        pengajarExisting.setNama(request.getNama());
     if (request.getFotoDiri() != null)
         pengajarExisting.setFotoDiri(request.getFotoDiri());
     if (request.getEmailPribadi() != null)
         pengajarExisting.setEmailPribadi(request.getEmailPribadi());
+    if (request.getEmail() != null)
+        pengajarExisting.setEmail(request.getEmail());
+    if (request.getJenisKelamin() != null)
+        pengajarExisting.setJenisKelamin(request.getJenisKelamin());
+    if (request.getNoTelp() != null)
+        pengajarExisting.setNoTelp(request.getNoTelp());
     if (request.getBackupPhoneNum() != null)
         pengajarExisting.setBackupPhoneNum(request.getBackupPhoneNum());
     if (request.getNoRekBank() != null)
