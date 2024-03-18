@@ -37,6 +37,7 @@ public class KelasServiceImpl implements KelasService {
 
     @Override
     public List<Kelas> getAll() {
+
         return kelasDb.findAll();
     }
 

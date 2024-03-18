@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.*;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
@@ -15,6 +17,16 @@ public class ReadKelas {
     private int id;
 
     private String pengajar;
+
+    private String programName;
+
+    private String jenisKelasName;
+
+    private String moda;
+
+    private Date tanggalMulai;
+
+    private Date tanggalSelesai;
 
     private int jumlah_murid;
 
