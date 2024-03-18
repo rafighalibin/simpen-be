@@ -22,10 +22,10 @@ import lombok.Setter;
 @Getter
 @Setter
 public class CreateKelas {
-    @NotBlank(message = "Program ID is mandatory")
+    @NotNull(message = "Program ID is mandatory")
     private UUID programId;
 
-    @NotBlank(message = "Jenis Kelas ID is mandatory")
+    @NotNull(message = "Jenis Kelas ID is mandatory")
     private UUID jenisKelasId;
 
     @NotEmpty(message = "Minimum 1 jadwal kelas")

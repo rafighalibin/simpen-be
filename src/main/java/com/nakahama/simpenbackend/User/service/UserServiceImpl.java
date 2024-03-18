@@ -11,8 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.nakahama.simpenbackend.User.dto.User.EditDataUserRequestDTO;
+import com.nakahama.simpenbackend.User.dto.User.EditDataPengajarRequestDTO;
 import com.nakahama.simpenbackend.User.dto.User.EditUserRequestDTO;
+import com.nakahama.simpenbackend.User.dto.User.mapper.PengajarMapper;
 import com.nakahama.simpenbackend.User.model.Akademik;
 import com.nakahama.simpenbackend.User.model.Operasional;
 import com.nakahama.simpenbackend.User.model.Pengajar;
@@ -37,6 +38,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     PengajarDb pengajarDb;
+
+    @Autowired
+    PengajarMapper pengajarMapper;
 
     BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
 
@@ -108,6 +112,11 @@ public class UserServiceImpl implements UserService {
                 user = akademik;
             }
 
+            if (!role.equals("superadmin") && !role.equals("pengajar") && !role.equals("operasional")
+                    && !role.equals("akademik")) {
+                throw new BadRequestException("Role " + role + " not found");
+            }
+
             user.setNama(nama);
             user.setEmail(email);
             user.setRole(role);
@@ -154,7 +163,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void deleteUser(UUID id) {
-        userDb.delete(getUserById(id));
+        UserModel user = getUserById(id);
+        if (user != null) {
+            user.setDeleted(true);
+            userDb.save(user);
+        }
     }
 
     @Override
@@ -181,14 +194,15 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserModel editDataUser(EditDataUserRequestDTO editDataUserRequestDTO) {
-        UserModel userTobeUpdated = getUserById(editDataUserRequestDTO.getId());
-        // userTobeUpdated = UserMapper.toEntity(editDataUserRequestDTO,
-        // userTobeUpdated);
-        userDb.save(userTobeUpdated);
-        return userTobeUpdated;
-        // return null;
+    public Pengajar editDataPengajar(EditDataPengajarRequestDTO pengajarRequestDTO) {
+        Pengajar pengajar = pengajarDb.findById(pengajarRequestDTO.getId())
+                .orElseThrow(
+                        () -> new BadRequestException("Pengajar with id " + pengajarRequestDTO.getId() + " not found"));
 
+        pengajar = PengajarMapper.toEntity(pengajarRequestDTO, pengajar);
+
+        pengajarDb.save(pengajar);
+        return pengajar;
     }
 
 }

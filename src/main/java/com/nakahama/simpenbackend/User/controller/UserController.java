@@ -11,14 +11,17 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.nakahama.simpenbackend.Auth.service.AuthService;
 import com.nakahama.simpenbackend.User.dto.User.AddUserRequestDTO;
-import com.nakahama.simpenbackend.User.dto.User.EditDataUserRequestDTO;
+import com.nakahama.simpenbackend.User.dto.User.EditDataPengajarRequestDTO;
 import com.nakahama.simpenbackend.User.dto.User.EditUserRequestDTO;
+import com.nakahama.simpenbackend.User.model.Pengajar;
 import com.nakahama.simpenbackend.User.model.UserModel;
 import com.nakahama.simpenbackend.User.repository.UserDb;
 import com.nakahama.simpenbackend.User.service.UserServiceImpl;
 import com.nakahama.simpenbackend.util.ResponseUtil;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 
 import java.util.Map;
@@ -36,6 +39,9 @@ public class UserController {
 
     @Autowired
     UserDb userDb;
+
+    @Autowired
+    AuthService authService;
 
     @PostMapping("")
     public ResponseEntity<Object> AddUser(@Valid @RequestBody AddUserRequestDTO addUserRequestDTO) {
@@ -74,10 +80,11 @@ public class UserController {
     }
 
     @PutMapping("")
-    public ResponseEntity<Object> editDataUser(@RequestBody EditDataUserRequestDTO editDataUserRequestDTO) {
-        UserModel user = userService.editDataUser(editDataUserRequestDTO);
-        return ResponseUtil.okResponse(user,
+    public ResponseEntity<Object> editDataPengajar(@RequestBody EditDataPengajarRequestDTO pengajarRequestDTO,
+            HttpServletRequest request) {
+        authService.checkOwnership(request, pengajarRequestDTO.getId());
+        Pengajar pengajar = userService.editDataPengajar(pengajarRequestDTO);
+        return ResponseUtil.okResponse(pengajar,
                 "User berhasil diupdate");
     }
-
 }
