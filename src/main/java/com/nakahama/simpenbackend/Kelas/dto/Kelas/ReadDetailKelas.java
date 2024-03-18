@@ -18,7 +18,11 @@ public class ReadDetailKelas {
 
     private String programName;
 
+    private UUID programId;
+
     private String jenisKelasName;
+
+    private UUID jenisKelasId;
 
     private List<SesiKelasDTO> listSesi;
 
@@ -27,6 +31,8 @@ public class ReadDetailKelas {
     private Date tanggalSelesai;
 
     private UUID pengajarId;
+
+    private String namaPengajar;
 
     private String linkGroup;
 

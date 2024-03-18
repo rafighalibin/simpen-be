@@ -56,9 +56,9 @@ public class TagServiceImpl implements TagService {
 
     @Override
     public Tag createTag(CreateTagRequest tagRequest) {
-        if (isNamaExist(tagRequest.getNama())) {
-            throw new BadRequestException("Tag with name " + tagRequest.getNama() + " already exists");
-        }
+        // if (isNamaExist(tagRequest.getNama())) {
+        //     throw new BadRequestException("Tag with name " + tagRequest.getNama() + " already exists");
+        // }
 
         Tag tag = new Tag();
         tag.setNama(tagRequest.getNama());
@@ -74,7 +74,7 @@ public class TagServiceImpl implements TagService {
         Tag tag = getTagById(assignTagRequestDTO.getId());
         for (UUID id : assignTagRequestDTO.getListIdPengajar()) {
             UserModel user = userService.getUserById(id);
-            if (user instanceof Pengajar) {
+            if (!(user instanceof Pengajar)) {
                 throw new BadRequestException("User with id " + id + " is not a pengajar");
             }
 
@@ -95,7 +95,7 @@ public class TagServiceImpl implements TagService {
         Tag tag = getTagById(tagRequestDTO.getId());
         for (UUID id : tagRequestDTO.getListIdPengajar()) {
             UserModel user = userService.getUserById(id);
-            if (user instanceof Pengajar) {
+            if (!(user instanceof Pengajar)) {
                 throw new BadRequestException("User with id " + id + " is not a pengajar");
             }
 
