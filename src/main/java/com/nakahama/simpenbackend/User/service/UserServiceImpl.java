@@ -173,20 +173,18 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserModel updateUser(EditUserRequestDTO editUserRequestDTO) {
         UserModel user = getUserById(editUserRequestDTO.getId());
+
         if (editUserRequestDTO.getNama() != null) {
             user.setNama(editUserRequestDTO.getNama());
         }
-        if (editUserRequestDTO.getEmail() != null) {
-            user.setEmail(editUserRequestDTO.getEmail());
-        }
-        if (editUserRequestDTO.getPassword() != null) {
-            user.setPassword(bCryptPasswordEncoder.encode(editUserRequestDTO.getPassword()));
-        }
-        if (editUserRequestDTO.getJenisKelamin() != null) {
-            user.setJenisKelamin(editUserRequestDTO.getJenisKelamin());
-        }
-        if (editUserRequestDTO.getNoTelp() != null) {
-            user.setNoTelp(editUserRequestDTO.getNoTelp());
+        if (editUserRequestDTO.getEmail() != null && !user.getEmail().equals(editUserRequestDTO.getEmail())) {
+            if (!isExistByEmail(editUserRequestDTO.getEmail())) {
+                user.setEmail(editUserRequestDTO.getEmail());
+            } else {
+                return null;
+            }
+        } else {
+            editUserRequestDTO.getEmail();
         }
 
         userDb.save(user);

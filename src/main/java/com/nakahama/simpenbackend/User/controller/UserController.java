@@ -75,8 +75,12 @@ public class UserController {
             @RequestBody EditUserRequestDTO editUserRequestDTO) {
         editUserRequestDTO.setId(UUID.fromString(id));
         UserModel user = userService.updateUser(editUserRequestDTO);
-        return ResponseUtil.okResponse((user),
-                "User berhasil diupdate");
+        if (user != null) {
+            return ResponseUtil.okResponse((user),
+                    "User berhasil diupdate");
+        } else {
+            return ResponseUtil.badRequest(id, null);
+        }
     }
 
     @PutMapping("")
