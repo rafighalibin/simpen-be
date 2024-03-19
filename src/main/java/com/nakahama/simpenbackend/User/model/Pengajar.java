@@ -7,7 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -34,10 +34,6 @@ public class Pengajar extends UserModel {
     private byte[] fotoDiri;
 
     @Size(max = 100)
-    @Column(name = "email_pribadi")
-    private String emailPribadi;
-
-    @Size(max = 100)
     @Column(name = "backup_phone_num")
     private String backupPhoneNum;
 
@@ -61,7 +57,7 @@ public class Pengajar extends UserModel {
     private String pendidikanTerakhir;
 
     @Column(name = "tgl_masuk_kontrak")
-    private LocalDate tglMasukKontrak;
+    private Date tglMasukKontrak;
 
     @Size(max = 100)
     @Column(name = "pekerjaan_lainnya")
