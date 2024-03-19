@@ -105,9 +105,8 @@ public class KelasServiceImpl implements KelasService {
 
         Kelas updatedKelas = kelasDb.findById(kelasRequest.getId()).get();
         Pengajar pengajar = (Pengajar) userService.getUserById(kelasRequest.getPengajarId());
-        KelasMapper.toEntity(kelasRequest, updatedKelas, pengajar);
 
-        return kelasDb.save(updatedKelas);
+        return kelasDb.save(KelasMapper.toEntity(kelasRequest, updatedKelas, pengajar));
     }
 
 }
