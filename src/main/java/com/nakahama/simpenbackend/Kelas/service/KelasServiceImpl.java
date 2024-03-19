@@ -15,6 +15,7 @@ import com.nakahama.simpenbackend.Kelas.model.Program;
 import com.nakahama.simpenbackend.Kelas.model.SesiKelas;
 import com.nakahama.simpenbackend.Kelas.repository.KelasDb;
 import com.nakahama.simpenbackend.User.model.Pengajar;
+import com.nakahama.simpenbackend.User.model.UserModel;
 import com.nakahama.simpenbackend.User.service.UserService;
 
 @Service
@@ -38,6 +39,11 @@ public class KelasServiceImpl implements KelasService {
     @Override
     public List<Kelas> getAll() {
         return kelasDb.findAll();
+    }
+
+    @Override
+    public List<Kelas> getAllKelasPengajar(UserModel userModel) {
+        return kelasDb.findAllByPengajar((Pengajar) userModel);
     }
 
     @Override

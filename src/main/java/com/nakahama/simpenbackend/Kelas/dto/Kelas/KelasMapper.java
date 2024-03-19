@@ -75,10 +75,16 @@ public class KelasMapper {
 
     public static ReadKelas toReadDto(Kelas kelas) {
         ReadKelas response = new ReadKelas();
-        response.setId(kelas.getKelasId());
         response.setPengajar(kelas.getPengajar().getNama());
+        response.setJenisKelasName(kelas.getJenisKelas().getNama());
+        response.setProgramName(kelas.getProgram().getNama());
+        response.setTanggalMulai(kelas.getTanggalMulai());
+        response.setTanggalSelesai(kelas.getTanggalSelesai());
+        response.setId(kelas.getKelasId());
         response.setJumlah_murid(kelas.getListMurid().size());
         response.setStatus(kelas.getStatus());
+        response.setModa("Online");
+
         return response;
     }
 
