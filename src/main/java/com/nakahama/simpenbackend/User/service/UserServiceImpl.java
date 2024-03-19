@@ -5,18 +5,22 @@ import java.util.Map;
 import java.util.Random;
 import java.util.UUID;
 import java.util.stream.Collectors;
+import java.util.ArrayList;
 import java.util.Comparator;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.nakahama.simpenbackend.User.dto.Tag.ReadTagResponseDTO;
 import com.nakahama.simpenbackend.User.dto.User.EditDataPengajarRequestDTO;
 import com.nakahama.simpenbackend.User.dto.User.EditUserRequestDTO;
+import com.nakahama.simpenbackend.User.dto.User.UserWithTagsResponseDTO;
 import com.nakahama.simpenbackend.User.dto.User.mapper.PengajarMapper;
 import com.nakahama.simpenbackend.User.model.Akademik;
 import com.nakahama.simpenbackend.User.model.Operasional;
 import com.nakahama.simpenbackend.User.model.Pengajar;
+import com.nakahama.simpenbackend.User.model.Tag;
 import com.nakahama.simpenbackend.User.model.UserModel;
 import com.nakahama.simpenbackend.User.repository.AkademikDb;
 import com.nakahama.simpenbackend.User.repository.OperasionalDb;
@@ -201,6 +205,33 @@ public class UserServiceImpl implements UserService {
 
         pengajarDb.save(pengajar);
         return pengajar;
+    }
+
+    @Override
+    public UserWithTagsResponseDTO getUserAndTag(UUID id) {
+        UserModel user = getUserById(id);
+        UserWithTagsResponseDTO response = new UserWithTagsResponseDTO();
+
+        if (user instanceof Pengajar) {
+            Pengajar pengajar = (Pengajar) user;
+            List<Tag> tags = pengajar.getListTag();
+
+            List<ReadTagResponseDTO> tagsDTOs = new ArrayList<>();
+            for (Tag tag : tags) {
+                tagsDTOs.add(new ReadTagResponseDTO(tag.getId(), tag.getNama()));
+            }
+
+            response.setTags(tagsDTOs);
+        }
+
+        response.setId(id);
+        response.setNama(user.getNama());
+        response.setEmail(user.getEmail());
+        response.setEmailPribadi(user.getEmailPribadi());
+        response.setJenisKelamin(user.getJenisKelamin());
+        response.setRole(user.getRole());
+
+        return response;
     }
 
 }

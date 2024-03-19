@@ -15,6 +15,7 @@ import com.nakahama.simpenbackend.Auth.service.AuthService;
 import com.nakahama.simpenbackend.User.dto.User.AddUserRequestDTO;
 import com.nakahama.simpenbackend.User.dto.User.EditDataPengajarRequestDTO;
 import com.nakahama.simpenbackend.User.dto.User.EditUserRequestDTO;
+import com.nakahama.simpenbackend.User.dto.User.UserWithTagsResponseDTO;
 import com.nakahama.simpenbackend.User.model.Pengajar;
 import com.nakahama.simpenbackend.User.model.UserModel;
 import com.nakahama.simpenbackend.User.repository.UserDb;
@@ -29,6 +30,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.UUID;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @RestController
 @RequestMapping("/user")
@@ -81,6 +83,12 @@ public class UserController {
         } else {
             return ResponseUtil.badRequest(id, null);
         }
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Object> getUser(@PathVariable String id) {
+        UserWithTagsResponseDTO response = userService.getUserAndTag(UUID.fromString(id));
+        return ResponseUtil.okResponse(response, "Success");
     }
 
     @PutMapping("")
