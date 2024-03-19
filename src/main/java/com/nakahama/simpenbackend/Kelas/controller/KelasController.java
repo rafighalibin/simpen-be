@@ -47,12 +47,20 @@ public class KelasController {
     @Autowired
     SesiKelasService sesiKelasService;
 
+    @SuppressWarnings("deprecation")
     @GetMapping("/kelas")
-    public ResponseEntity<Object> getKelas() {
-
+    public ResponseEntity<Object> getKelas(
+            HttpServletRequest request) {
+        String role = authService.getRoleLoggedUser(request);
         List<ReadKelas> listKelas = new ArrayList<ReadKelas>();
-        for (Kelas kelas : kelasService.getAll()) {
-            listKelas.add(KelasMapper.toReadDto(kelas));
+        if (role.equals("pengajar")) {
+            for (Kelas kelas : kelasService.getAllKelasPengajar(authService.getLoggedUser(request))) {
+                listKelas.add(KelasMapper.toReadDto(kelas));
+            }
+        } else {
+            for (Kelas kelas : kelasService.getAll()) {
+                listKelas.add(KelasMapper.toReadDto(kelas));
+            }
         }
         return ResponseUtil.okResponse(listKelas, "Success");
     }
