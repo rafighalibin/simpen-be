@@ -1,7 +1,6 @@
 package com.nakahama.simpenbackend.Kelas.service;
 
 import java.util.List;
-import java.util.UUID;
 
 import com.nakahama.simpenbackend.Kelas.dto.Murid.CreateMurid;
 import com.nakahama.simpenbackend.Kelas.dto.Murid.UpdateMurid;
@@ -15,9 +14,9 @@ public interface MuridService {
 
         public Murid update(UpdateMurid murid);
 
-        public Murid getById(UUID id);
+        public Murid getById(int id);
 
-        public void delete(UUID id);
+        public void delete(int id);
 
         public Murid getByNama(String nama);
 

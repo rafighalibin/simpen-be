@@ -15,7 +15,7 @@ import lombok.Setter;
 @Setter
 public class UpdateMurid {
 
-    private UUID id;
+    private int id;
 
     private String nama;
 

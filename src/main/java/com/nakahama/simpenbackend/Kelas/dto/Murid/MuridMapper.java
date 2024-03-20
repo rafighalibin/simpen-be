@@ -1,6 +1,10 @@
 package com.nakahama.simpenbackend.Kelas.dto.Murid;
 
+import java.util.*;
+
 import com.nakahama.simpenbackend.Kelas.model.Murid;
+import com.nakahama.simpenbackend.Kelas.model.MuridKelas;
+import com.nakahama.simpenbackend.Kelas.model.MuridSesi;
 
 public class MuridMapper {
 
@@ -60,6 +64,33 @@ public class MuridMapper {
 
         return response;
 
+    }
+
+    public static List<ReadMuridSesi> toListReadMuridSesi(List<MuridSesi> listMuridSesi) {
+        List<ReadMuridSesi> response = new ArrayList<ReadMuridSesi>();
+        for (MuridSesi muridSesi : listMuridSesi) {
+            response.add(toReadMuridSesi(muridSesi));
+        }
+        return response;
+    }
+
+    private static ReadMuridSesi toReadMuridSesi(MuridSesi muridSesi) {
+        ReadMuridSesi response = new ReadMuridSesi();
+
+        response.setMuridId(muridSesi.getMurid().getId());
+        response.setSesiId(muridSesi.getSesiKelas().getId());
+        response.setIsPresent(muridSesi.getIsPresent());
+        response.setRating(muridSesi.getRating());
+
+        return response;
+    }
+
+    public static List<ReadMurid> toListMuridKelas(List<MuridKelas> listMurid) {
+        List<ReadMurid> response = new ArrayList<ReadMurid>();
+        for (MuridKelas murid : listMurid) {
+            response.add(toReadDto(murid.getMurid()));
+        }
+        return response;
     }
 
 }

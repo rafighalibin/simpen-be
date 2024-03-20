@@ -24,7 +24,16 @@ public class MuridServiceImpl implements MuridService {
 
     @Override
     public Murid save(CreateMurid muridRequest) {
+        muridRequest.setId(generateMuridId());
         return muridDb.save(MuridMapper.toEntity(muridRequest));
+    }
+
+    private int generateMuridId() {
+        List<Murid> listKelas = muridDb.findAll();
+        if (listKelas.isEmpty()) {
+            return 0;
+        }
+        return listKelas.size() + 1;
     }
 
     @Override
@@ -34,7 +43,7 @@ public class MuridServiceImpl implements MuridService {
     }
 
     @Override
-    public Murid getById(UUID id) {
+    public Murid getById(int id) {
         Murid murid = muridDb.findById(id).get();
         if (murid == null)
             throw new NoSuchElementException("Murid with id " + id + " not found");
@@ -42,7 +51,7 @@ public class MuridServiceImpl implements MuridService {
     }
 
     @Override
-    public void delete(UUID id) {
+    public void delete(int id) {
         getById(id);
         muridDb.deleteById(id);
     }

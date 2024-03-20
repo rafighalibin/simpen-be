@@ -17,7 +17,7 @@ import lombok.Setter;
 @Setter
 public class CreateMurid {
 
-    private UUID id;
+    private int id;
 
     @NotBlank(message = "Nama required")
     private String nama;

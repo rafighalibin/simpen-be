@@ -16,7 +16,7 @@ import lombok.Setter;
 @Setter
 public class ReadDetailMurid {
 
-    private UUID id;
+    private int id;
 
     private String nama;
 

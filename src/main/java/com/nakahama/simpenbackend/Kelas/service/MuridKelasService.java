@@ -9,19 +9,23 @@ import com.nakahama.simpenbackend.Kelas.model.Murid;
 import com.nakahama.simpenbackend.Kelas.model.MuridKelas;
 
 public interface MuridKelasService {
-    
+
     public List<MuridKelas> getAll();
 
     public MuridKelas save(MuridKelas muridKelas);
 
-    public Optional<MuridKelas> getById(UUID id);
+    public MuridKelas getById(UUID id);
 
     public void delete(UUID id);
 
-    public Optional<MuridKelas> getByMurid(Murid murid);
+    public MuridKelas getByMurid(Murid murid);
 
     public Optional<MuridKelas> getByKelas(Kelas kelas);
-    
+
     public Optional<MuridKelas> getByLinkReport(String linkReport);
+
+    public List<MuridKelas> getListMurid(List<Integer> listMurid);
+
+    public List<MuridKelas> createListMuridKelas(List<Integer> listMurid, Kelas kelas);
 
 }
