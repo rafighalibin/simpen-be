@@ -66,8 +66,6 @@ public class Kelas {
     @JsonIgnore
     private List<MuridKelas> muridKelas;
 
-    private List<String> listMurid;
-
     private String status = "Scheduled";
 
     private Boolean isDeleted = false;

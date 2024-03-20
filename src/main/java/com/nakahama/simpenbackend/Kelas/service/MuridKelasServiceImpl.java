@@ -11,10 +11,13 @@ import com.nakahama.simpenbackend.Kelas.model.MuridKelas;
 import com.nakahama.simpenbackend.Kelas.repository.MuridKelasDb;
 
 @Service
-public class MuridKelasServiceImpl implements MuridKelasService{
-    
+public class MuridKelasServiceImpl implements MuridKelasService {
+
     @Autowired
     MuridKelasDb muridKelasDb;
+
+    @Autowired
+    MuridService muridService;
 
     @Override
     public List<MuridKelas> getAll() {
@@ -27,8 +30,11 @@ public class MuridKelasServiceImpl implements MuridKelasService{
     }
 
     @Override
-    public Optional<MuridKelas> getById(UUID id) {
-        return muridKelasDb.findById(id);
+    public MuridKelas getById(UUID id) {
+        MuridKelas muridKelas = muridKelasDb.findById(id).get();
+        if (muridKelas == null)
+            throw new NoSuchElementException("Murid Kelas with id " + id + " not found");
+        return muridKelas;
     }
 
     @Override
@@ -37,8 +43,11 @@ public class MuridKelasServiceImpl implements MuridKelasService{
     }
 
     @Override
-    public Optional<MuridKelas> getByMurid(Murid murid) {
-        return muridKelasDb.findByMurid(murid);
+    public MuridKelas getByMurid(Murid murid) {
+        MuridKelas muridKelas = muridKelasDb.findByMurid(murid).get();
+        if (muridKelas == null)
+            throw new NoSuchElementException("Murid Kelas with murid " + murid + " not found");
+        return muridKelas;
     }
 
     @Override
@@ -50,5 +59,28 @@ public class MuridKelasServiceImpl implements MuridKelasService{
     public Optional<MuridKelas> getByLinkReport(String linkReport) {
         return muridKelasDb.findByLinkReport(linkReport);
     }
-    
+
+    @Override
+    public List<MuridKelas> getListMurid(List<Integer> listMurid) {
+        List<MuridKelas> muridKelas = new ArrayList<>();
+        for (int idMurid : listMurid) {
+            MuridKelas muridKelasTemp = getByMurid(muridService.getById(idMurid));
+            muridKelas.add(muridKelasTemp);
+        }
+        return muridKelas;
+    }
+
+    @Override
+    public List<MuridKelas> createListMuridKelas(List<Integer> listMurid, Kelas kelas) {
+        List<MuridKelas> muridKelas = new ArrayList<>();
+        for (int idMurid : listMurid) {
+            MuridKelas muridKelasTemp = new MuridKelas();
+            muridKelasTemp.setMurid(muridService.getById(idMurid));
+            muridKelasTemp.setKelas(kelas);
+            save(muridKelasTemp);
+            muridKelas.add(muridKelasTemp);
+        }
+        return muridKelas;
+    }
+
 }

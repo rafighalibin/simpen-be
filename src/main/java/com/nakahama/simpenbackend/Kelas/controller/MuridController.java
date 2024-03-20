@@ -21,7 +21,6 @@ import com.nakahama.simpenbackend.util.ResponseUtil;
 
 import java.util.List;
 import java.util.ArrayList;
-import java.util.UUID;
 
 import jakarta.validation.Valid;
 
@@ -41,8 +40,8 @@ public class MuridController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Object> getMurid(@PathVariable String id) {
-        ReadDetailMurid response = MuridMapper.toReadDetailDto(muridService.getById(UUID.fromString(id)));
+    public ResponseEntity<Object> getMurid(@PathVariable int id) {
+        ReadDetailMurid response = MuridMapper.toReadDetailDto(muridService.getById(id));
         return ResponseUtil.okResponse(response, "Success");
     }
 
@@ -53,8 +52,8 @@ public class MuridController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Object> updateMurid(@PathVariable String id, @Valid @RequestBody UpdateMurid muridRequest) {
-        muridRequest.setId(UUID.fromString(id));
+    public ResponseEntity<Object> updateMurid(@PathVariable int id, @Valid @RequestBody UpdateMurid muridRequest) {
+        muridRequest.setId(id);
         Murid murid = muridService.update(muridRequest);
         return ResponseUtil.okResponse(MuridMapper.toReadDetailDto(murid), "Success");
     }

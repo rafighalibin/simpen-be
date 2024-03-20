@@ -2,6 +2,7 @@ package com.nakahama.simpenbackend.Kelas.dto.Kelas;
 
 import java.util.*;
 
+import com.nakahama.simpenbackend.Kelas.dto.Murid.ReadMurid;
 import com.nakahama.simpenbackend.Kelas.dto.SesiKelas.SesiKelasDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -36,7 +37,7 @@ public class ReadDetailKelas {
 
     private String linkGroup;
 
-    private List<String> listMurid;
+    private List<ReadMurid> listMurid;
 
     private int level;
 

@@ -5,9 +5,12 @@ import com.nakahama.simpenbackend.User.model.Pengajar;
 import java.time.LocalDateTime;
 import java.util.*;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.*;
 import lombok.*;
@@ -44,4 +47,9 @@ public class SesiKelas {
 
     @NotNull
     private String status;
+
+    @OneToMany(mappedBy = "sesiKelas", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JsonIgnore
+    private List<MuridSesi> listMuridSesi;
+
 }
