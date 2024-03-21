@@ -19,6 +19,8 @@ import lombok.Setter;
 @Setter
 public class ReadDetailSesiKelas {
 
+    private int noSesi;
+
     private UUID sesi_id;
 
     private String Status;

@@ -76,6 +76,10 @@ public class MuridMapper {
 
     private static ReadMuridSesi toReadMuridSesi(MuridSesi muridSesi) {
         ReadMuridSesi response = new ReadMuridSesi();
+        response.setNama(muridSesi.getMurid().getNama());
+        response.setNamaOrtu(muridSesi.getMurid().getNamaOrtu());
+        response.setEmailOrtu(muridSesi.getMurid().getEmailOrtu());
+        response.setNoHpOrtu(muridSesi.getMurid().getNoHpOrtu());
 
         response.setMuridId(muridSesi.getMurid().getId());
         response.setSesiId(muridSesi.getSesiKelas().getId());
