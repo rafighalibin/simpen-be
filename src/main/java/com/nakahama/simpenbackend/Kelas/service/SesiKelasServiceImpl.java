@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
+import com.nakahama.simpenbackend.Kelas.dto.SesiKelas.UpdateAbsensiMurid;
 import com.nakahama.simpenbackend.Kelas.model.*;
 import com.nakahama.simpenbackend.Kelas.repository.SesiKelasDb;
 import com.nakahama.simpenbackend.User.model.Pengajar;
@@ -127,6 +128,22 @@ public class SesiKelasServiceImpl implements SesiKelasService {
 
         }
         return listSesiKelas;
+    }
+
+    @Override
+    public void uppdateAbsenSesi(UUID idSesi, List<UpdateAbsensiMurid> updateAbsensiMurid) {
+        SesiKelas sesiKelas = getById(idSesi);
+        List<MuridSesi> muridSesi = sesiKelas.getListMuridSesi();
+        if (muridSesi.size() != updateAbsensiMurid.size())
+            throw new NoSuchElementException("MuridSesi and UpdateAbsensiMurid size not match");
+        for (int i = 0; i < muridSesi.size(); i++) {
+            MuridSesi muridSesiToUpdate = muridSesi.get(i);
+            muridSesiToUpdate.setIsPresent(updateAbsensiMurid.get(i).getIsPresent());
+            muridSesiToUpdate.setRating(updateAbsensiMurid.get(i).getRating());
+            muridSesiToUpdate.setKomentar(updateAbsensiMurid.get(i).getKomentar());
+            muridSesiService.save(muridSesiToUpdate);
+        }
+        save(sesiKelas);
     }
 
 }
