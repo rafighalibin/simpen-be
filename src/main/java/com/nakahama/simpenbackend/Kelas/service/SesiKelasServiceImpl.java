@@ -138,8 +138,10 @@ public class SesiKelasServiceImpl implements SesiKelasService {
             throw new NoSuchElementException("MuridSesi and UpdateAbsensiMurid size not match");
         for (int i = 0; i < muridSesi.size(); i++) {
             MuridSesi muridSesiToUpdate = muridSesi.get(i);
-            muridSesiToUpdate.setIsPresent(updateAbsensiMurid.get(i).getIsPresent());
-            muridSesiToUpdate.setRating(updateAbsensiMurid.get(i).getRating());
+            muridSesiToUpdate.setIsPresent(updateAbsensiMurid.get(i).getIsPresent() == null ? false
+                    : updateAbsensiMurid.get(i).getIsPresent());
+            muridSesiToUpdate.setRating(updateAbsensiMurid.get(i).getRating() == null ? 0
+                    : updateAbsensiMurid.get(i).getRating());
             muridSesiToUpdate.setKomentar(updateAbsensiMurid.get(i).getKomentar());
             muridSesiService.save(muridSesiToUpdate);
         }

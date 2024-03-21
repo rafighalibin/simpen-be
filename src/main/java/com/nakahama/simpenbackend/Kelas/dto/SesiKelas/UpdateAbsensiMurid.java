@@ -1,10 +1,6 @@
 package com.nakahama.simpenbackend.Kelas.dto.SesiKelas;
 
-import java.time.LocalDateTime;
 import java.util.*;
-
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.nakahama.simpenbackend.Kelas.dto.Murid.ReadMuridSesi;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -12,16 +8,14 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class UpdateAbsensiMurid {
 
-    private Long id; // Assuming `muridId` is a Long. Change the type if it's different.
+    private int id;
 
     @NotBlank(message = "Nama cannot be blank")
     private String nama;
@@ -38,12 +32,11 @@ public class UpdateAbsensiMurid {
     private String noHpOrtu;
 
     @NotNull(message = "SesiId cannot be null")
-    private UUID sesiId; // Assuming sesiId is a UUID. Change the type if it's different.
+    private UUID sesiId;
 
-    @NotNull(message = "isPresent cannot be null")
     private Boolean isPresent;
 
-    private Integer rating; // Assuming rating can be null and is an Integer. Adjust as necessary.
+    private Integer rating;
 
-    private String komentar; // Assuming komentar can be null.
+    private String komentar;
 }
