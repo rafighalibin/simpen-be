@@ -18,7 +18,9 @@ public class SesiKelasMapper {
     public static List<ReadDetailSesiKelas> toListReadDetailDto(List<SesiKelas> request) {
         List<ReadDetailSesiKelas> response = new ArrayList<>();
         for (SesiKelas sesiKelas : request) {
-            response.add(toReadDetailDto(sesiKelas));
+            ReadDetailSesiKelas detailSesiKelas = toReadDetailDto(sesiKelas);
+            detailSesiKelas.setNoSesi(response.size() + 1);
+            response.add(detailSesiKelas);
         }
         return response;
     }
