@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.nakahama.simpenbackend.Kelas.dto.Kelas.CreateKelas;
 import com.nakahama.simpenbackend.Kelas.dto.Kelas.KelasMapper;
 import com.nakahama.simpenbackend.Kelas.dto.Kelas.UpdateKelas;
+import com.nakahama.simpenbackend.Kelas.dto.Kelas.UpdateKelasPlaylist;
 import com.nakahama.simpenbackend.Kelas.model.JenisKelas;
 import com.nakahama.simpenbackend.Kelas.model.Kelas;
 import com.nakahama.simpenbackend.Kelas.model.MuridKelas;
@@ -106,6 +107,13 @@ public class KelasServiceImpl implements KelasService {
         List<MuridKelas> listMurid = muridKelasService.getListMurid(kelasRequest.getListMurid());
 
         return kelasDb.save(KelasMapper.toEntity(kelasRequest, updatedKelas, pengajar, listMurid));
+    }
+
+    @Override
+    public void updateKelasPlaylist(UpdateKelasPlaylist updateKelasPlaylist) {
+        Kelas kelas = getById(updateKelasPlaylist.getId());
+        kelas.setLinkPlaylist(updateKelasPlaylist.getLinkPlaylist());
+        kelasDb.save(kelas);
     }
 
 }
