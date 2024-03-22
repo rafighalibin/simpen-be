@@ -1,5 +1,7 @@
 package com.nakahama.simpenbackend.Kelas.service;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -103,12 +105,14 @@ public class KelasServiceImpl implements KelasService {
     public Kelas update(UpdateKelas kelasRequest) {
 
         Kelas updatedKelas = kelasDb.findById(kelasRequest.getId()).get();
+        List<LocalDateTime> jadwalKelas = new ArrayList<>();
 
         // check if kelas is still started
         for (SesiKelas sesiKelas : updatedKelas.getListsesiKelas()) {
             if (!sesiKelas.getStatus().equals("Scheduled")) {
                 throw new IllegalArgumentException("Kelas masih berlangsung, tidak bisa diubah");
             }
+            jadwalKelas.add(sesiKelas.getWaktuPelaksanaan());
         }
 
         Pengajar pengajar = (Pengajar) userService.getUserById(kelasRequest.getPengajarId());
@@ -119,7 +123,7 @@ public class KelasServiceImpl implements KelasService {
         updatedKelas.setJumlahMurid(listMurid.size());
         kelasDb.save(updatedKelas);
 
-        List<SesiKelas> listSesiKelas = sesiKelasService.createListSesiKelas(kelasRequest.getJadwalKelas(),
+        List<SesiKelas> listSesiKelas = sesiKelasService.createListSesiKelas(jadwalKelas,
                 updatedKelas,
                 pengajar, listMurid, kelasRequest.getPlatform());
         updatedKelas.getListsesiKelas().clear();
