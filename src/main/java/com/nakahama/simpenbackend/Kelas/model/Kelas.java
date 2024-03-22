@@ -38,7 +38,7 @@ public class Kelas {
     private UserModel operasional; // need to change after Operasional model is created
 
     @NotNull
-    @ManyToOne
+    @ManyToOne(cascade = { CascadeType.ALL })
     private Pengajar pengajar; // need to change after Pengajar model is created
 
     @NotNull
