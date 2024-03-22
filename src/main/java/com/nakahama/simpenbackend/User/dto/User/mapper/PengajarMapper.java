@@ -1,14 +1,12 @@
 package com.nakahama.simpenbackend.User.dto.User.mapper;
 
 import org.mapstruct.Mapper;
-import org.springframework.stereotype.Component;
 
 import com.nakahama.simpenbackend.User.dto.User.EditDataPengajarRequestDTO;
 import com.nakahama.simpenbackend.User.model.Pengajar;
 
-@Component
 @Mapper(componentModel = "spring")
-public interface PengajarMapper {
+public interface PengajarMapper { 
   static Pengajar toEntity(EditDataPengajarRequestDTO request, Pengajar pengajarExisting) {
     if (request.getAlamatKTP() != null)
         pengajarExisting.setAlamatKTP(request.getAlamatKTP());

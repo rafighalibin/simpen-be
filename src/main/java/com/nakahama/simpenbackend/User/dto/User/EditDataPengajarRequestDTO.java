@@ -18,8 +18,8 @@ public class EditDataPengajarRequestDTO {
     String alamatKTP;
     String nama;
     String domisiliKota;
-    byte[] fotoDiri;
     String emailPribadi;
+    String fotoDiri;
     String email;
     String jenisKelamin;
     String noTelp;
@@ -27,14 +27,14 @@ public class EditDataPengajarRequestDTO {
     String noRekBank;
     String namaBank;
     String namaPemilikRek;
-    byte[] fotoBukuTabungan;
+   String fotoBukuTabungan;
     String pendidikanTerakhir;
     String pekerjaanLainnya;
     Date tglMasukKontrak;
     String nik;
-    byte[] fotoKtp;
+   String fotoKtp;
     String Npwp;
-    byte[] fotoNpwp;
+   String fotoNpwp;
     String namaKontakDarurat;
     String noTelpDarurat;
 }

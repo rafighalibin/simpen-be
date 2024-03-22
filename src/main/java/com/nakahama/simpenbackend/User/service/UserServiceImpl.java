@@ -197,11 +197,11 @@ public class UserServiceImpl implements UserService {
     public Pengajar editDataPengajar(EditDataPengajarRequestDTO pengajarRequestDTO) {
         Pengajar pengajar = pengajarDb.findById(pengajarRequestDTO.getId())
                 .orElseThrow(() -> new BadRequestException("Pengajar with id " + pengajarRequestDTO.getId() + " not found"));
-        
         pengajar = PengajarMapper.toEntity(pengajarRequestDTO, pengajar);
-
         pengajarDb.save(pengajar);
         return pengajar;
     }
+
+    
 
 }
