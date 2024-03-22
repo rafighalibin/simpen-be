@@ -35,7 +35,7 @@ public class MuridSesiServiceImpl implements MuridSesiService {
     }
 
     @Override
-    public void delete(UUID id) {
+    public void deleteById(UUID id) {
         muridSesiDb.deleteById(id);
     }
 

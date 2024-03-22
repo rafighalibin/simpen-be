@@ -15,7 +15,7 @@ public interface MuridSesiService {
 
     public MuridSesi getById(UUID id);
 
-    public void delete(UUID id);
+    public void deleteById(UUID id);
 
     public List<MuridSesi> createListMuridSesi(List<MuridKelas> listMurid, SesiKelas sesiKelas);
 
