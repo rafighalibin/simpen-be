@@ -36,5 +36,5 @@ public interface SesiKelasService {
     public List<SesiKelas> createListSesiKelas(List<LocalDateTime> jadwalKelas, Kelas createdKelas, Pengajar pengajar,
             List<MuridKelas> listMurid, String platform);
 
-    public void uppdateAbsenSesi(UUID idSesi, List<UpdateAbsensiMurid> updateAbsensiMurid);
+    public void updateAbsenSesi(UUID idSesi, List<UpdateAbsensiMurid> updateAbsensiMurid);
 }

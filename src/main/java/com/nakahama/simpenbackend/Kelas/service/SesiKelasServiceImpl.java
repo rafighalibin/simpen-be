@@ -131,8 +131,11 @@ public class SesiKelasServiceImpl implements SesiKelasService {
     }
 
     @Override
-    public void uppdateAbsenSesi(UUID idSesi, List<UpdateAbsensiMurid> updateAbsensiMurid) {
+    public void updateAbsenSesi(UUID idSesi, List<UpdateAbsensiMurid> updateAbsensiMurid) {
         SesiKelas sesiKelas = getById(idSesi);
+        sesiKelas.setStatus("Done");
+
+        sesiKelas.getKelas().setStatus("On Going");
         List<MuridSesi> muridSesi = sesiKelas.getListMuridSesi();
         if (muridSesi.size() != updateAbsensiMurid.size())
             throw new NoSuchElementException("MuridSesi and UpdateAbsensiMurid size not match");

@@ -37,7 +37,7 @@ public class SesiKelasController {
     @PutMapping("/absen/{idSesi}")
     public ResponseEntity<Object> update(@Valid @RequestBody List<UpdateAbsensiMurid> updateAbsensiMurid,
             @PathVariable String idSesi) {
-        sesiKelasService.uppdateAbsenSesi(UUID.fromString(idSesi), updateAbsensiMurid);
+        sesiKelasService.updateAbsenSesi(UUID.fromString(idSesi), updateAbsensiMurid);
         return ResponseUtil.okResponse(null, "Success");
     }
 
