@@ -1,13 +1,15 @@
 package com.nakahama.simpenbackend.Kelas.service;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
-import com.nakahama.simpenbackend.Kelas.model.SesiKelas;
+import com.nakahama.simpenbackend.Kelas.dto.SesiKelas.UpdateAbsensiMurid;
 import com.nakahama.simpenbackend.Kelas.model.Kelas;
-import com.nakahama.simpenbackend.User.model.UserModel;
+import com.nakahama.simpenbackend.Kelas.model.MuridKelas;
+import com.nakahama.simpenbackend.Kelas.model.SesiKelas;
+import com.nakahama.simpenbackend.User.model.Pengajar;
 
 public interface SesiKelasService {
 
@@ -15,19 +17,24 @@ public interface SesiKelasService {
 
     public SesiKelas save(SesiKelas sesiKelas);
 
-    public Optional<SesiKelas> getById(UUID id);
+    public SesiKelas getById(UUID id);
 
     public void delete(UUID id);
 
-    public Optional<SesiKelas> getByKelas(Kelas kelas);
+    public List<SesiKelas> getByKelasId(int idKelas);
 
-    public Optional<SesiKelas> getByPengajar(UserModel pengajar);
+    public List<SesiKelas> getByPengajarId(UUID idPengajar);
 
-    public Optional<SesiKelas> getByPengajarPengganti(UserModel pengajarPengganti);
+    public SesiKelas getByPengajarPenggantiId(UUID idPengajarPengganti);
 
-    public Optional<SesiKelas> getByWaktuPermintaanBetween(Date startDate, Date endDate);
+    public SesiKelas getByWaktuPermintaanBetween(Date startDate, Date endDate);
 
-    public Optional<SesiKelas> getByStatus(String status);
+    public SesiKelas getByStatus(String status);
 
-    public Optional<SesiKelas> getByPlatform(String platform);
+    public SesiKelas getByPlatformId(String idPlatform);
+
+    public List<SesiKelas> createListSesiKelas(List<LocalDateTime> jadwalKelas, Kelas createdKelas, Pengajar pengajar,
+            List<MuridKelas> listMurid, String platform);
+
+    public void uppdateAbsenSesi(UUID idSesi, List<UpdateAbsensiMurid> updateAbsensiMurid);
 }

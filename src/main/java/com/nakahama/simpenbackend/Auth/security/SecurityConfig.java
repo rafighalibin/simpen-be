@@ -51,7 +51,8 @@ public class SecurityConfig {
                     auth.requestMatchers("kelas/jenis").hasAuthority("operasional");
                     auth.requestMatchers("kelas/program").hasAuthority("operasional");
                     auth.requestMatchers(HttpMethod.POST, "kelas").hasAuthority("operasional");
-                    auth.requestMatchers(HttpMethod.GET, "kelas").hasAnyAuthority("operasional", "akademik");
+                    auth.requestMatchers(HttpMethod.GET, "kelas").hasAnyAuthority("pengajar", "operasional",
+                            "akademik");
                     auth.requestMatchers(HttpMethod.GET, "kelas/**").hasAnyAuthority("pengajar", "operasional",
                             "akademik");
                     auth.requestMatchers(HttpMethod.PUT, "kelas/**").hasAuthority("operasional");

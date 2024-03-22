@@ -39,6 +39,9 @@ public class KelasController {
     KelasServiceImpl kelasService;
 
     @Autowired
+    MuridKelasService muridKelasService;
+
+    @Autowired
     ProgramServiceImpl programService;
 
     @Autowired
@@ -71,11 +74,12 @@ public class KelasController {
             HttpServletRequest request) {
         createKelasRequest.setOperasional(authService.getLoggedUser(request));
         Kelas createdKelas = kelasService.save(createKelasRequest);
+
         return ResponseUtil.okResponse(
                 KelasMapper.toDetailDto(
                         createdKelas,
                         createdKelas.getListsesiKelas(),
-                        userService.getUserById(createdKelas.getPengajar().getId())),
+                        userService.getUserById(createdKelas.getPengajar().getId()), createdKelas.getMuridKelas()),
                 "Kelas dengan id " + createdKelas.getKelasId() + " berhasil dibuat");
     }
 
@@ -84,7 +88,7 @@ public class KelasController {
 
         Kelas updatedKelas = kelasService.getById(kelasId);
         return ResponseUtil.okResponse(KelasMapper.toDetailDto(updatedKelas, updatedKelas.getListsesiKelas(),
-                userService.getUserById(updatedKelas.getPengajar().getId())),
+                userService.getUserById(updatedKelas.getPengajar().getId()), updatedKelas.getMuridKelas()),
                 "Success");
     }
 
@@ -95,7 +99,7 @@ public class KelasController {
         updateKelasRequest.setId(kelasId);
         Kelas updatedKelas = kelasService.update(updateKelasRequest);
         return ResponseUtil.okResponse(KelasMapper.toDetailDto(updatedKelas, updatedKelas.getListsesiKelas(),
-                userService.getUserById(updatedKelas.getPengajar().getId())),
+                userService.getUserById(updatedKelas.getPengajar().getId()), updatedKelas.getMuridKelas()),
                 "Kelas dengan id " + updatedKelas.getKelasId() + " berhasil diupdate");
     }
 
