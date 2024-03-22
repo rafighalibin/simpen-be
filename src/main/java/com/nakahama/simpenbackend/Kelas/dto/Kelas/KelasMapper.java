@@ -90,8 +90,10 @@ public class KelasMapper {
         response.setTanggalSelesai(createdKelas.getTanggalSelesai());
         response.setPengajarId(createdKelas.getPengajar().getId());
         response.setLinkGroup(createdKelas.getLinkGroup());
+        response.setLinkPlaylist(createdKelas.getLinkPlaylist());
         response.setListMurid(MuridMapper.toListMuridKelas(listMurid));
         response.setLevel(createdKelas.getLevel());
+
         // TODO: IMPLEMENT AVERAGE RATING
         // TODO: IMPLEMENT PLATFORM
         response.setPlatform("TODO: IMPLEMENT PLATFORM");
