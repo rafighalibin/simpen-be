@@ -10,6 +10,8 @@ import lombok.Setter;
 import java.util.Date;
 import java.util.List;
 
+import org.hibernate.annotations.Cascade;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.nakahama.simpenbackend.Kelas.model.Kelas;
 import com.nakahama.simpenbackend.Kelas.model.SesiKelas;
@@ -85,15 +87,15 @@ public class Pengajar extends UserModel {
     @Column(name = "no_telp_darurat")
     private String noTelpDarurat;
 
-    @ManyToMany(mappedBy = "listPengajar", fetch = FetchType.LAZY)
+    @ManyToMany(mappedBy = "listPengajar", fetch = FetchType.LAZY, cascade = { CascadeType.ALL })
     @JsonIgnore
-    List<Tag> listTag;
-    
-    @OneToMany
+    private List<Tag> listTag;
+
+    @OneToMany(cascade = { CascadeType.ALL })
     @JsonIgnore
     private List<SesiKelas> sesiKelas;
 
-    @OneToMany
+    @OneToMany(cascade = { CascadeType.ALL })
     @JsonIgnore
     private List<Kelas> kelas;
 }

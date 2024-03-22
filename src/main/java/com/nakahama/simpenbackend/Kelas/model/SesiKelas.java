@@ -26,11 +26,11 @@ public class SesiKelas {
     private UUID Id = UUID.randomUUID();
 
     @NotNull
-    @ManyToOne
+    @ManyToOne(cascade = { CascadeType.ALL })
     @JsonIgnore
     private Pengajar pengajar; // need to change after Pengajar model is created
 
-    @ManyToOne
+    @ManyToOne(cascade = { CascadeType.ALL })
     @JsonIgnore
     private Pengajar pengajarPengganti; // need to change after Pengajar model is created
 
