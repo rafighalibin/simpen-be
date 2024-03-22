@@ -1,7 +1,6 @@
 package com.nakahama.simpenbackend.Kelas.service;
 
 import java.util.*;
-import java.time.LocalDateTime;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,10 +10,12 @@ import com.nakahama.simpenbackend.Kelas.dto.Kelas.KelasMapper;
 import com.nakahama.simpenbackend.Kelas.dto.Kelas.UpdateKelas;
 import com.nakahama.simpenbackend.Kelas.model.JenisKelas;
 import com.nakahama.simpenbackend.Kelas.model.Kelas;
+import com.nakahama.simpenbackend.Kelas.model.MuridKelas;
 import com.nakahama.simpenbackend.Kelas.model.Program;
 import com.nakahama.simpenbackend.Kelas.model.SesiKelas;
 import com.nakahama.simpenbackend.Kelas.repository.KelasDb;
 import com.nakahama.simpenbackend.User.model.Pengajar;
+import com.nakahama.simpenbackend.User.model.UserModel;
 import com.nakahama.simpenbackend.User.service.UserService;
 
 @Service
@@ -35,9 +36,17 @@ public class KelasServiceImpl implements KelasService {
     @Autowired
     SesiKelasService sesiKelasService;
 
+    @Autowired
+    MuridKelasService muridKelasService;
+
     @Override
     public List<Kelas> getAll() {
         return kelasDb.findAll();
+    }
+
+    @Override
+    public List<Kelas> getAllKelasPengajar(UserModel userModel) {
+        return kelasDb.findAllByPengajar((Pengajar) userModel);
     }
 
     @Override
@@ -49,20 +58,15 @@ public class KelasServiceImpl implements KelasService {
 
         Kelas createdKelas = KelasMapper.toEntity(request, program, jenisKelas,
                 pengajar, generateKelasId());
-
         kelasDb.save(createdKelas);
 
-        for (LocalDateTime e : request.getJadwalKelas()) {
-            SesiKelas sesiKelas = new SesiKelas();
-            sesiKelas.setKelas(createdKelas);
-            sesiKelas.setPengajar(pengajar);
-            sesiKelas.setPlatform(request.getPlatform());
-            sesiKelas.setWaktuPelaksanaan(e);
-            sesiKelas.setStatus("Scheduled");
-            sesiKelasService.save(sesiKelas);
-            createdKelas.getListsesiKelas().add(sesiKelas);
-        }
+        List<MuridKelas> listMurid = muridKelasService.createListMuridKelas(request.getListMurid(), createdKelas);
+        createdKelas.setMuridKelas(listMurid);
+        kelasDb.save(createdKelas);
 
+        List<SesiKelas> listSesiKelas = sesiKelasService.createListSesiKelas(request.getJadwalKelas(), createdKelas,
+                pengajar, listMurid, request.getPlatform());
+        createdKelas.setListsesiKelas(listSesiKelas);
         return kelasDb.save(createdKelas);
 
     }
@@ -99,9 +103,9 @@ public class KelasServiceImpl implements KelasService {
 
         Kelas updatedKelas = kelasDb.findById(kelasRequest.getId()).get();
         Pengajar pengajar = (Pengajar) userService.getUserById(kelasRequest.getPengajarId());
-        KelasMapper.toEntity(kelasRequest, updatedKelas, pengajar);
+        List<MuridKelas> listMurid = muridKelasService.getListMurid(kelasRequest.getListMurid());
 
-        return kelasDb.save(updatedKelas);
+        return kelasDb.save(KelasMapper.toEntity(kelasRequest, updatedKelas, pengajar, listMurid));
     }
 
 }

@@ -37,7 +37,7 @@ public class UpdateKelas {
     private String linkGroup;
 
     @NotEmpty(message = "Minimum 1 murid pada kelas")
-    private List<String> listMurid;
+    private List<Integer> listMurid;
 
     @NotNull(message = "Level is mandatory")
     @Min(value = 0, message = "Tidak Boleh Kurang dari 0")

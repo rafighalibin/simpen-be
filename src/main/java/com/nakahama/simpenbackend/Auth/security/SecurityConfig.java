@@ -31,19 +31,32 @@ public class SecurityConfig {
                 .securityMatcher("/**")
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> {
+                    // Auth, User, Tag
                     auth.requestMatchers("auth/login").permitAll();
                     auth.requestMatchers("auth/test").authenticated();
                     auth.requestMatchers("auth/test-role").hasAuthority("superadmin");
                     auth.requestMatchers(HttpMethod.POST, "user").hasAuthority("superadmin");
                     auth.requestMatchers(HttpMethod.GET, "user").hasAnyAuthority("operasional", "superadmin");
-                    auth.requestMatchers(HttpMethod.PUT, "user").hasAnyAuthority( "pengajar");
+                    auth.requestMatchers(HttpMethod.PUT, "user").hasAnyAuthority("pengajar", "operasional", "akademik");
                     auth.requestMatchers(HttpMethod.DELETE, "user/**").hasAuthority("superadmin");
                     auth.requestMatchers(HttpMethod.PUT, "user/**").hasAnyAuthority("operasional", "superadmin");
+                    auth.requestMatchers(HttpMethod.GET, "user/**").hasAnyAuthority("operasional", "superadmin");
                     auth.requestMatchers(HttpMethod.POST, "tag").hasAnyAuthority("operasional", "akademik");
                     auth.requestMatchers(HttpMethod.GET, "tag").hasAnyAuthority("operasional", "akademik");
-                    auth.requestMatchers(HttpMethod.POST, "tag/**").hasAnyAuthority("operasional", "akademik");
-                    auth.requestMatchers(HttpMethod.GET, "tag/**").hasAnyAuthority("operasional", "akademik");
-                    auth.requestMatchers(HttpMethod.DELETE, "tag/**").hasAnyAuthority("operasional", "akademik");
+                    auth.requestMatchers(HttpMethod.POST, "tag/assign").hasAnyAuthority("operasional", "akademik");
+                    auth.requestMatchers(HttpMethod.GET, "tag/assign").hasAnyAuthority("operasional", "akademik");
+                    auth.requestMatchers(HttpMethod.DELETE, "tag/assign").hasAnyAuthority("operasional", "akademik");
+
+                    // Kelas, Program
+                    auth.requestMatchers("kelas/jenis").hasAuthority("operasional");
+                    auth.requestMatchers("kelas/program").hasAuthority("operasional");
+                    auth.requestMatchers(HttpMethod.POST, "kelas").hasAuthority("operasional");
+                    auth.requestMatchers(HttpMethod.GET, "kelas").hasAnyAuthority("pengajar", "operasional",
+                            "akademik");
+                    auth.requestMatchers(HttpMethod.GET, "kelas/**").hasAnyAuthority("pengajar", "operasional",
+                            "akademik");
+                    auth.requestMatchers(HttpMethod.PUT, "kelas/**").hasAuthority("operasional");
+                    auth.requestMatchers(HttpMethod.DELETE, "kelas/**").hasAuthority("operasional");
 
                     // TODO: set the appropriate authorities for the corresponding endpoints
                     auth.anyRequest().permitAll();
