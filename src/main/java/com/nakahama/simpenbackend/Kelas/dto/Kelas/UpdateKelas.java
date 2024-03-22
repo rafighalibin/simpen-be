@@ -1,6 +1,5 @@
 package com.nakahama.simpenbackend.Kelas.dto.Kelas;
 
-import java.time.LocalDateTime;
 import java.util.*;
 
 import com.fasterxml.jackson.annotation.JsonFormat;

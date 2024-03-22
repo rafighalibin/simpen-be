@@ -90,6 +90,7 @@ public class KelasMapper {
         response.setLinkPlaylist(createdKelas.getLinkPlaylist());
         response.setListMurid(MuridMapper.toListMuridKelas(listMurid));
         response.setLevel(createdKelas.getLevel());
+        response.setStatus(createdKelas.getStatus());
 
         // TODO: IMPLEMENT AVERAGE RATING
         // TODO: IMPLEMENT PLATFORM
