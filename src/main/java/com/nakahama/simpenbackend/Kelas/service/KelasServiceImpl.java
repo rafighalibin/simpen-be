@@ -103,6 +103,14 @@ public class KelasServiceImpl implements KelasService {
     public Kelas update(UpdateKelas kelasRequest) {
 
         Kelas updatedKelas = kelasDb.findById(kelasRequest.getId()).get();
+
+        // check if kelas is still started
+        for (SesiKelas sesiKelas : updatedKelas.getListsesiKelas()) {
+            if (!sesiKelas.getStatus().equals("Scheduled")) {
+                throw new IllegalArgumentException("Kelas masih berlangsung, tidak bisa diubah");
+            }
+        }
+
         Pengajar pengajar = (Pengajar) userService.getUserById(kelasRequest.getPengajarId());
 
         List<MuridKelas> listMurid = muridKelasService.createListMuridKelas(kelasRequest.getListMurid(), updatedKelas);
