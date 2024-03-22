@@ -59,10 +59,10 @@ public class Kelas {
 
     private float averageRating;
 
-    @OneToMany
+    @OneToMany(mappedBy = "kelas", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<SesiKelas> listsesiKelas;
 
-    @OneToMany(mappedBy = "kelas", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "kelas", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
     private List<MuridKelas> muridKelas;
 

@@ -60,15 +60,12 @@ public class KelasMapper {
         return response;
     }
 
-    public static Kelas toEntity(UpdateKelas request, Kelas existingKelas, Pengajar pengajar,
-            List<MuridKelas> listMurid) {
+    public static Kelas toEntity(UpdateKelas request, Kelas existingKelas, Pengajar pengajar) {
         Kelas response = existingKelas;
         response.setTanggalMulai(request.getTanggalMulai());
         response.setTanggalSelesai(request.getTanggalSelesai());
         response.setPengajar(pengajar);
         response.setLinkGroup(request.getLinkGroup());
-        response.setMuridKelas(listMurid);
-        response.setJumlahMurid(request.getListMurid().size());
         response.setLevel(request.getLevel());
         return response;
     }

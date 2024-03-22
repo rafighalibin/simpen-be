@@ -1,5 +1,6 @@
 package com.nakahama.simpenbackend.Kelas.dto.Kelas;
 
+import java.time.LocalDateTime;
 import java.util.*;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -21,6 +22,10 @@ import lombok.Setter;
 @Setter
 public class UpdateKelas {
     private int id;
+
+    @NotEmpty(message = "Minimum 1 jadwal kelas")
+    @JsonFormat(pattern = "MM-dd-yyyy HH:mm:ss")
+    private List<LocalDateTime> jadwalKelas;
 
     @NotNull(message = "Tanggal Mulai is mandatory")
     @JsonFormat(pattern = "yyyy-MM-dd")

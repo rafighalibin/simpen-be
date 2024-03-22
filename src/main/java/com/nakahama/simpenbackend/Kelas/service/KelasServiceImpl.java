@@ -104,9 +104,21 @@ public class KelasServiceImpl implements KelasService {
 
         Kelas updatedKelas = kelasDb.findById(kelasRequest.getId()).get();
         Pengajar pengajar = (Pengajar) userService.getUserById(kelasRequest.getPengajarId());
-        List<MuridKelas> listMurid = muridKelasService.getListMurid(kelasRequest.getListMurid());
 
-        return kelasDb.save(KelasMapper.toEntity(kelasRequest, updatedKelas, pengajar, listMurid));
+        List<MuridKelas> listMurid = muridKelasService.createListMuridKelas(kelasRequest.getListMurid(), updatedKelas);
+        updatedKelas.getMuridKelas().clear();
+        updatedKelas.getMuridKelas().addAll(listMurid);
+        updatedKelas.setJumlahMurid(listMurid.size());
+        kelasDb.save(updatedKelas);
+
+        List<SesiKelas> listSesiKelas = sesiKelasService.createListSesiKelas(kelasRequest.getJadwalKelas(),
+                updatedKelas,
+                pengajar, listMurid, kelasRequest.getPlatform());
+        updatedKelas.getListsesiKelas().clear();
+        updatedKelas.getListsesiKelas().addAll(listSesiKelas);
+
+        return kelasDb.save(KelasMapper.toEntity(kelasRequest, updatedKelas,
+                pengajar));
     }
 
     @Override

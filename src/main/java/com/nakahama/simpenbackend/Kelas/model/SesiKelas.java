@@ -48,7 +48,7 @@ public class SesiKelas {
     @NotNull
     private String status;
 
-    @OneToMany(mappedBy = "sesiKelas", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "sesiKelas", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
     private List<MuridSesi> listMuridSesi;
 

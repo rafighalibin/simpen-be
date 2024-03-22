@@ -18,13 +18,13 @@ public interface MuridKelasService {
 
     public void delete(UUID id);
 
-    public MuridKelas getByMurid(Murid murid);
+    public List<MuridKelas> getByMuridAndKelas(Murid murid, Kelas kelas);
 
     public Optional<MuridKelas> getByKelas(Kelas kelas);
 
     public Optional<MuridKelas> getByLinkReport(String linkReport);
 
-    public List<MuridKelas> getListMurid(List<Integer> listMurid);
+    public List<MuridKelas> getListMurid(List<Integer> listMurid, Kelas kelas);
 
     public List<MuridKelas> createListMuridKelas(List<Integer> listMurid, Kelas kelas);
 

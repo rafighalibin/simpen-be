@@ -43,8 +43,8 @@ public class MuridKelasServiceImpl implements MuridKelasService {
     }
 
     @Override
-    public MuridKelas getByMurid(Murid murid) {
-        MuridKelas muridKelas = muridKelasDb.findByMurid(murid).get();
+    public List<MuridKelas> getByMuridAndKelas(Murid murid, Kelas kelas) {
+        List<MuridKelas> muridKelas = muridKelasDb.findAllByMuridAndKelas(murid, kelas);
         if (muridKelas == null)
             throw new NoSuchElementException("Murid Kelas with murid " + murid + " not found");
         return muridKelas;
@@ -61,11 +61,11 @@ public class MuridKelasServiceImpl implements MuridKelasService {
     }
 
     @Override
-    public List<MuridKelas> getListMurid(List<Integer> listMurid) {
+    public List<MuridKelas> getListMurid(List<Integer> listMurid, Kelas kelas) {
         List<MuridKelas> muridKelas = new ArrayList<>();
         for (int idMurid : listMurid) {
-            MuridKelas muridKelasTemp = getByMurid(muridService.getById(idMurid));
-            muridKelas.add(muridKelasTemp);
+            List<MuridKelas> muridKelasTemp = getByMuridAndKelas(muridService.getById(idMurid), kelas);
+            muridKelas.addAll(muridKelasTemp);
         }
         return muridKelas;
     }
