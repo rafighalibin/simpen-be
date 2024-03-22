@@ -13,9 +13,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.nakahama.simpenbackend.Auth.service.AuthService;
 import com.nakahama.simpenbackend.User.dto.User.AddUserRequestDTO;
-import com.nakahama.simpenbackend.User.dto.User.EditDataPengajarRequestDTO;
+import com.nakahama.simpenbackend.User.dto.User.EditDataUserRequestDTO;
 import com.nakahama.simpenbackend.User.dto.User.EditUserRequestDTO;
 import com.nakahama.simpenbackend.User.dto.User.UserWithTagsResponseDTO;
+import com.nakahama.simpenbackend.User.model.Akademik;
+import com.nakahama.simpenbackend.User.model.Operasional;
 import com.nakahama.simpenbackend.User.model.Pengajar;
 import com.nakahama.simpenbackend.User.model.UserModel;
 import com.nakahama.simpenbackend.User.repository.UserDb;
@@ -92,11 +94,21 @@ public class UserController {
     }
 
     @PutMapping("")
-    public ResponseEntity<Object> editDataPengajar(@RequestBody EditDataPengajarRequestDTO pengajarRequestDTO,
+    public ResponseEntity<Object> editDataUser(@RequestBody EditDataUserRequestDTO userRequestDTO,
             HttpServletRequest request) {
-        authService.checkOwnership(request, pengajarRequestDTO.getId());
-        Pengajar pengajar = userService.editDataPengajar(pengajarRequestDTO);
-        return ResponseUtil.okResponse(pengajar,
-                "User berhasil diupdate");
+        authService.checkOwnership(request, userRequestDTO.getId());
+        if(userRequestDTO.getRole().equals("pengajar")) {
+            Pengajar pengajar = userService.editDataPengajar(userRequestDTO);
+            return ResponseUtil.okResponse(pengajar,
+                    "User berhasil diupdate");
+        }else if(userRequestDTO.getRole().equals("operasional")) {
+            Operasional operasional = userService.editDataOperasional(userRequestDTO);
+            return ResponseUtil.okResponse(operasional,
+                    "User berhasil diupdate");
+        }else {
+            Akademik akademik = userService.editDataAkademik(userRequestDTO);
+            return ResponseUtil.okResponse(akademik,
+                    "User berhasil diupdate");
+        }
     }
 }

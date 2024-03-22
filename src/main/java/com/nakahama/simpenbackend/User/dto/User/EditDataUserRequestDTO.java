@@ -13,11 +13,13 @@ import lombok.Setter;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class EditDataPengajarRequestDTO {
+public class EditDataUserRequestDTO {
     UUID id;
+    String role;
     String alamatKTP;
     String nama;
     String domisiliKota;
+    String password;
     String emailPribadi;
     String fotoDiri;
     String email;
