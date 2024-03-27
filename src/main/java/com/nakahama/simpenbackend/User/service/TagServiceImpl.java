@@ -75,6 +75,11 @@ public class TagServiceImpl implements TagService {
             throw new BadRequestException("User with id " + assignTagRequestDTO.getId() + " is not a pengajar");
         }
         Pengajar pengajar = (Pengajar) user;
+        for(Tag tag : pengajar.getListTag()){
+            setUnassignJumlahPengajar(tag);
+        }
+        pengajar.getListTag().clear();
+        
         for (Long id : assignTagRequestDTO.getListIdTag()) {
             Tag tag = getTagById(id);
 
