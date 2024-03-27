@@ -1,8 +1,9 @@
 package com.nakahama.simpenbackend.User.dto.Tag;
 
 import java.util.List;
+import java.util.UUID;
 
-import com.nakahama.simpenbackend.User.dto.User.UserDTO;
+import com.nakahama.simpenbackend.User.dto.User.tagDTO;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -14,10 +15,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class AssignedTagResponse {
-    private Long tag_id;
+    private UUID idPengajar;
 
-    private String nama_tag;
+    private String namaPengajar;
 
-    private List<UserDTO> listUser;
+    private List<tagDTO> listTag;
 
 }

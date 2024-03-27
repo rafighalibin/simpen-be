@@ -3,15 +3,16 @@ package com.nakahama.simpenbackend.User.service;
 import java.util.ArrayList;
 import java.util.List;
 
-import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.nakahama.simpenbackend.User.dto.Tag.AssignTagRequestDTO;
 import com.nakahama.simpenbackend.User.dto.Tag.CreateTagRequest;
+import com.nakahama.simpenbackend.User.dto.Tag.UpdateTagRequest;
 import com.nakahama.simpenbackend.User.model.Pengajar;
 import com.nakahama.simpenbackend.User.model.Tag;
 import com.nakahama.simpenbackend.User.model.UserModel;
+import com.nakahama.simpenbackend.User.repository.PengajarDb;
 import com.nakahama.simpenbackend.User.repository.TagDb;
 import com.nakahama.simpenbackend.exception.BadRequestException;
 
@@ -19,6 +20,9 @@ import com.nakahama.simpenbackend.exception.BadRequestException;
 public class TagServiceImpl implements TagService {
     @Autowired
     TagDb tagDb;
+
+    @Autowired
+    PengajarDb pengajarDb;
 
     @Autowired
     UserService userService;
@@ -29,7 +33,8 @@ public class TagServiceImpl implements TagService {
     }
 
     @Override
-    public void deleteTag(Tag tag) {
+    public void deleteTag(Long id) {
+        Tag tag = getTagById(id);
         tagDb.delete(tag);
     }
 
@@ -44,21 +49,16 @@ public class TagServiceImpl implements TagService {
     }
 
     @Override
-    public Tag updateTag(Tag tagRequest) {
+    public Tag updateTag(UpdateTagRequest tagRequest) {
         Tag tag = getTagById(tagRequest.getId());
         if (tag != null) {
-            // tag.setNama(tagRequest.getNama());
-            tag.setListPengajar(tagRequest.getListPengajar());
-            tag.setJumlahPengajar(tagRequest.getListPengajar().size());
+            tag.setNama(tagRequest.getNama());
         }
         return tagDb.save(tag);
     }
 
     @Override
     public Tag createTag(CreateTagRequest tagRequest) {
-        // if (isNamaExist(tagRequest.getNama())) {
-        //     throw new BadRequestException("Tag with name " + tagRequest.getNama() + " already exists");
-        // }
 
         Tag tag = new Tag();
         tag.setNama(tagRequest.getNama());
@@ -69,43 +69,62 @@ public class TagServiceImpl implements TagService {
     }
 
     @Override
-    public Tag assignTag(AssignTagRequestDTO assignTagRequestDTO) {
-        // TODO: ini UserModel diganti Pengajar
-        Tag tag = getTagById(assignTagRequestDTO.getId());
-        for (UUID id : assignTagRequestDTO.getListIdPengajar()) {
-            UserModel user = userService.getUserById(id);
-            if (!(user instanceof Pengajar)) {
-                throw new BadRequestException("User with id " + id + " is not a pengajar");
-            }
-
-            if (tag.getListPengajar().contains(user)) {
-                throw new BadRequestException(
-                        "User with id " + id + " is already assigned to tag with id " + tag.getId());
-            }
-            tag.getListPengajar().add((Pengajar) user);
-            tag.setJumlahPengajar(tag.getListPengajar().size());
+    public Pengajar assignTag(AssignTagRequestDTO assignTagRequestDTO) {
+        UserModel user = userService.getUserById(assignTagRequestDTO.getId());
+        if (!(user instanceof Pengajar)) {
+            throw new BadRequestException("User with id " + assignTagRequestDTO.getId() + " is not a pengajar");
         }
-        return tagDb.save(tag);
+        Pengajar pengajar = (Pengajar) user;
+        for(Tag tag : pengajar.getListTag()){
+            setUnassignJumlahPengajar(tag);
+        }
+        pengajar.getListTag().clear();
+        
+        for (Long id : assignTagRequestDTO.getListIdTag()) {
+            Tag tag = getTagById(id);
+
+            if (pengajar.getListTag().contains(tag)) {
+                continue;
+            }
+            pengajar.getListTag().add(tag);
+           setAssignJumlahPengajar(tag);
+        }
+        return pengajarDb.save(pengajar);
     }
 
     @Override
-    public Tag unassignTag(AssignTagRequestDTO tagRequestDTO) {
-        // TODO: ini UserModel diganti Pengajar
+    public Tag setAssignJumlahPengajar(Tag tag) {
+        int jumlahPengajar = tag.getJumlahPengajar();
+        jumlahPengajar++;
+        tag.setJumlahPengajar(jumlahPengajar);
+        return tagDb.save(tag);
+    }
+    
+    @Override
+    public Pengajar unassignTag(AssignTagRequestDTO tagRequestDTO) {
+    UserModel user = userService.getUserById(tagRequestDTO.getId());
+    if (!(user instanceof Pengajar)) {
+        throw new BadRequestException("User with id " + tagRequestDTO.getId() + " is not a pengajar");
+    }
+    Pengajar pengajar = (Pengajar) user;
+    for (Long id : tagRequestDTO.getListIdTag()) {
+        Tag tag = getTagById(id);
 
-        Tag tag = getTagById(tagRequestDTO.getId());
-        for (UUID id : tagRequestDTO.getListIdPengajar()) {
-            UserModel user = userService.getUserById(id);
-            if (!(user instanceof Pengajar)) {
-                throw new BadRequestException("User with id " + id + " is not a pengajar");
-            }
-
-            if (!tag.getListPengajar().contains(user)) {
-                throw new BadRequestException(
-                        "User with id " + id + " is not assigned to tag with id " + tag.getId());
-            }
-            tag.getListPengajar().remove(user);
+        if (!pengajar.getListTag().contains(tag)) {
+            throw new BadRequestException(
+                    "User with id " + tagRequestDTO.getId() + " is not assigned to tag with id " + tag.getId());
         }
-        tag.setJumlahPengajar(tag.getListPengajar().size());
+        pengajar.getListTag().remove(tag);
+        setUnassignJumlahPengajar(tag);
+    }
+    return pengajarDb.save(pengajar);
+
+    }
+    @Override
+    public Tag setUnassignJumlahPengajar(Tag tag) {
+        int jumlahPengajar = tag.getJumlahPengajar();
+        jumlahPengajar--;
+        tag.setJumlahPengajar(jumlahPengajar);
         return tagDb.save(tag);
     }
 

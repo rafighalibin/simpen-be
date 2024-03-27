@@ -13,9 +13,11 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.nakahama.simpenbackend.User.dto.Tag.ReadTagResponseDTO;
-import com.nakahama.simpenbackend.User.dto.User.EditDataPengajarRequestDTO;
+import com.nakahama.simpenbackend.User.dto.User.EditDataUserRequestDTO;
 import com.nakahama.simpenbackend.User.dto.User.EditUserRequestDTO;
 import com.nakahama.simpenbackend.User.dto.User.UserWithTagsResponseDTO;
+import com.nakahama.simpenbackend.User.dto.User.mapper.AkademikMapper;
+import com.nakahama.simpenbackend.User.dto.User.mapper.OperasionalMapper;
 import com.nakahama.simpenbackend.User.dto.User.mapper.PengajarMapper;
 import com.nakahama.simpenbackend.User.model.Akademik;
 import com.nakahama.simpenbackend.User.model.Operasional;
@@ -196,15 +198,27 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Pengajar editDataPengajar(EditDataPengajarRequestDTO pengajarRequestDTO) {
-        Pengajar pengajar = pengajarDb.findById(pengajarRequestDTO.getId())
-                .orElseThrow(
-                        () -> new BadRequestException("Pengajar with id " + pengajarRequestDTO.getId() + " not found"));
-
+    public Pengajar editDataPengajar(EditDataUserRequestDTO pengajarRequestDTO) {
+        Pengajar pengajar = pengajarDb.findById(pengajarRequestDTO.getId()).orElseThrow(() -> new BadRequestException("Pengajar with id " + pengajarRequestDTO.getId() + " not found"));
         pengajar = PengajarMapper.toEntity(pengajarRequestDTO, pengajar);
-
         pengajarDb.save(pengajar);
         return pengajar;
+    }
+
+    @Override
+    public Operasional editDataOperasional(EditDataUserRequestDTO operasionalRequestDTO) {
+        Operasional operasional = operasionalDb.findById(operasionalRequestDTO.getId()).orElseThrow(() -> new BadRequestException("Operasional with id " + operasionalRequestDTO.getId() + " not found"));
+        operasional = OperasionalMapper.toEntity(operasionalRequestDTO, operasional);
+        operasionalDb.save(operasional);
+        return operasional;
+    }
+
+    @Override
+    public Akademik editDataAkademik(EditDataUserRequestDTO akademikRequestDTO) {
+        Akademik akademik = akademikDb.findById(akademikRequestDTO.getId()).orElseThrow(() -> new BadRequestException("Akademik with id " + akademikRequestDTO.getId() + " not found"));
+        akademik = AkademikMapper.toEntity(akademikRequestDTO, akademik);
+        akademikDb.save(akademik);
+        return akademik;
     }
 
     @Override
