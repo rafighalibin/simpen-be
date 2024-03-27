@@ -26,6 +26,9 @@ public class SesiKelas {
     private UUID Id = UUID.randomUUID();
 
     @NotNull
+    private Integer nomorPertemuan;
+
+    @NotNull
     @ManyToOne(cascade = { CascadeType.ALL })
     @JsonIgnore
     private Pengajar pengajar; // need to change after Pengajar model is created

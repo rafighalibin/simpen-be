@@ -19,7 +19,7 @@ public class SesiKelasMapper {
         List<ReadDetailSesiKelas> response = new ArrayList<>();
         for (SesiKelas sesiKelas : request) {
             ReadDetailSesiKelas detailSesiKelas = toReadDetailDto(sesiKelas);
-            detailSesiKelas.setNoSesi(response.size() + 1);
+            detailSesiKelas.setNomorPertemuan(sesiKelas.getNomorPertemuan());
             response.add(detailSesiKelas);
         }
         return response;

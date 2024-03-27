@@ -112,6 +112,7 @@ public class SesiKelasServiceImpl implements SesiKelasService {
     public List<SesiKelas> createListSesiKelas(List<LocalDateTime> jadwalKelas, Kelas createdKelas, Pengajar pengajar,
             List<MuridKelas> listMurid, String platform) {
         List<SesiKelas> listSesiKelas = new ArrayList<>();
+        int nomorPertemuan = 1;
         for (LocalDateTime e : jadwalKelas) {
             SesiKelas sesiKelas = new SesiKelas();
 
@@ -120,12 +121,14 @@ public class SesiKelasServiceImpl implements SesiKelasService {
             sesiKelas.setPlatform(platform);
             sesiKelas.setWaktuPelaksanaan(e);
             sesiKelas.setStatus("Scheduled");
+            sesiKelas.setNomorPertemuan(nomorPertemuan);
             save(sesiKelas);
             listSesiKelas.add(sesiKelas);
 
             sesiKelas.setListMuridSesi(muridSesiService.createListMuridSesi(listMurid, sesiKelas));
             save(sesiKelas);
 
+            nomorPertemuan++;
         }
         return listSesiKelas;
     }
