@@ -13,9 +13,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 public class AssignTagRequestDTO {
-    @NotNull(message = "Id Tag required")
-    private Long id;
-
-    @NotEmpty(message = "List id pengajar required")
-    private List<UUID> listIdPengajar;
+    @NotNull(message = "Id Pengajar required")
+    private UUID id;
+    
+    private List<Long> listIdTag;
 }

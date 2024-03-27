@@ -1,8 +1,10 @@
 package com.nakahama.simpenbackend.User.service;
 
-import com.nakahama.simpenbackend.User.dto.User.EditDataPengajarRequestDTO;
+import com.nakahama.simpenbackend.User.dto.User.EditDataUserRequestDTO;
 import com.nakahama.simpenbackend.User.dto.User.EditUserRequestDTO;
 import com.nakahama.simpenbackend.User.dto.User.UserWithTagsResponseDTO;
+import com.nakahama.simpenbackend.User.model.Akademik;
+import com.nakahama.simpenbackend.User.model.Operasional;
 import com.nakahama.simpenbackend.User.model.Pengajar;
 import com.nakahama.simpenbackend.User.model.UserModel;
 import java.util.List;
@@ -31,7 +33,11 @@ public interface UserService {
 
     public UserModel updateUser(EditUserRequestDTO editUserRequestDTO);
 
-    public Pengajar editDataPengajar(EditDataPengajarRequestDTO pengajarRequestDTO);
+    public Pengajar editDataPengajar(EditDataUserRequestDTO pengajarRequestDTO);
+
+    public Operasional editDataOperasional(EditDataUserRequestDTO operasionalRequestDTO);
+
+    public Akademik editDataAkademik(EditDataUserRequestDTO akademikRequestDTO);
 
     public UserWithTagsResponseDTO getUserAndTag(UUID id);
 

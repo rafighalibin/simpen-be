@@ -4,6 +4,8 @@ import java.util.List;
 
 import com.nakahama.simpenbackend.User.dto.Tag.AssignTagRequestDTO;
 import com.nakahama.simpenbackend.User.dto.Tag.CreateTagRequest;
+import com.nakahama.simpenbackend.User.dto.Tag.UpdateTagRequest;
+import com.nakahama.simpenbackend.User.model.Pengajar;
 import com.nakahama.simpenbackend.User.model.Tag;
 
 public interface TagService {
@@ -11,16 +13,20 @@ public interface TagService {
 
     List<Tag> getAllTag();
 
-    void deleteTag(Tag tag);
+    void deleteTag(Long id);
 
     boolean isNamaExist(String nama);
 
     Tag getTagById(long id);
 
-    Tag updateTag(Tag tag);
+    Tag updateTag(UpdateTagRequest tag);
 
-    Tag assignTag(AssignTagRequestDTO assignTagRequestDTO);
+    Pengajar assignTag(AssignTagRequestDTO assignTagRequestDTO);
 
-    Tag unassignTag(AssignTagRequestDTO unassignTagRequestDTO);
+    Pengajar unassignTag(AssignTagRequestDTO unassignTagRequestDTO);
+
+    Tag setAssignJumlahPengajar(Tag tag);
+
+    Tag setUnassignJumlahPengajar(Tag tag);
 
 }
