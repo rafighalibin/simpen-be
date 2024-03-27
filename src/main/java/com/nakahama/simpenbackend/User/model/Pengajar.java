@@ -87,8 +87,8 @@ public class Pengajar extends UserModel {
     @Column(name = "no_telp_darurat")
     private String noTelpDarurat;
 
-    @ManyToMany(mappedBy = "listPengajar", fetch = FetchType.LAZY, cascade = { CascadeType.ALL })
-    @JsonIgnore
+    @ManyToMany(fetch = FetchType.LAZY, cascade = { CascadeType.ALL })
+    @JoinTable(name = "pengajar_tag", joinColumns = @JoinColumn(name = "idPengajar"), inverseJoinColumns = @JoinColumn(name = "id"))
     private List<Tag> listTag;
 
     @OneToMany(cascade = { CascadeType.ALL })
