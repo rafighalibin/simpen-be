@@ -45,4 +45,7 @@ public class UpdateKelas {
 
     @NotBlank(message = "Platform is mandatory")
     private String platform; // need to delete after platform model created (sprint 2)
+
+    private String linkPlaylist;
+
 }

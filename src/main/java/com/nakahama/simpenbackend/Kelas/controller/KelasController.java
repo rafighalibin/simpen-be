@@ -11,6 +11,7 @@ import java.util.*;
 import com.nakahama.simpenbackend.Kelas.model.*;
 import com.nakahama.simpenbackend.User.service.UserService;
 import com.nakahama.simpenbackend.Auth.service.AuthService;
+import com.nakahama.simpenbackend.Kelas.dto.Kelas.AddPlaylist;
 import com.nakahama.simpenbackend.Kelas.dto.Kelas.CreateKelas;
 import com.nakahama.simpenbackend.Kelas.dto.Kelas.KelasMapper;
 import com.nakahama.simpenbackend.Kelas.dto.Kelas.ReadKelas;
@@ -101,6 +102,15 @@ public class KelasController {
         return ResponseUtil.okResponse(KelasMapper.toDetailDto(updatedKelas, updatedKelas.getListsesiKelas(),
                 userService.getUserById(updatedKelas.getPengajar().getId()), updatedKelas.getMuridKelas()),
                 "Kelas dengan id " + updatedKelas.getKelasId() + " berhasil diupdate");
+    }
+
+    @PostMapping("/kelas/playlist/{kelasId}")
+    public ResponseEntity<Object> addPlaylist(@PathVariable int kelasId, @Valid @RequestBody AddPlaylist linkPlaylist) {
+
+        Kelas updatedKelas = kelasService.addPlaylist(kelasId, linkPlaylist.getLinkPlaylist());
+        return ResponseUtil.okResponse(KelasMapper.toDetailDto(updatedKelas, updatedKelas.getListsesiKelas(),
+                userService.getUserById(updatedKelas.getPengajar().getId()), updatedKelas.getMuridKelas()),
+                "Success");
     }
 
     @DeleteMapping("/kelas/{kelasId}")
