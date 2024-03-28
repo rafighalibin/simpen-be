@@ -30,4 +30,8 @@ public class ReadDetailSesiKelas {
 
     private List<ReadMuridSesi> listMuridSesi;
 
+    private double persentaseKehadiran;
+
+    private double averageRating;
+
 }

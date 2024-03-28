@@ -139,6 +139,10 @@ public class SesiKelasServiceImpl implements SesiKelasService {
         List<MuridSesi> muridSesi = sesiKelas.getListMuridSesi();
         if (muridSesi.size() != updateAbsensiMurid.size())
             throw new NoSuchElementException("MuridSesi and UpdateAbsensiMurid size not match");
+
+        double totalRating = 0;
+        double attendance = 0;
+
         for (int i = 0; i < muridSesi.size(); i++) {
             MuridSesi muridSesiToUpdate = muridSesi.get(i);
             muridSesiToUpdate.setIsPresent(updateAbsensiMurid.get(i).getIsPresent() == null ? false
@@ -147,6 +151,19 @@ public class SesiKelasServiceImpl implements SesiKelasService {
                     : updateAbsensiMurid.get(i).getRating());
             muridSesiToUpdate.setKomentar(updateAbsensiMurid.get(i).getKomentar());
             muridSesiService.save(muridSesiToUpdate);
+
+            if (muridSesiToUpdate.getIsPresent() != null && muridSesiToUpdate.getIsPresent()) {
+                attendance++;
+                totalRating += muridSesiToUpdate.getRating();
+            }
+        }
+
+        if (attendance != 0) {
+            sesiKelas.setAverageRating(totalRating / attendance);
+            sesiKelas.setPersentaseKehadiran((attendance / sesiKelas.getListMuridSesi().size()) * 100);
+        } else {
+            sesiKelas.setAverageRating(0);
+            sesiKelas.setPersentaseKehadiran(0);
         }
         save(sesiKelas);
     }
