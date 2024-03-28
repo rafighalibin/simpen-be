@@ -108,4 +108,11 @@ public class KelasServiceImpl implements KelasService {
         return kelasDb.save(KelasMapper.toEntity(kelasRequest, updatedKelas, pengajar, listMurid));
     }
 
+    @Override
+    public Kelas addPlaylist(int kelasId, String linkPlaylist) {
+        Kelas kelas = getById(kelasId);
+        kelas.setLinkPlaylist(linkPlaylist);
+        return kelasDb.save(kelas);
+    }
+
 }
