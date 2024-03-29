@@ -26,6 +26,9 @@ public class SesiKelas {
     private UUID Id = UUID.randomUUID();
 
     @NotNull
+    private Integer nomorPertemuan;
+
+    @NotNull
     @ManyToOne(cascade = { CascadeType.ALL })
     @JsonIgnore
     private Pengajar pengajar; // need to change after Pengajar model is created
@@ -51,5 +54,9 @@ public class SesiKelas {
     @OneToMany(mappedBy = "sesiKelas", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JsonIgnore
     private List<MuridSesi> listMuridSesi;
+
+    private double persentaseKehadiran;
+
+    private double averageRating;
 
 }

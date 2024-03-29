@@ -20,4 +20,6 @@ public interface KelasService {
     public Kelas update(UpdateKelas kelasRequest);
 
     public List<Kelas> getAllKelasPengajar(UserModel userModel);
+
+    public Kelas addPlaylist(int kelasId, String linkPlaylist);
 }
