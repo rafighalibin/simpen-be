@@ -19,9 +19,9 @@ public class SesiKelasMapper {
         List<ReadDetailSesiKelas> response = new ArrayList<>();
         for (SesiKelas sesiKelas : request) {
             ReadDetailSesiKelas detailSesiKelas = toReadDetailDto(sesiKelas);
-            detailSesiKelas.setNomorPertemuan(sesiKelas.getNomorPertemuan());
             response.add(detailSesiKelas);
         }
+        response.sort(Comparator.comparing(ReadDetailSesiKelas::getNomorPertemuan));
         return response;
     }
 
@@ -31,6 +31,9 @@ public class SesiKelasMapper {
         response.setStatus(sesiKelas.getStatus());
         response.setWaktuPelaksanaan(sesiKelas.getWaktuPelaksanaan());
         response.setListMuridSesi(MuridMapper.toListReadMuridSesi(sesiKelas.getListMuridSesi()));
+        response.setNomorPertemuan(sesiKelas.getNomorPertemuan());
+        response.setAverageRating(sesiKelas.getAverageRating());
+        response.setPersentaseKehadiran(sesiKelas.getPersentaseKehadiran());
 
         return response;
     }

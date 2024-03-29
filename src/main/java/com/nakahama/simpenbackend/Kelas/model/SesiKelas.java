@@ -55,4 +55,8 @@ public class SesiKelas {
     @JsonIgnore
     private List<MuridSesi> listMuridSesi;
 
+    private double persentaseKehadiran;
+
+    private double averageRating;
+
 }
