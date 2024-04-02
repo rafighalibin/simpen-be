@@ -83,9 +83,7 @@ public class KelasMapper {
         response.setJenisKelasName(createdKelas.getJenisKelas().getNama());
         response.setJenisKelasId(createdKelas.getJenisKelas().getId());
         response.setListSesi(new ArrayList<SesiKelasDTO>());
-        for (SesiKelas sesiKelas : listSesiKelas) {
-            response.getListSesi().add(SesiKelasMapper.toDto(sesiKelas));
-        }
+        response.setListSesi(SesiKelasMapper.toListDto(listSesiKelas));
         response.setNamaPengajar(pengajar.getNama());
         response.setTanggalMulai(createdKelas.getTanggalMulai());
         response.setTanggalSelesai(createdKelas.getTanggalSelesai());
@@ -94,6 +92,7 @@ public class KelasMapper {
         response.setLinkPlaylist(createdKelas.getLinkPlaylist());
         response.setListMurid(MuridMapper.toListMuridKelas(listMurid));
         response.setLevel(createdKelas.getLevel());
+        response.setStatus(createdKelas.getStatus());
         // TODO: IMPLEMENT AVERAGE RATING
         // TODO: IMPLEMENT PLATFORM
         response.setPlatform("TODO: IMPLEMENT PLATFORM");
