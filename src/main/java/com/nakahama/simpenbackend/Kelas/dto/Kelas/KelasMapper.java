@@ -67,6 +67,7 @@ public class KelasMapper {
         response.setTanggalSelesai(request.getTanggalSelesai());
         response.setPengajar(pengajar);
         response.setLinkGroup(request.getLinkGroup());
+        response.setLinkPlaylist(request.getLinkPlaylist());
         response.setMuridKelas(listMurid);
         response.setJumlahMurid(request.getListMurid().size());
         response.setLevel(request.getLevel());
@@ -90,6 +91,7 @@ public class KelasMapper {
         response.setTanggalSelesai(createdKelas.getTanggalSelesai());
         response.setPengajarId(createdKelas.getPengajar().getId());
         response.setLinkGroup(createdKelas.getLinkGroup());
+        response.setLinkPlaylist(createdKelas.getLinkPlaylist());
         response.setListMurid(MuridMapper.toListMuridKelas(listMurid));
         response.setLevel(createdKelas.getLevel());
         // TODO: IMPLEMENT AVERAGE RATING

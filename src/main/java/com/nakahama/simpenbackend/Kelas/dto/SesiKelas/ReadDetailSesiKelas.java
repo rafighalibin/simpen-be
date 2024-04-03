@@ -19,7 +19,7 @@ import lombok.Setter;
 @Setter
 public class ReadDetailSesiKelas {
 
-    private int noSesi;
+    private int nomorPertemuan;
 
     private UUID sesi_id;
 
@@ -29,5 +29,9 @@ public class ReadDetailSesiKelas {
     private LocalDateTime waktuPelaksanaan;
 
     private List<ReadMuridSesi> listMuridSesi;
+
+    private double persentaseKehadiran;
+
+    private double averageRating;
 
 }

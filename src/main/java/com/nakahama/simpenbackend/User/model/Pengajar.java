@@ -32,8 +32,8 @@ public class Pengajar extends UserModel {
     @Column(name = "domisili_kota")
     private String domisiliKota;
 
-    @Column(name = "foto_diri")
-    private byte[] fotoDiri;
+    @Column(name = "foto_diri", columnDefinition = "TEXT")
+    private String fotoDiri;
 
     @Size(max = 100)
     @Column(name = "backup_phone_num")
@@ -51,8 +51,8 @@ public class Pengajar extends UserModel {
     @Column(name = "nama_pemilik_rekening")
     private String namaPemilikRek;
 
-    @Column(name = "foto_buku_tabungan")
-    private byte[] fotoBukuTabungan;
+    @Column(name = "foto_buku_tabungan", columnDefinition = "TEXT")
+    private String fotoBukuTabungan;
 
     @Size(max = 100)
     @Column(name = "pendidikan_terkahir")
@@ -69,15 +69,15 @@ public class Pengajar extends UserModel {
     @Column(name = "nik")
     private String nik;
 
-    @Column(name = "foto_ktp")
-    private byte[] fotoKtp;
+    @Column(name = "foto_ktp", columnDefinition = "TEXT")
+    private String fotoKtp;
 
     @Size(max = 100)
     @Column(name = "npwp")
     private String npwp;
 
-    @Column(name = "foto_npwp")
-    private byte[] fotoNpwp;
+    @Column(name = "foto_npwp", columnDefinition = "TEXT")
+    private String fotoNpwp;
 
     @Size(max = 100)
     @Column(name = "nama_kontak_darurat")
@@ -87,8 +87,8 @@ public class Pengajar extends UserModel {
     @Column(name = "no_telp_darurat")
     private String noTelpDarurat;
 
-    @ManyToMany(mappedBy = "listPengajar", fetch = FetchType.LAZY, cascade = { CascadeType.ALL })
-    @JsonIgnore
+    @ManyToMany(fetch = FetchType.LAZY, cascade = { CascadeType.ALL })
+    @JoinTable(name = "pengajar_tag", joinColumns = @JoinColumn(name = "idPengajar"), inverseJoinColumns = @JoinColumn(name = "id"))
     private List<Tag> listTag;
 
     @OneToMany(cascade = { CascadeType.ALL })

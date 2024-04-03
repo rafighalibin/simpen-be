@@ -37,6 +37,8 @@ public class ReadDetailKelas {
 
     private String linkGroup;
 
+    private String linkPlaylist;
+
     private List<ReadMurid> listMurid;
 
     private int level;

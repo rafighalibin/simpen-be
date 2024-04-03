@@ -112,6 +112,7 @@ public class SesiKelasServiceImpl implements SesiKelasService {
     public List<SesiKelas> createListSesiKelas(List<LocalDateTime> jadwalKelas, Kelas createdKelas, Pengajar pengajar,
             List<MuridKelas> listMurid, String platform) {
         List<SesiKelas> listSesiKelas = new ArrayList<>();
+        int nomorPertemuan = 1;
         for (LocalDateTime e : jadwalKelas) {
             SesiKelas sesiKelas = new SesiKelas();
 
@@ -120,12 +121,14 @@ public class SesiKelasServiceImpl implements SesiKelasService {
             sesiKelas.setPlatform(platform);
             sesiKelas.setWaktuPelaksanaan(e);
             sesiKelas.setStatus("Scheduled");
+            sesiKelas.setNomorPertemuan(nomorPertemuan);
             save(sesiKelas);
             listSesiKelas.add(sesiKelas);
 
             sesiKelas.setListMuridSesi(muridSesiService.createListMuridSesi(listMurid, sesiKelas));
             save(sesiKelas);
 
+            nomorPertemuan++;
         }
         return listSesiKelas;
     }
@@ -136,6 +139,10 @@ public class SesiKelasServiceImpl implements SesiKelasService {
         List<MuridSesi> muridSesi = sesiKelas.getListMuridSesi();
         if (muridSesi.size() != updateAbsensiMurid.size())
             throw new NoSuchElementException("MuridSesi and UpdateAbsensiMurid size not match");
+
+        double totalRating = 0;
+        double attendance = 0;
+
         for (int i = 0; i < muridSesi.size(); i++) {
             MuridSesi muridSesiToUpdate = muridSesi.get(i);
             muridSesiToUpdate.setIsPresent(updateAbsensiMurid.get(i).getIsPresent() == null ? false
@@ -144,6 +151,19 @@ public class SesiKelasServiceImpl implements SesiKelasService {
                     : updateAbsensiMurid.get(i).getRating());
             muridSesiToUpdate.setKomentar(updateAbsensiMurid.get(i).getKomentar());
             muridSesiService.save(muridSesiToUpdate);
+
+            if (muridSesiToUpdate.getIsPresent() != null && muridSesiToUpdate.getIsPresent()) {
+                attendance++;
+                totalRating += muridSesiToUpdate.getRating();
+            }
+        }
+
+        if (attendance != 0) {
+            sesiKelas.setAverageRating(totalRating / attendance);
+            sesiKelas.setPersentaseKehadiran((attendance / sesiKelas.getListMuridSesi().size()) * 100);
+        } else {
+            sesiKelas.setAverageRating(0);
+            sesiKelas.setPersentaseKehadiran(0);
         }
         save(sesiKelas);
     }
