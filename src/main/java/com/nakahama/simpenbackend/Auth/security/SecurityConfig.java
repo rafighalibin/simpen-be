@@ -48,8 +48,8 @@ public class SecurityConfig {
                     auth.requestMatchers(HttpMethod.DELETE, "tag/assign").hasAnyAuthority("operasional", "akademik");
 
                     // Kelas, Program
-                    auth.requestMatchers("kelas/jenis").hasAuthority("operasional");
-                    auth.requestMatchers("kelas/program").hasAuthority("operasional");
+                    auth.requestMatchers("kelas/jenis").hasAnyAuthority("operasional", "superadmin");
+                    auth.requestMatchers("kelas/program").hasAnyAuthority("operasional", "superadmin");
                     auth.requestMatchers(HttpMethod.POST, "kelas").hasAuthority("operasional");
                     auth.requestMatchers(HttpMethod.GET, "kelas").hasAnyAuthority("pengajar", "operasional",
                             "akademik");
