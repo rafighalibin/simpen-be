@@ -33,10 +33,10 @@ public class Pengajar extends UserModel {
     @Size(max = 100)
     @Column(name = "domisili_kota")
     private String domisiliKota;
-  
+
     @Column(name = "foto_diri", columnDefinition = "TEXT")
     private String fotoDiri;
-    
+
     @Size(max = 100)
     @Column(name = "backup_phone_num")
     private String backupPhoneNum;
@@ -70,7 +70,7 @@ public class Pengajar extends UserModel {
     @Size(max = 100)
     @Column(name = "nik")
     private String nik;
-   
+
     @Column(name = "foto_ktp", columnDefinition = "TEXT")
     private String fotoKtp;
 
