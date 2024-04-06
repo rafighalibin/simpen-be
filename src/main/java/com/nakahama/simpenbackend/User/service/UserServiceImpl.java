@@ -199,7 +199,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Pengajar editDataPengajar(EditDataUserRequestDTO pengajarRequestDTO) {
-        Pengajar pengajar = pengajarDb.findById(pengajarRequestDTO.getId()).orElseThrow(() -> new BadRequestException("Pengajar with id " + pengajarRequestDTO.getId() + " not found"));
+        Pengajar pengajar = pengajarDb.findById(pengajarRequestDTO.getId()).orElseThrow(
+                () -> new BadRequestException("Pengajar with id " + pengajarRequestDTO.getId() + " not found"));
         pengajar = PengajarMapper.toEntity(pengajarRequestDTO, pengajar);
         pengajarDb.save(pengajar);
         return pengajar;
@@ -207,7 +208,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Operasional editDataOperasional(EditDataUserRequestDTO operasionalRequestDTO) {
-        Operasional operasional = operasionalDb.findById(operasionalRequestDTO.getId()).orElseThrow(() -> new BadRequestException("Operasional with id " + operasionalRequestDTO.getId() + " not found"));
+        Operasional operasional = operasionalDb.findById(operasionalRequestDTO.getId()).orElseThrow(
+                () -> new BadRequestException("Operasional with id " + operasionalRequestDTO.getId() + " not found"));
         operasional = OperasionalMapper.toEntity(operasionalRequestDTO, operasional);
         operasionalDb.save(operasional);
         return operasional;
@@ -215,7 +217,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Akademik editDataAkademik(EditDataUserRequestDTO akademikRequestDTO) {
-        Akademik akademik = akademikDb.findById(akademikRequestDTO.getId()).orElseThrow(() -> new BadRequestException("Akademik with id " + akademikRequestDTO.getId() + " not found"));
+        Akademik akademik = akademikDb.findById(akademikRequestDTO.getId()).orElseThrow(
+                () -> new BadRequestException("Akademik with id " + akademikRequestDTO.getId() + " not found"));
         akademik = AkademikMapper.toEntity(akademikRequestDTO, akademik);
         akademikDb.save(akademik);
         return akademik;
@@ -244,6 +247,7 @@ public class UserServiceImpl implements UserService {
         response.setEmailPribadi(user.getEmailPribadi());
         response.setJenisKelamin(user.getJenisKelamin());
         response.setRole(user.getRole());
+        response.setNoTelp(user.getNoTelp());
 
         return response;
     }
