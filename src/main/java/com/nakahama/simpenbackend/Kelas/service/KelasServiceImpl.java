@@ -72,7 +72,7 @@ public class KelasServiceImpl implements KelasService {
     }
 
     private int generateKelasId() {
-        List<Kelas> listKelas = kelasDb.findAll();
+        List<Kelas> listKelas = kelasDb.findAllIncludeDeleted();
         if (listKelas.isEmpty()) {
             return 1000;
         }
