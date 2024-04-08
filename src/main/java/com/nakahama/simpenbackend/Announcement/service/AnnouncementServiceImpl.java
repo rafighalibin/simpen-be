@@ -10,6 +10,7 @@ import com.nakahama.simpenbackend.Announcement.dto.CreateAnnouncementDTO;
 import com.nakahama.simpenbackend.Announcement.model.Announcement;
 import com.nakahama.simpenbackend.Announcement.repository.AnnouncementDb;
 import com.nakahama.simpenbackend.Auth.service.AuthService;
+import com.nakahama.simpenbackend.User.model.UserModel;
 import com.nakahama.simpenbackend.exception.BadRequestException;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -31,10 +32,11 @@ public class AnnouncementServiceImpl implements AnnouncementService {
     @Override
     @Deprecated
     public Announcement addAnnouncement(HttpServletRequest request, CreateAnnouncementDTO createAnnouncementDTO) {
-        String idPembuat = authService.getIdLoggedUser(request);
-        if (idPembuat != null) {
+        UserModel pembuat = authService.getLoggedUser(request);
+        if (pembuat != null) {
             Announcement announcement = new Announcement();
-            announcement.setIdPembuat(UUID.fromString(idPembuat));
+            announcement.setNamaPembuat(pembuat.getNama());
+            announcement.setRolePembuat(pembuat.getRole());
             announcement.setJudul(createAnnouncementDTO.getJudul());
             announcement.setIsi(createAnnouncementDTO.getIsi());
             announcementDb.save(announcement);
