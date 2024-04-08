@@ -20,5 +20,6 @@ public class UserWithTagsResponseDTO {
     private String emailPribadi;
     private String jenisKelamin;
     private String role;
+    private String noTelp;
     private List<ReadTagResponseDTO> tags = null;
 }

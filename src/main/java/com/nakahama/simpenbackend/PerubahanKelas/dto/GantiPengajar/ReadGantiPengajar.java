@@ -1,34 +1,31 @@
-package com.nakahama.simpenbackend.PerubahanKelas.dto;
+package com.nakahama.simpenbackend.PerubahanKelas.dto.GantiPengajar;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.time.LocalDateTime;
 import java.util.*;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import java.time.LocalDateTime;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
 @Getter
 @Setter
-public class ReadPermintaanPerubahan {
+public class ReadGantiPengajar {
 
-    private UUID permintaanId;
+    private UUID id;
 
-    private int kelasId;
+    private String namaPengajarPenggati = "";
 
-    private String namaPengajar;
+    private UUID idPengajarPengganti;
 
-    private UUID pengajarId;
+    private String alasan;
 
     private String status;
-
-    private String tipePermintaan;
 
     @JsonFormat(pattern = "MM-dd-yyyy HH:mm:ss")
     private LocalDateTime waktuPermintaan;

@@ -21,4 +21,7 @@ public interface KelasDb extends JpaRepository<Kelas, Integer> {
 
     @Query("FROM Kelas WHERE pengajar = :requestedPengajar AND isDeleted = false")
     List<Kelas> findAllByPengajar(@Param("requestedPengajar") Pengajar pengajar);
+
+    @Query("FROM Kelas")
+    List<Kelas> findAllIncludeDeleted();
 }
