@@ -1,5 +1,6 @@
 package com.nakahama.simpenbackend.Payroll.service;
 
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,6 +49,11 @@ public class AbsenPengajarServiceImpl implements AbsenPengajarService{
         absenPengajar.setKelas(sesiKelas.getKelas());
         sesiKelasService.updateStatus(sesiKelas);
         return absenPengajarDb.save(absenPengajar);
+    }
+
+    @Override
+    public List<AbsenPengajar> getAllAbsenPengajar() {
+        return absenPengajarDb.findAll();
     }
     
 }
