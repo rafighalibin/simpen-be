@@ -1,4 +1,4 @@
-package com.nakahama.simpenbackend.PerubahanKelas.dto.Reschedule;
+package com.nakahama.simpenbackend.PerubahanKelas.dto.GantiPengajar;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -12,7 +12,7 @@ import java.util.*;
 @Data
 @Getter
 @Setter
-public class ReadDetailReschedule {
+public class ReadDetailGantiPengajar {
 
-    private List<ReadRescheduleSesi> listSesiReschedule;
+    private List<ReadGantiPengajarSesi> listSesiGantiPengajar;
 }
