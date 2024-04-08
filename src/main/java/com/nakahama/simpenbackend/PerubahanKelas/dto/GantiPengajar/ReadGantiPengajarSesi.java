@@ -1,4 +1,4 @@
-package com.nakahama.simpenbackend.PerubahanKelas.dto.Reschedule;
+package com.nakahama.simpenbackend.PerubahanKelas.dto.GantiPengajar;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -14,15 +14,15 @@ import com.nakahama.simpenbackend.Kelas.dto.SesiKelas.SesiKelasDTO;
 @Data
 @Getter
 @Setter
-public class ReadRescheduleSesi {
+public class ReadGantiPengajarSesi {
 
     private SesiKelasDTO sesiKelas;
 
-    private ReadReschedule activeReschedule;
+    private ReadGantiPengajar activeGantiPengajar;
 
-    private String activeRescheduleDate = "";
+    private String activeGantiPengajarNamaPengajar = "";
 
-    private String activeRescheduleTime = "";
+    private String activeGantiPengajarIdPengajar = "";
 
-    private List<ReadReschedule> listReschedule;
+    private List<ReadGantiPengajar> listGantiPengajar;
 }
