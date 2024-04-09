@@ -6,8 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.sql.Date;
-import java.util.UUID;
+import java.time.LocalDateTime;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.SQLDelete;
@@ -25,8 +24,11 @@ public class Announcement {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "id_pembuat")
-    private UUID idPembuat;
+    @Column(name = "nama_pembuat")
+    private String namaPembuat;
+
+    @Column(name = "role_pembuat")
+    private String rolePembuat;
 
     @Column(name = "judul")
     private String judul;
@@ -36,7 +38,7 @@ public class Announcement {
 
     @CreationTimestamp
     @Column(name = "tanggal_pembuatan")
-    private Date tanggalPembuatan;
+    private LocalDateTime tanggalPembuatan;
 
     @Column(name = "is_deleted")
     private boolean isDeleted = false;

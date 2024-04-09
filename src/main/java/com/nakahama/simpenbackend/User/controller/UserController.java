@@ -97,15 +97,15 @@ public class UserController {
     public ResponseEntity<Object> editDataUser(@RequestBody EditDataUserRequestDTO userRequestDTO,
             HttpServletRequest request) {
         authService.checkOwnership(request, userRequestDTO.getId());
-        if(userRequestDTO.getRole().equals("pengajar")) {
+        if (userRequestDTO.getRole().equals("pengajar")) {
             Pengajar pengajar = userService.editDataPengajar(userRequestDTO);
             return ResponseUtil.okResponse(pengajar,
                     "User berhasil diupdate");
-        }else if(userRequestDTO.getRole().equals("operasional")) {
+        } else if (userRequestDTO.getRole().equals("operasional")) {
             Operasional operasional = userService.editDataOperasional(userRequestDTO);
             return ResponseUtil.okResponse(operasional,
                     "User berhasil diupdate");
-        }else {
+        } else {
             Akademik akademik = userService.editDataAkademik(userRequestDTO);
             return ResponseUtil.okResponse(akademik,
                     "User berhasil diupdate");
