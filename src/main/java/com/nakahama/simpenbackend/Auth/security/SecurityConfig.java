@@ -50,13 +50,13 @@ public class SecurityConfig {
                     // Kelas, Program
                     auth.requestMatchers("kelas/jenis").hasAnyAuthority("operasional", "superadmin");
                     auth.requestMatchers("kelas/program").hasAnyAuthority("operasional", "superadmin");
-                    auth.requestMatchers(HttpMethod.POST, "kelas").hasAuthority("operasional");
+                    auth.requestMatchers(HttpMethod.POST, "kelas").hasAnyAuthority("operasional", "superadmin");
                     auth.requestMatchers(HttpMethod.GET, "kelas").hasAnyAuthority("pengajar", "operasional",
-                            "akademik");
+                            "akademik", "superadmin");
                     auth.requestMatchers(HttpMethod.GET, "kelas/**").hasAnyAuthority("pengajar", "operasional",
-                            "akademik");
-                    auth.requestMatchers(HttpMethod.PUT, "kelas/**").hasAuthority("operasional");
-                    auth.requestMatchers(HttpMethod.DELETE, "kelas/**").hasAuthority("operasional");
+                            "akademik", "superadmin");
+                    auth.requestMatchers(HttpMethod.PUT, "kelas/**").hasAnyAuthority("operasional", "superadmin");
+                    auth.requestMatchers(HttpMethod.DELETE, "kelas/**").hasAnyAuthority("operasional", "superadmin");
 
                     // TODO: set the appropriate authorities for the corresponding endpoints
                     auth.anyRequest().permitAll();

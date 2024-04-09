@@ -5,7 +5,6 @@ import java.util.*;
 import org.springframework.stereotype.Service;
 
 import com.nakahama.simpenbackend.Kelas.dto.Program.CreateProgram;
-import com.nakahama.simpenbackend.Kelas.dto.Program.DeleteProgram;
 import com.nakahama.simpenbackend.Kelas.dto.Program.ReadDistinctJenisKelasProgram;
 import com.nakahama.simpenbackend.Kelas.dto.Program.ReadProgram;
 import com.nakahama.simpenbackend.Kelas.dto.Program.UpdateProgram;
@@ -20,7 +19,7 @@ public interface ProgramService {
 
     public Program getById(UUID id);
 
-    public void delete(DeleteProgram programRequest);
+    public void delete(UUID id);
 
     public Optional<Program> getByNama(String nama);
 

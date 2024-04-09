@@ -51,10 +51,10 @@ public class ProgramController {
         return ResponseUtil.okResponse(program, "Program with name " + program.getNama() + " has been updated");
     }
 
-    @DeleteMapping(value = "")
-    public ResponseEntity<Object> deleteProgram(@Valid @RequestBody DeleteProgram programRequest) {
-        programService.delete(programRequest);
-        return ResponseUtil.okResponse(null, "Program with id " + programRequest.getId() + " has been deleted");
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Object> deleteProgramId(@PathVariable("id") String id) {
+        programService.delete(UUID.fromString(id));
+        return ResponseUtil.okResponse(null, "Program dengan ID " + id + " has been deleted");
     }
 
     @GetMapping(value = "{id}/jenis-kelas")

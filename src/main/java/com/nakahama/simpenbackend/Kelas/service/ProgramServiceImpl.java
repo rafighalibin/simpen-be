@@ -65,12 +65,9 @@ public class ProgramServiceImpl implements ProgramService {
     }
 
     @Override
-    public void delete(DeleteProgram programRequest) {
-        Program program = programDb.findById(programRequest.getId()).orElse(null);
-        if (program == null) {
-            throw new BadRequestException("Program with id " + programRequest.getId() + " not found");
-        }
-        programDb.deleteById(programRequest.getId());
+    public void delete(UUID id) {
+        getById(id);
+        programDb.deleteById(id);
     }
 
     @Override

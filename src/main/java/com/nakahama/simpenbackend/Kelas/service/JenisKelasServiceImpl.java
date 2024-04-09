@@ -108,8 +108,18 @@ public class JenisKelasServiceImpl implements JenisKelasService {
 
     @Override
     public void delete(UUID id) {
-        getById(id);
+        JenisKelas jenisKelas = getById(id);
         jenisKelasDb.deleteById(id);
+
+        if (jenisKelasDb.findByTipe(jenisKelas.getTipe()).isEmpty()) {
+            tipeDb.deleteById(jenisKelas.getTipe());
+        }
+        if (jenisKelasDb.findByModaPertemuan(jenisKelas.getModaPertemuan()).isEmpty()) {
+            modaPertemuanDb.deleteById(jenisKelas.getModaPertemuan());
+        }
+        if (jenisKelasDb.findByBahasa(jenisKelas.getBahasa()).isEmpty()) {
+            bahasaDb.deleteById(jenisKelas.getBahasa());
+        }
     }
 
     @Override

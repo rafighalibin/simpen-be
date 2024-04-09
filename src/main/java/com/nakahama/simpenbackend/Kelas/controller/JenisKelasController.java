@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 import java.util.*;
 
@@ -56,13 +57,10 @@ public class JenisKelasController {
         return ResponseUtil.okResponse(jenisKelas,
                 "Jenis Kelas with name " + jenisKelas.getNama() + " has been updated");
     }
-
-    @DeleteMapping(value = "")
-    public ResponseEntity<Object> deleteJenisKelas(@Valid @RequestBody DeleteJenisKelas jenisKelasRequest) {
-        jenisKelasService.delete(jenisKelasRequest.getId());
-        return ResponseUtil.okResponse(null,
-                "Jenis Kelas dengan ID " + jenisKelasRequest.getId() + " has been deleted");
-
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Object> deleteJenisKelasId(@PathVariable("id") String id) {
+        jenisKelasService.delete(UUID.fromString(id));
+        return ResponseUtil.okResponse(null, "Jenis Kelas dengan ID " + id + " has been deleted");
     }
 
     @GetMapping("/existing-attributes")
