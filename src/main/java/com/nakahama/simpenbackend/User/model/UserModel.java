@@ -1,6 +1,7 @@
 package com.nakahama.simpenbackend.User.model;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.UUID;
 
 import jakarta.persistence.*;
@@ -11,6 +12,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import org.hibernate.annotations.SQLDelete;
+
+import com.nakahama.simpenbackend.Notification.model.Notification;
 
 @Setter
 @Getter
@@ -53,6 +56,9 @@ public class UserModel implements Serializable {
     @Size(max = 100)
     @Column(name = "role")
     private String role;
+
+    @OneToMany(mappedBy = "akunPenerima", cascade = CascadeType.ALL)
+    private List<Notification> notifikasi;
 
     // @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     // @JsonIgnore

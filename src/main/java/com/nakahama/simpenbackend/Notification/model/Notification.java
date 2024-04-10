@@ -1,14 +1,18 @@
 package com.nakahama.simpenbackend.Notification.model;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.SQLDelete;
-import org.springframework.cglib.core.Local;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.nakahama.simpenbackend.User.model.UserModel;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -26,23 +30,31 @@ public class Notification {
     @Id
     private UUID id = UUID.randomUUID();
 
-    @Column(name = "akun_penerima")
-    private UUID akunPenerima;
+    @ManyToOne
+    @JoinColumn(name = "akun_penerima")
+    @JsonIgnore
+    private UserModel akunPenerima;
 
     @Column(name = "judul")
     private String judul;
 
-    @Column(name = "isi")
-    private Map<String, String> isi;
+    @ElementCollection
+    @CollectionTable(name = "notification_isi", joinColumns = @JoinColumn(name = "notification_id"))
+    @MapKeyColumn(name = "key")
+    @Column(name = "value")
+    private Map<String, String> isi = new HashMap<>();
 
     @Column(name = "expiration_date")
     private LocalDateTime expirationDate;
 
     @Column(name = "is_opened")
-    private Boolean isOpened;
+    private Boolean isOpened = false;
 
     @Column(name = "is_hidden")
-    private Boolean isHidden;
+    private Boolean isHidden = false;
+
+    @Column(name = "is_hidden")
+    private Boolean isDeleted = false;
 
     @Column(name = "tipe")
     private int tipe;
