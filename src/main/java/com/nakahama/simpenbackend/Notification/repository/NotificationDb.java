@@ -15,7 +15,7 @@ import jakarta.transaction.Transactional;
 @Transactional
 public interface NotificationDb extends JpaRepository<Notification, UUID> {
 
-    @Query("FROM notification WHERE isDeleted = false")
+    @Query("FROM Notification WHERE isDeleted = false")
     List<Notification> findAll();
 
 }

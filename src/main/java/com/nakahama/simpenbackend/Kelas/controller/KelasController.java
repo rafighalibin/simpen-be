@@ -87,7 +87,7 @@ public class KelasController {
         notification.setTipe(1);
 
         // Content of Notification
-        notification.setJudul("Mendapatkan Jadwal Kelas Baru");
+        notification.setJudul("Anda mendapatkan jadwal kelas baru");
         notification.getIsi().put("idKelas", String.valueOf(createdKelas.getKelasId()));
         notification.getIsi().put("jadwalKelas", String.valueOf(createKelasRequest.getJadwalKelas()));
         notification.getIsi().put("tanggalMulai", String.valueOf(createdKelas.getTanggalMulai()));

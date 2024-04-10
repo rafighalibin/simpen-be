@@ -16,10 +16,10 @@ import lombok.Setter;
 public class SetStatusNotifDTO {
     UUID id;
 
-    Boolean isOpened;
+    int isOpened;
 
-    Boolean isHidden;
+    int isHidden;
 
-    Boolean isDelete;
+    int isDelete;
 
 }

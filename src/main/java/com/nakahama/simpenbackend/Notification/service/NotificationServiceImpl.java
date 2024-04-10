@@ -4,8 +4,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
-import javax.print.DocFlavor.READER;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -37,7 +35,10 @@ public class NotificationServiceImpl implements NotificationService {
         notification.setIsi(generateNotifDTO.getIsi());
         notification.setTipe(generateNotifDTO.getTipe());
 
-        LocalDateTime expDateTime = LocalDateTime.now().plusMonths(2);
+        LocalDateTime creationDate = LocalDateTime.now();
+        LocalDateTime expDateTime = creationDate.plusMonths(2);
+
+        notification.setTanggalPembuatan(creationDate);
         notification.setExpirationDate(expDateTime);
 
         UserModel akunPenerima = userService.getUserById(generateNotifDTO.getAkunPenerima());
@@ -60,7 +61,7 @@ public class NotificationServiceImpl implements NotificationService {
     @Override
     public Notification getNotificationById(UUID id) {
         for (Notification notification : retreiveAllNotification()) {
-            if (notification.getId() == id) {
+            if (notification.getId().equals(id)) {
                 return notification;
             }
         }
@@ -73,9 +74,17 @@ public class NotificationServiceImpl implements NotificationService {
     public void setNotifStatus(SetStatusNotifDTO setStatusNotifDTO) {
         Notification notification = getNotificationById(setStatusNotifDTO.getId());
 
-        notification.setIsOpened(setStatusNotifDTO.getIsOpened());
-        notification.setIsHidden(setStatusNotifDTO.getIsHidden());
-        notification.setIsDeleted(setStatusNotifDTO.getIsDelete());
+        if (setStatusNotifDTO.getIsOpened() != 0) {
+            notification.setOpened(true);
+        }
+
+        if (setStatusNotifDTO.getIsHidden() != 0) {
+            notification.setHidden(true);
+        }
+
+        if (setStatusNotifDTO.getIsDelete() != 0) {
+            notification.setDeleted(true);
+        }
 
         notificationDb.save(notification);
 

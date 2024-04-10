@@ -5,14 +5,12 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.SQLDelete;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.nakahama.simpenbackend.User.model.UserModel;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -48,18 +46,17 @@ public class Notification {
     private LocalDateTime expirationDate;
 
     @Column(name = "is_opened")
-    private Boolean isOpened = false;
+    private boolean isOpened = false;
 
     @Column(name = "is_hidden")
-    private Boolean isHidden = false;
+    private boolean isHidden = false;
 
-    @Column(name = "is_hidden")
-    private Boolean isDeleted = false;
+    @Column(name = "is_deleted")
+    private boolean isDeleted = false;
 
     @Column(name = "tipe")
     private int tipe;
 
-    @CreationTimestamp
     @Column(name = "tanggal_pembuatan")
     private LocalDateTime tanggalPembuatan;
 
@@ -76,7 +73,7 @@ public class Notification {
     // 6: Req pengajar pengganti
 
     // Akademik
-    // 7: Mitra pengajar tidak aktif
-    // 8: Assign PIC kelas
+    // 8: Mitra pengajar tidak aktif
+    // 7: Assign PIC kelas
 
 }
