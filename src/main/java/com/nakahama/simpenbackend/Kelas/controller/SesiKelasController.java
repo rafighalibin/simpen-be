@@ -28,7 +28,7 @@ public class SesiKelasController {
     SesiKelasService sesiKelasService;
 
     @GetMapping("/{idKelas}")
-    public ResponseEntity<Object> getSesiByKelasId(@PathVariable int idKelas) {
+    public ResponseEntity<Object> getSesiByKelasId(@PathVariable(value="idKelas") int idKelas) {
         List<ReadDetailSesiKelas> response = SesiKelasMapper
                 .toListReadDetailDto(sesiKelasService.getByKelasId(idKelas));
         return ResponseUtil.okResponse(response, "Success");
