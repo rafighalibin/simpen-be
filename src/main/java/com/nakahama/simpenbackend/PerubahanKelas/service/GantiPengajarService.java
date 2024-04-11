@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.UUID;
 
 import com.nakahama.simpenbackend.PerubahanKelas.dto.GantiPengajar.CreateGantiPengajar;
+import com.nakahama.simpenbackend.PerubahanKelas.dto.GantiPengajar.UpdateGantiPengajar;
 import com.nakahama.simpenbackend.PerubahanKelas.model.PengajarMenggantikan;
 
 public interface GantiPengajarService {
@@ -15,4 +16,6 @@ public interface GantiPengajarService {
     public PengajarMenggantikan getById(UUID id);
 
     public List<PengajarMenggantikan> getAllByKelasId(int kelasId);
+
+    public void approve(List<UpdateGantiPengajar> listGantiPengajarRequest);
 }

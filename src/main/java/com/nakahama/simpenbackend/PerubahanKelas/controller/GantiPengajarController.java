@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import com.nakahama.simpenbackend.PerubahanKelas.service.GantiPengajarService;
@@ -15,6 +16,7 @@ import com.nakahama.simpenbackend.Kelas.model.SesiKelas;
 import com.nakahama.simpenbackend.Kelas.service.SesiKelasService;
 import com.nakahama.simpenbackend.PerubahanKelas.dto.GantiPengajar.CreateGantiPengajar;
 import com.nakahama.simpenbackend.PerubahanKelas.dto.GantiPengajar.GantiPengajarMapper;
+import com.nakahama.simpenbackend.PerubahanKelas.dto.GantiPengajar.UpdateGantiPengajar;
 
 import jakarta.validation.Valid;
 import java.util.*;
@@ -33,13 +35,20 @@ public class GantiPengajarController {
     public ResponseEntity<Object> createGantiPengajar(
             @Valid @RequestBody List<CreateGantiPengajar> listGantiPengajarRequest) {
         gantiPengajarService.save(listGantiPengajarRequest);
-        return ResponseUtil.okResponse(null, listGantiPengajarRequest.size() + " Reschedule created");
+        return ResponseUtil.okResponse(null, listGantiPengajarRequest.size() + " Ganti Pengajar Request created");
     }
 
     @GetMapping("/{kelasId}")
     public ResponseEntity<Object> getAllRescheduleByKelas(@PathVariable int kelasId) {
         List<SesiKelas> response = sesiKelasService.getByKelasId(kelasId);
         return ResponseUtil.okResponse(GantiPengajarMapper.toReadDetailGantiPengajar(response), "Success");
+    }
+
+    @PutMapping("/create/{kelasId}")
+    public ResponseEntity<Object> approveGantiPengajar(
+            @Valid @RequestBody List<UpdateGantiPengajar> listGantiPengajarRequest) {
+        gantiPengajarService.approve(listGantiPengajarRequest);
+        return ResponseUtil.okResponse(null, listGantiPengajarRequest.size() + " Ganti Pengajar Request changed");
     }
 
 }
