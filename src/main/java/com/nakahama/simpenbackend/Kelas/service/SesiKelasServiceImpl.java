@@ -167,11 +167,12 @@ public class SesiKelasServiceImpl implements SesiKelasService {
             sesiKelas.setPersentaseKehadiran(0);
         }
         save(sesiKelas);
+        kelasService.updateRating(sesiKelas.getKelas().getKelasId());
     }
 
     @Override
     public void updateStatus(SesiKelas sesiKelas) {
-    //TODO: adapt lagi
+        // TODO: adapt lagi
         sesiKelas.setStatus("Finished");
         save(sesiKelas);
     }

@@ -115,4 +115,22 @@ public class KelasServiceImpl implements KelasService {
         return kelasDb.save(kelas);
     }
 
+    @Override
+    public void updateRating(int kelasId) {
+        Kelas kelas = getById(kelasId);
+
+        List<SesiKelas> listSesiKelas = kelas.getListsesiKelas();
+        double totalRating = 0;
+        int totalSesiSudahBerlangsung = 0;
+
+        for (SesiKelas sesiKelas : listSesiKelas) {
+            if (sesiKelas.getAverageRating() == 0) {
+                continue;
+            }
+            totalRating += sesiKelas.getAverageRating();
+            totalSesiSudahBerlangsung++;
+        }
+        kelas.setAverageRating(totalRating / totalSesiSudahBerlangsung);
+        kelasDb.save(kelas);
+    }
 }

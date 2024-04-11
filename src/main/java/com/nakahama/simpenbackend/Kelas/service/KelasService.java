@@ -22,4 +22,6 @@ public interface KelasService {
     public List<Kelas> getAllKelasPengajar(UserModel userModel);
 
     public Kelas addPlaylist(int kelasId, String linkPlaylist);
+
+    public void updateRating(int kelasId);
 }
