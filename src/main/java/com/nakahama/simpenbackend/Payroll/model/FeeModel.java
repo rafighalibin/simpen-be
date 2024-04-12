@@ -21,7 +21,6 @@ import com.nakahama.simpenbackend.Kelas.model.Program;
 @AllArgsConstructor
 @Entity
 @Table(name = "fee")
-@SQLDelete(sql = "UPDATE fee SET is_deleted = true WHERE id=?")
 public class FeeModel {
     @Id
     private UUID id = UUID.randomUUID();

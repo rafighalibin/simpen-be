@@ -71,9 +71,12 @@ public class FeeServiceImpl implements FeeService{
     public void delete(UUID id) {
         FeeModel fee = getById(id);
         List<Kelas> kelasList = fee.getJenisKelas().getKelas();
+        System.out.println(kelasList);
         for (Kelas kelas : kelasList) {
-            if(!kelas.getStatus().equals("Finished")){
-                throw new BadRequestException("Cannot delete fee with id " + id + " because there are still active classes");
+            if(!(kelas.getStatus().equals("Finished"))){
+                if(kelas.getProgram().getId().equals(fee.getProgram().getId())){
+                    throw new BadRequestException("Fee with id " + id + " is still being used in a class");
+                }
             }
         }
         feeDb.deleteById(id);
