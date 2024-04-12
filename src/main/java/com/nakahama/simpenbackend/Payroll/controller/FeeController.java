@@ -49,15 +49,15 @@ public class FeeController {
         return ResponseUtil.okResponse(fee, "Fee with id " + fee.getId() + " has been updated");
     }
 
-    @DeleteMapping(value = "")
-    public ResponseEntity<Object> deleteFee(@RequestBody UUID id, @RequestHeader("Authorization") String token){
-        feeService.delete(id);
+    @DeleteMapping(value = "/{id}")
+    public ResponseEntity<Object> deleteFee(@RequestHeader("Authorization") String token, @PathVariable("id") String id){
+        feeService.delete(UUID.fromString(id));
         return ResponseUtil.okResponse(null, "Fee with id " + id + " has been deleted");
     }
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<Object> getFeeById(@RequestHeader("Authorization") String token, @PathVariable(value="id") UUID id){
-        FeeModel fee = feeService.getById(id);
+    public ResponseEntity<Object> getFeeById(@RequestHeader("Authorization") String token, @PathVariable("id") String id){
+        FeeModel fee = feeService.getById(UUID.fromString(id));
         return ResponseUtil.okResponse(fee, "Success");
     }
 }
