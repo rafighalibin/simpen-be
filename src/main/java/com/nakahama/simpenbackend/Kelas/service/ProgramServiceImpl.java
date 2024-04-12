@@ -16,6 +16,7 @@ import com.nakahama.simpenbackend.Kelas.dto.Program.ReadProgram;
 import com.nakahama.simpenbackend.Kelas.model.JenisKelas;
 import com.nakahama.simpenbackend.Kelas.model.Program;
 import com.nakahama.simpenbackend.Kelas.repository.ProgramDb;
+import com.nakahama.simpenbackend.Kelas.repository.JenisKelas.JenisKelasDb;
 import com.nakahama.simpenbackend.exception.BadRequestException;
 
 @Service
@@ -27,6 +28,9 @@ public class ProgramServiceImpl implements ProgramService {
     @Autowired
     JenisKelasService jenisKelasService;
 
+    @Autowired
+    JenisKelasDb jenisKelasDb;
+
     @Override
     public List<ReadProgram> getAll() {
         List<ReadProgram> listProgram = new ArrayList<ReadProgram>();
@@ -34,7 +38,6 @@ public class ProgramServiceImpl implements ProgramService {
             ReadProgram response = ProgramMapper.toDto(program);
             response.setJenisKelas(new ArrayList<JenisKelasDTO>());
             for (JenisKelas jenisKelas : program.getJenisKelas()) {
-                System.out.println(jenisKelas.getNama());
                 response.getJenisKelas().add(JenisKelasMapper.toDto(jenisKelas));
             }
             listProgram.add(response);
@@ -53,7 +56,18 @@ public class ProgramServiceImpl implements ProgramService {
             }
             program.getJenisKelas().add(jenisKelas);
         }
-        return programDb.save(program);
+
+        programDb.save(program);
+
+        for(JenisKelas jenisKelas : program.getJenisKelas()) {
+            if(jenisKelas.getProgram().size() == 0) {
+                jenisKelas.setProgram(new ArrayList<Program>());
+            }
+            jenisKelas.getProgram().add(program);
+            jenisKelasDb.save(jenisKelas);
+        }
+
+        return program;
     }
 
     @Override
