@@ -37,4 +37,6 @@ public interface SesiKelasService {
             List<MuridKelas> listMurid, String platform);
 
     public void uppdateAbsenSesi(UUID idSesi, List<UpdateAbsensiMurid> updateAbsensiMurid);
+
+    public void updateStatus(SesiKelas sesiKelas);
 }

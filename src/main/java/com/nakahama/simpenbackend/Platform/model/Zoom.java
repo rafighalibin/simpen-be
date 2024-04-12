@@ -1,16 +1,10 @@
 package com.nakahama.simpenbackend.Platform.model;
 
-import java.io.Serializable;
-import java.util.UUID;
-
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import org.hibernate.annotations.SQLDelete;
 
 @Setter
 @Getter
@@ -18,7 +12,7 @@ import org.hibernate.annotations.SQLDelete;
 @AllArgsConstructor
 @Entity
 @DiscriminatorValue("Zoom")
-public class Zoom extends PlatformModel{
+public class Zoom extends Platform {
     @Column(name = "host_key")
     private String hostKey;
 

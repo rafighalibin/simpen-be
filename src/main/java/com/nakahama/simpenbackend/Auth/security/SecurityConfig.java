@@ -9,6 +9,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.hibernate.sql.Delete;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,59 +20,82 @@ import org.springframework.security.config.Customizer;
 @EnableWebSecurity
 public class SecurityConfig {
 
-    @Autowired
-    private UserDetailsService userDetailsService;
+        @Autowired
+        private UserDetailsService userDetailsService;
 
-    @Autowired
-    private JwtAuthFilter jwtAuthFilter;
+        @Autowired
+        private JwtAuthFilter jwtAuthFilter;
 
-    @Bean
-    public SecurityFilterChain jwtFilterChain(HttpSecurity http) throws Exception {
-        http
-                .securityMatcher("/**")
-                .csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(auth -> {
-                    // Auth, User, Tag
-                    auth.requestMatchers("auth/login").permitAll();
-                    auth.requestMatchers("auth/test").authenticated();
-                    auth.requestMatchers("auth/test-role").hasAuthority("superadmin");
-                    auth.requestMatchers(HttpMethod.POST, "user").hasAuthority("superadmin");
-                    auth.requestMatchers(HttpMethod.GET, "user").hasAnyAuthority("operasional", "superadmin");
-                    auth.requestMatchers(HttpMethod.PUT, "user").hasAnyAuthority("pengajar", "operasional", "akademik");
-                    auth.requestMatchers(HttpMethod.DELETE, "user/**").hasAuthority("superadmin");
-                    auth.requestMatchers(HttpMethod.PUT, "user/**").hasAnyAuthority("operasional", "superadmin");
-                    auth.requestMatchers(HttpMethod.GET, "user/**").hasAnyAuthority("operasional", "superadmin");
-                    auth.requestMatchers(HttpMethod.POST, "tag").hasAnyAuthority("operasional", "akademik");
-                    auth.requestMatchers(HttpMethod.GET, "tag").hasAnyAuthority("operasional", "akademik");
-                    auth.requestMatchers(HttpMethod.POST, "tag/assign").hasAnyAuthority("operasional", "akademik");
-                    auth.requestMatchers(HttpMethod.GET, "tag/assign").hasAnyAuthority("operasional", "akademik");
-                    auth.requestMatchers(HttpMethod.DELETE, "tag/assign").hasAnyAuthority("operasional", "akademik");
+        @Bean
+        public SecurityFilterChain jwtFilterChain(HttpSecurity http) throws Exception {
+                http
+                                .securityMatcher("/**")
+                                .csrf(AbstractHttpConfigurer::disable)
+                                .authorizeHttpRequests(auth -> {
+                                        // Auth, User, Tag
+                                        auth.requestMatchers("auth/login").permitAll();
+                                        auth.requestMatchers("auth/test").authenticated();
+                                        auth.requestMatchers("auth/test-role").hasAuthority("superadmin");
+                                        auth.requestMatchers(HttpMethod.POST, "user").hasAuthority("superadmin");
+                                        auth.requestMatchers(HttpMethod.GET, "user").hasAnyAuthority("operasional",
+                                                        "superadmin");
+                                        auth.requestMatchers(HttpMethod.PUT, "user").hasAnyAuthority("pengajar",
+                                                        "operasional", "akademik");
+                                        auth.requestMatchers(HttpMethod.DELETE, "user/**").hasAuthority("superadmin");
+                                        auth.requestMatchers(HttpMethod.PUT, "user/**").hasAnyAuthority("operasional",
+                                                        "superadmin");
+                                        auth.requestMatchers(HttpMethod.GET, "user/**").hasAnyAuthority("operasional",
+                                                        "superadmin");
+                                        auth.requestMatchers(HttpMethod.POST, "tag").hasAnyAuthority("operasional",
+                                                        "akademik");
+                                        auth.requestMatchers(HttpMethod.GET, "tag").hasAnyAuthority("operasional",
+                                                        "akademik");
+                                        auth.requestMatchers(HttpMethod.POST, "tag/assign")
+                                                        .hasAnyAuthority("operasional", "akademik");
+                                        auth.requestMatchers(HttpMethod.GET, "tag/assign")
+                                                        .hasAnyAuthority("operasional", "akademik");
+                                        auth.requestMatchers(HttpMethod.DELETE, "tag/assign")
+                                                        .hasAnyAuthority("operasional", "akademik");
 
-                    // Kelas, Program
-                    auth.requestMatchers("kelas/jenis").hasAuthority("operasional");
-                    auth.requestMatchers("kelas/program").hasAuthority("operasional");
-                    auth.requestMatchers(HttpMethod.POST, "kelas").hasAuthority("operasional");
-                    auth.requestMatchers(HttpMethod.GET, "kelas").hasAnyAuthority("pengajar", "operasional",
-                            "akademik");
-                    auth.requestMatchers(HttpMethod.GET, "kelas/**").hasAnyAuthority("pengajar", "operasional",
-                            "akademik");
-                    auth.requestMatchers(HttpMethod.PUT, "kelas/**").hasAuthority("operasional");
-                    auth.requestMatchers(HttpMethod.DELETE, "kelas/**").hasAuthority("operasional");
+                                        // Kelas, Program
+                                        auth.requestMatchers("kelas/jenis").hasAnyAuthority("operasional",
+                                                        "superadmin");
+                                        auth.requestMatchers("kelas/program").hasAnyAuthority("operasional",
+                                                        "superadmin");
+                                        auth.requestMatchers(HttpMethod.POST, "kelas").hasAuthority("operasional");
+                                        auth.requestMatchers(HttpMethod.GET, "kelas").hasAnyAuthority("pengajar",
+                                                        "operasional",
+                                                        "akademik");
+                                        auth.requestMatchers(HttpMethod.GET, "kelas/**").hasAnyAuthority("pengajar",
+                                                        "operasional",
+                                                        "akademik");
+                                        auth.requestMatchers(HttpMethod.PUT, "kelas/**").hasAuthority("operasional");
+                                        auth.requestMatchers(HttpMethod.DELETE, "kelas/**").hasAuthority("operasional");
 
-                    // TODO: set the appropriate authorities for the corresponding endpoints
-                    auth.anyRequest().permitAll();
-                })
-                .sessionManagement(sessionAuthenticationStrategy -> sessionAuthenticationStrategy
-                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
-                .httpBasic(Customizer.withDefaults());
-        return http.build();
-    }
+                                        // Announcement
+                                        auth.requestMatchers(HttpMethod.POST, "announcement")
+                                                        .hasAnyAuthority("operasional", "akademik");
+                                        auth.requestMatchers(HttpMethod.DELETE, "announcement/**")
+                                                        .hasAnyAuthority("operasional", "akademik");
+                                        auth.requestMatchers(HttpMethod.GET, "announcement")
+                                                        .hasAnyAuthority("operasional", "akademik", "pengajar");
+                                        auth.requestMatchers(HttpMethod.GET, "announcement/**")
+                                                        .hasAnyAuthority("operasional", "akademik", "pengajar");
 
-    @Autowired
-    public void confAuthentication(AuthenticationManagerBuilder auth, PasswordEncoder passwordEncoder)
-            throws Exception {
-        auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder);
-    }
+                                        // TODO: set the appropriate authorities for the corresponding endpoints
+                                        auth.anyRequest().permitAll();
+                                })
+                                .sessionManagement(sessionAuthenticationStrategy -> sessionAuthenticationStrategy
+                                                .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
+                                .httpBasic(Customizer.withDefaults());
+                return http.build();
+        }
+
+        @Autowired
+        public void confAuthentication(AuthenticationManagerBuilder auth, PasswordEncoder passwordEncoder)
+                        throws Exception {
+                auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder);
+        }
 
 }
