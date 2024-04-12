@@ -38,7 +38,6 @@ public class ProgramServiceImpl implements ProgramService {
             ReadProgram response = ProgramMapper.toDto(program);
             response.setJenisKelas(new ArrayList<JenisKelasDTO>());
             for (JenisKelas jenisKelas : program.getJenisKelas()) {
-                System.out.println(jenisKelas.getNama());
                 response.getJenisKelas().add(JenisKelasMapper.toDto(jenisKelas));
             }
             listProgram.add(response);
