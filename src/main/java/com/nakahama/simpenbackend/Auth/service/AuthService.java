@@ -14,6 +14,7 @@ import com.nakahama.simpenbackend.exception.AuthException;
 
 import jakarta.servlet.http.HttpServletRequest;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Service
@@ -34,6 +35,9 @@ public class AuthService {
     public String loginWithJwt(LoginReqDTO loginReqDTO) {
         UserModel user = userDb.findByEmail(loginReqDTO.getEmail());
         if (authenticate(user, loginReqDTO.getPassword()) && !user.isDeleted()) {
+            user.setLastLogin(LocalDateTime.now());
+            user.setInactive(false);
+            userDb.save(user);
             return jwtUtils.generateToken(user.getEmail(), user.getId(), String.valueOf(user.getRole()));
         } else {
             return null;
