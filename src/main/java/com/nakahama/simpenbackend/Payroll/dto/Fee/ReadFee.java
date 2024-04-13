@@ -1,8 +1,6 @@
 package com.nakahama.simpenbackend.Payroll.dto.Fee;
 
-import java.util.Date;
 import java.util.UUID;
-import java.time.LocalDateTime;
 
 import com.nakahama.simpenbackend.Kelas.dto.JenisKelas.ReadJenisKelas;
 
