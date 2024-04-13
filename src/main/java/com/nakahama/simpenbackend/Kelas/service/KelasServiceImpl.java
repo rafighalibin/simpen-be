@@ -77,7 +77,7 @@ public class KelasServiceImpl implements KelasService {
         kelasDb.save(createdKelas);
 
         List<SesiKelas> listSesiKelas = sesiKelasService.createListSesiKelas(request.getJadwalKelas(), createdKelas,
-                pengajar, listMurid, request.getPlatform());
+                pengajar, listMurid);
         createdKelas.setListsesiKelas(listSesiKelas);
 
         kelasDb.save(createdKelas);
