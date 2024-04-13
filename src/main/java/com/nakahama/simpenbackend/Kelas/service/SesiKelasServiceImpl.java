@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.nakahama.simpenbackend.Kelas.dto.SesiKelas.UpdateAbsensiMurid;
 import com.nakahama.simpenbackend.Kelas.model.*;
 import com.nakahama.simpenbackend.Kelas.repository.SesiKelasDb;
+import com.nakahama.simpenbackend.Platform.service.PlatformService;
 import com.nakahama.simpenbackend.User.model.Pengajar;
 import com.nakahama.simpenbackend.User.model.UserModel; // need to change after Pengajar model is created
 import com.nakahama.simpenbackend.User.repository.PengajarDb;
@@ -34,6 +35,10 @@ public class SesiKelasServiceImpl implements SesiKelasService {
     @Autowired
     @Lazy
     MuridSesiService muridSesiService;
+
+    @Autowired
+    @Lazy
+    PlatformService platformService;
 
     @Override
     public List<SesiKelas> getAll() {
@@ -115,7 +120,7 @@ public class SesiKelasServiceImpl implements SesiKelasService {
 
     @Override
     public List<SesiKelas> createListSesiKelas(List<LocalDateTime> jadwalKelas, Kelas createdKelas, Pengajar pengajar,
-            List<MuridKelas> listMurid, String platform) {
+            List<MuridKelas> listMurid) {
         List<SesiKelas> listSesiKelas = new ArrayList<>();
         int nomorPertemuan = 1;
         for (LocalDateTime e : jadwalKelas) {
@@ -123,7 +128,6 @@ public class SesiKelasServiceImpl implements SesiKelasService {
 
             sesiKelas.setKelas(createdKelas);
             sesiKelas.setPengajar(pengajar);
-            sesiKelas.setPlatform(platform);
             sesiKelas.setWaktuPelaksanaan(e);
             sesiKelas.setStatus("Scheduled");
             sesiKelas.setNomorPertemuan(nomorPertemuan);
@@ -141,6 +145,16 @@ public class SesiKelasServiceImpl implements SesiKelasService {
 
             nomorPertemuan++;
         }
+
+        if (createdKelas.getJenisKelas().getModaPertemuan().equals("Online")) {
+            platformService.assignZoom(listSesiKelas);
+        } else {
+            platformService.assignRuangan(listSesiKelas);
+        }
+
+        for (SesiKelas sesiKelas : listSesiKelas)
+            save(sesiKelas);
+
         return listSesiKelas;
     }
 
