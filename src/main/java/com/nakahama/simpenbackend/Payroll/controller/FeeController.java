@@ -14,9 +14,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.nakahama.simpenbackend.Payroll.dto.Fee.CreateFee;
 import com.nakahama.simpenbackend.Payroll.dto.Fee.ReadFee;
+import com.nakahama.simpenbackend.Payroll.dto.Fee.ReadFeeGrouped;
 import com.nakahama.simpenbackend.Payroll.dto.Fee.UpdateFee;
 import com.nakahama.simpenbackend.Payroll.model.FeeModel;
 import com.nakahama.simpenbackend.Payroll.service.FeeService;
+import com.nakahama.simpenbackend.Kelas.dto.Program.ReadProgram;
 import com.nakahama.simpenbackend.util.ResponseUtil;
 
 import jakarta.validation.Valid;
@@ -59,5 +61,17 @@ public class FeeController {
     public ResponseEntity<Object> getFeeById(@RequestHeader("Authorization") String token, @PathVariable("id") String id){
         FeeModel fee = feeService.getById(UUID.fromString(id));
         return ResponseUtil.okResponse(fee, "Success");
+    }
+
+    @GetMapping(value = "/distinct-program")
+    public ResponseEntity<Object> getDistinctProgram(@RequestHeader("Authorization") String token){
+        List<ReadProgram> listProgram = feeService.getDistinctProgram();
+        return ResponseUtil.okResponse(listProgram, "Success");
+    }
+
+    @GetMapping(value = "/grouped")
+    public ResponseEntity<Object> getFeeGrouped(@RequestHeader("Authorization") String token){
+        List<ReadFeeGrouped> listFeeGrouped = feeService.getFeeGrouped();
+        return ResponseUtil.okResponse(listFeeGrouped, "Success");
     }
 }
