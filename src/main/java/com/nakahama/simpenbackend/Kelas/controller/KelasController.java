@@ -104,7 +104,7 @@ public class KelasController {
     }
 
     @GetMapping("/kelas/{kelasId}")
-    public ResponseEntity<Object> detailKelas(@PathVariable int kelasId) {
+    public ResponseEntity<Object> detailKelas(@PathVariable(value="kelasId") int kelasId) {
 
         Kelas updatedKelas = kelasService.getById(kelasId);
         return ResponseUtil.okResponse(KelasMapper.toDetailDto(updatedKelas, updatedKelas.getListsesiKelas(),
