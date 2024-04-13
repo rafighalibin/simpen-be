@@ -15,6 +15,8 @@ import com.nakahama.simpenbackend.Kelas.dto.JenisKelas.ProgramJenisKelasAttribut
 import com.nakahama.simpenbackend.Kelas.dto.JenisKelas.ReadJenisKelas;
 import com.nakahama.simpenbackend.Kelas.dto.JenisKelas.UpdateJenisKelas;
 import com.nakahama.simpenbackend.Kelas.service.JenisKelasService;
+import com.nakahama.simpenbackend.Notification.dto.GenerateNotifDTO;
+import com.nakahama.simpenbackend.Notification.service.NotificationService;
 import com.nakahama.simpenbackend.util.ResponseUtil;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -26,7 +28,6 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 
-
 @RestController
 @RequestMapping("/kelas/jenis")
 public class JenisKelasController {
@@ -37,10 +38,24 @@ public class JenisKelasController {
     @Autowired
     AuthService authService;
 
+    @Autowired
+    NotificationService notificationService;
+
     @PostMapping("")
     public ResponseEntity<Object> createJenisKelas(@Valid @RequestBody CreateJenisKelas jenisKelasRequest,
             HttpServletRequest request) {
         jenisKelasService.save(jenisKelasRequest);
+
+        // Generate Notification
+        GenerateNotifDTO notification = new GenerateNotifDTO();
+        notification.setAkunPenerima(jenisKelasRequest.getPicAkademikId());
+        notification.setTipe(7);
+
+        // Content of Notification
+        notification.setJudul("Anda menjadi PIC jenis kelas " + String.valueOf(jenisKelasRequest.getNama()));
+
+        notificationService.generateNotification(notification);
+
         return ResponseUtil.okResponse(null,
                 "Jenis Kelas with name " + jenisKelasRequest.getNama() + " has been created");
     }
