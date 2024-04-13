@@ -19,6 +19,7 @@ import com.nakahama.simpenbackend.Payroll.dto.Fee.UpdateFee;
 import com.nakahama.simpenbackend.Payroll.model.FeeModel;
 import com.nakahama.simpenbackend.Payroll.service.FeeService;
 import com.nakahama.simpenbackend.Kelas.dto.Program.ReadProgram;
+import com.nakahama.simpenbackend.Kelas.service.JenisKelasService;
 import com.nakahama.simpenbackend.util.ResponseUtil;
 
 import jakarta.validation.Valid;
@@ -30,6 +31,9 @@ import java.util.*;
 public class FeeController {
     @Autowired
     FeeService feeService;
+
+    @Autowired
+    JenisKelasService jenisKelasService;
 
     @PostMapping("")
     public ResponseEntity<Object> createFee(@Valid @RequestBody CreateFee feeRequest,
@@ -73,5 +77,10 @@ public class FeeController {
     public ResponseEntity<Object> getFeeGrouped(@RequestHeader("Authorization") String token){
         List<ReadFeeGrouped> listFeeGrouped = feeService.getFeeGrouped();
         return ResponseUtil.okResponse(listFeeGrouped, "Success");
+    }
+
+    @GetMapping(value = "/find-by-jenis-attr")
+    public ResponseEntity<Object> findByJenisAttr(@RequestHeader("Authorization") String token){
+        return ResponseUtil.okResponse(null, "Success");
     }
 }
