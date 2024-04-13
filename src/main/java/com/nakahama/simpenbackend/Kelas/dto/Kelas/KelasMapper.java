@@ -71,6 +71,7 @@ public class KelasMapper {
         response.setMuridKelas(listMurid);
         response.setJumlahMurid(request.getListMurid().size());
         response.setLevel(request.getLevel());
+        response.setStatus(request.getStatus());
         return response;
     }
 

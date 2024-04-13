@@ -28,7 +28,7 @@ public class SimpenBackendApplication {
 			userService.addDummySuperadmin();
 
 			// Dummy data for testing
-			// // Akademik
+			// Akademik
 			// UserModel akademik = userService.addUser("akademik@kalananti.id", "akademik",
 			// "Akademik");
 			// // Operasional

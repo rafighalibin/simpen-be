@@ -1,6 +1,7 @@
 package com.nakahama.simpenbackend.Kelas.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.nakahama.simpenbackend.Payroll.model.FeeModel;
 import com.nakahama.simpenbackend.User.model.Akademik;
 import java.util.*;
 
@@ -50,4 +51,8 @@ public class JenisKelas {
     @OneToMany
     @JsonIgnore
     private List<Kelas> kelas;
+
+    @OneToMany
+    @JsonIgnore
+    private List<FeeModel> fee;
 }

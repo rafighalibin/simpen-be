@@ -57,7 +57,7 @@ public class Kelas {
     @NotNull
     private int jumlahMurid;
 
-    private float averageRating;
+    private Double averageRating;
 
     @OneToMany
     private List<SesiKelas> listsesiKelas;

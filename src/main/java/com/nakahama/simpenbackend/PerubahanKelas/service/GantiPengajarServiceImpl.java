@@ -11,8 +11,11 @@ import com.nakahama.simpenbackend.Kelas.service.KelasService;
 import com.nakahama.simpenbackend.Kelas.service.SesiKelasService;
 import com.nakahama.simpenbackend.PerubahanKelas.dto.GantiPengajar.CreateGantiPengajar;
 import com.nakahama.simpenbackend.PerubahanKelas.dto.GantiPengajar.GantiPengajarMapper;
+import com.nakahama.simpenbackend.PerubahanKelas.dto.GantiPengajar.UpdateGantiPengajar;
 import com.nakahama.simpenbackend.PerubahanKelas.model.PengajarMenggantikan;
 import com.nakahama.simpenbackend.PerubahanKelas.repository.PengajarMenggantikanDb;
+import com.nakahama.simpenbackend.User.model.Pengajar;
+import com.nakahama.simpenbackend.User.service.UserService;
 
 @Service
 public class GantiPengajarServiceImpl implements GantiPengajarService {
@@ -25,6 +28,9 @@ public class GantiPengajarServiceImpl implements GantiPengajarService {
 
     @Autowired
     KelasService kelasService;
+
+    @Autowired
+    UserService userService;
 
     @Override
     public List<PengajarMenggantikan> getAll() {
@@ -62,6 +68,24 @@ public class GantiPengajarServiceImpl implements GantiPengajarService {
     public List<PengajarMenggantikan> getAllByKelasId(int kelasId) {
         Kelas kelas = kelasService.getById(kelasId);
         return pengajarMenggantikanDb.findAllByKelas(kelas);
+    }
+
+    @Override
+    public void approve(List<UpdateGantiPengajar> listGantiPengajarRequest) {
+        for (UpdateGantiPengajar request : listGantiPengajarRequest) {
+            PengajarMenggantikan pengajarMenggantikan = getById(request.getId());
+            if (request.getPengajarPenggantiId() != null) {
+                Pengajar pengajarPengganti = (Pengajar) userService.getUserById(request.getPengajarPenggantiId());
+                pengajarMenggantikan.getSesiKelas().setPengajarPengganti(pengajarPengganti);
+                pengajarMenggantikan.setPengajarPenganti(pengajarPengganti);
+                pengajarMenggantikan.getSesiKelas().setStatus("Scheduled");
+                pengajarMenggantikan.setStatus("Approved");
+            } else {
+                pengajarMenggantikan.getSesiKelas().setStatus("Scheduled");
+                pengajarMenggantikan.setStatus("Rejected");
+            }
+            pengajarMenggantikanDb.save(pengajarMenggantikan);
+        }
     }
 
 }
