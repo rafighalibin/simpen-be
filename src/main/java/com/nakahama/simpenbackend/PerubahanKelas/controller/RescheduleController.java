@@ -10,9 +10,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import com.nakahama.simpenbackend.PerubahanKelas.service.RescheduleService;
+import com.nakahama.simpenbackend.User.model.UserModel;
+import com.nakahama.simpenbackend.User.service.UserService;
 import com.nakahama.simpenbackend.util.ResponseUtil;
 import com.nakahama.simpenbackend.Kelas.model.SesiKelas;
 import com.nakahama.simpenbackend.Kelas.service.SesiKelasService;
+import com.nakahama.simpenbackend.Notification.dto.GenerateNotifDTO;
+import com.nakahama.simpenbackend.Notification.service.NotificationService;
 import com.nakahama.simpenbackend.PerubahanKelas.dto.Reschedule.RescheduleMapper;
 import com.nakahama.simpenbackend.PerubahanKelas.dto.Reschedule.CreateReschedule;
 
@@ -29,9 +33,31 @@ public class RescheduleController {
     @Autowired
     SesiKelasService sesiKelasService;
 
+    @Autowired
+    NotificationService notificationService;
+
+    @Autowired
+    UserService userService;
+
     @PostMapping("/create/{kelasId}")
     public ResponseEntity<Object> createReschedule(@Valid @RequestBody List<CreateReschedule> rescheduleRequest) {
         rescheduleService.save(rescheduleRequest);
+
+        // Generate Notification
+        List<UserModel> listOps = userService.getAllOperasional();
+
+        for (UserModel userModel : listOps) {
+            GenerateNotifDTO notification = new GenerateNotifDTO();
+            notification.setAkunPenerima(userModel.getId());
+            notification.setTipe(5);
+
+            // Content of Notification
+            notification.setJudul("pengajuan perubahan jadwal sesi kelas");
+            notification.getIsi().put("sesiKelas", String.valueOf(rescheduleRequest));
+
+            notificationService.generateNotification(notification);
+        }
+
         return ResponseUtil.okResponse(null, rescheduleRequest.size() + " Reschedule created");
     }
 

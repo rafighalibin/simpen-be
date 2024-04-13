@@ -148,6 +148,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<UserModel> retrieveAllUser() {
+
         return userDb.findAll();
     }
 
@@ -250,6 +251,21 @@ public class UserServiceImpl implements UserService {
         response.setNoTelp(user.getNoTelp());
 
         return response;
+    }
+
+    @Override
+    public List<UserModel> getAllOperasional() {
+        List<UserModel> listUser = retrieveAllUser();
+        List<UserModel> listOps = new ArrayList<>();
+
+        for (UserModel userModel : listUser) {
+            if (userModel.getRole().equals("operasional")) {
+                listOps.add(userModel);
+            }
+        }
+
+        return listOps;
+
     }
 
 }
