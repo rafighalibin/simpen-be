@@ -1,5 +1,6 @@
 package com.nakahama.simpenbackend.Payroll.controller;
 
+import java.time.Period;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,7 +18,9 @@ import com.nakahama.simpenbackend.Payroll.dto.AbsenPengajarMapper;
 import com.nakahama.simpenbackend.Payroll.dto.ReadAbsenPengajar;
 import com.nakahama.simpenbackend.Payroll.dto.createAbsenPengajarDTO;
 import com.nakahama.simpenbackend.Payroll.model.AbsenPengajar;
+import com.nakahama.simpenbackend.Payroll.model.PeriodePayroll;
 import com.nakahama.simpenbackend.Payroll.service.AbsenPengajarService;
+import com.nakahama.simpenbackend.Payroll.service.PeriodePayrollService;
 import com.nakahama.simpenbackend.User.model.Pengajar;
 import com.nakahama.simpenbackend.util.ResponseUtil;
 
@@ -33,6 +36,9 @@ public class AbsenPengajarController {
 
     @Autowired
     SesiKelasService sesiKelasService;
+
+    @Autowired
+    PeriodePayrollService periodePayrollService;
 
     @Autowired
     AuthService authService;
@@ -51,7 +57,7 @@ public class AbsenPengajarController {
     public ResponseEntity<Object> getAllAbsen() {
         List<ReadAbsenPengajar> listAbsenPengajar = new ArrayList<ReadAbsenPengajar>();
         for (AbsenPengajar absenPengajar : absenPengajarService.getAllAbsenPengajar()) {
-            listAbsenPengajar.add(AbsenPengajarMapper.toReadDto(absenPengajar));
+            listAbsenPengajar.add(AbsenPengajarMapper.toReadDto(absenPengajar, periodePayrollService.getAllPeriodePayroll()));
         }
         return ResponseUtil.okResponse(listAbsenPengajar, "Success");
     }
