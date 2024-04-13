@@ -2,6 +2,8 @@ package com.nakahama.simpenbackend.Platform.model;
 
 import java.util.UUID;
 
+import com.nakahama.simpenbackend.Kelas.model.SesiKelas;
+
 import java.time.LocalDateTime;
 
 import jakarta.persistence.*;
@@ -15,6 +17,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
+@Table(name = "jadwal_ruangan")
 public class JadwalRuangan {
     @Id
     private UUID id = UUID.randomUUID();
@@ -25,4 +28,7 @@ public class JadwalRuangan {
 
     @Column(name = "waktu")
     private LocalDateTime waktu;
+
+    @OneToOne
+    private SesiKelas sesiKelas;
 }

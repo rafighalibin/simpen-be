@@ -28,8 +28,6 @@ public interface SesiKelasDb extends JpaRepository<SesiKelas, UUID> {
 
     Optional<SesiKelas> findByStatus(String status);
 
-    Optional<SesiKelas> findByPlatform(String platform);
-
     List<SesiKelas> findAllByPengajar(UserModel pengajar);
 
     List<SesiKelas> findAllByKelas(Kelas kelas);
