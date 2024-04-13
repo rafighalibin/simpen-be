@@ -12,6 +12,7 @@ import com.nakahama.simpenbackend.Kelas.model.*;
 import com.nakahama.simpenbackend.Kelas.repository.SesiKelasDb;
 import com.nakahama.simpenbackend.User.model.Pengajar;
 import com.nakahama.simpenbackend.User.model.UserModel; // need to change after Pengajar model is created
+import com.nakahama.simpenbackend.User.repository.PengajarDb;
 import com.nakahama.simpenbackend.User.service.UserService;
 
 @Service
@@ -19,6 +20,9 @@ public class SesiKelasServiceImpl implements SesiKelasService {
 
     @Autowired
     SesiKelasDb sesiKelasDb;
+
+    @Autowired
+    PengajarDb pengajarDb;
 
     @Autowired
     @Lazy
@@ -128,6 +132,12 @@ public class SesiKelasServiceImpl implements SesiKelasService {
 
             sesiKelas.setListMuridSesi(muridSesiService.createListMuridSesi(listMurid, sesiKelas));
             save(sesiKelas);
+
+            if(pengajar.getSesiKelas().size() == 0){
+                pengajar.setSesiKelas(new ArrayList<SesiKelas>());
+            }
+            pengajar.getSesiKelas().add(sesiKelas);
+            pengajarDb.save(pengajar);
 
             nomorPertemuan++;
         }
