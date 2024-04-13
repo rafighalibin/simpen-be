@@ -64,8 +64,8 @@ public class Notification {
 
     // Mitra Pengajar
     // 1: Assign kelas --> Attr: id Kelas, jam kelas, hari kelas
-    // 2: Feedback --> Attr: nama pemberi, isi
-    // 3: Setuju/tolak perubahan jadwal --> Attr:
+    // 2: Feedback --> Attr: nama pemberi, isi belom
+    // 3: Setuju/tolak perubahan jadwal --> Attr: belom
     // 4: Setuju/tolak pengajar pengganti
 
     // Operasional

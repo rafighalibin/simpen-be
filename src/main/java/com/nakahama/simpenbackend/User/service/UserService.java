@@ -15,6 +15,8 @@ public interface UserService {
 
     public List<UserModel> retrieveAllUser();
 
+    public List<UserModel> getAllOperasional();
+
     public String generatePassword(int length);
 
     public boolean isDeactivate(String email);

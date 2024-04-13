@@ -1,5 +1,6 @@
 package com.nakahama.simpenbackend.User.model;
 
+import java.time.LocalDateTime;
 import java.io.Serializable;
 import java.util.List;
 import java.util.UUID;
@@ -56,6 +57,12 @@ public class UserModel implements Serializable {
     @Size(max = 100)
     @Column(name = "role")
     private String role;
+
+    @Column(name = "last_login")
+    private LocalDateTime lastLogin;
+
+    @Column(name = "is_inactive")
+    private boolean isInactive = false;
 
     @OneToMany(mappedBy = "akunPenerima", cascade = CascadeType.ALL)
     private List<Notification> notifikasi;

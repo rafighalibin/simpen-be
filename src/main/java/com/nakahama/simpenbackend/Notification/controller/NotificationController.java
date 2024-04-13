@@ -14,7 +14,6 @@ import com.nakahama.simpenbackend.Notification.model.Notification;
 import com.nakahama.simpenbackend.Notification.service.NotificationService;
 import com.nakahama.simpenbackend.util.ResponseUtil;
 
-import jakarta.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -34,7 +33,6 @@ public class NotificationController {
     public ResponseEntity<Object> setNotifStatus(@RequestBody SetStatusNotifDTO setStatusNotifDTO) {
         notificationService.setNotifStatus(setStatusNotifDTO);
         return ResponseUtil.okResponse(null, "Success");
-
     }
 
     @GetMapping("")
