@@ -17,6 +17,8 @@ public interface SesiKelasService {
 
     public SesiKelas save(SesiKelas sesiKelas);
 
+    public SesiKelas updateJadwal(SesiKelas sesiKelas);
+
     public SesiKelas getById(UUID id);
 
     public void delete(UUID id);

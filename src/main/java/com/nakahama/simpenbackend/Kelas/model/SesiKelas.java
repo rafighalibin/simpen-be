@@ -47,7 +47,7 @@ public class SesiKelas {
     @JsonIgnore
     private Kelas kelas;
 
-    @OneToOne
+    @OneToOne(orphanRemoval = true, cascade = CascadeType.ALL)
     private JadwalRuangan jadwalRuangan;
 
     @OneToOne

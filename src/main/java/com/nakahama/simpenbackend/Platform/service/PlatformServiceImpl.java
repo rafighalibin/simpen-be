@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.nakahama.simpenbackend.Kelas.model.SesiKelas;
+import com.nakahama.simpenbackend.Kelas.service.SesiKelasService;
 import com.nakahama.simpenbackend.Platform.dto.Ruangan.CreateRuanganRequest;
 import com.nakahama.simpenbackend.Platform.dto.Ruangan.RuanganMapper;
 import com.nakahama.simpenbackend.Platform.dto.Ruangan.UpdateRuanganRequest;
@@ -36,6 +37,9 @@ public class PlatformServiceImpl implements PlatformService {
 
     @Autowired
     JadwalService jadwalService;
+
+    @Autowired
+    SesiKelasService sesiKelasService;
 
     @Override
     public Platform save(CreateZoomRequest createZoomRequest) {
@@ -112,13 +116,13 @@ public class PlatformServiceImpl implements PlatformService {
             JadwalZoom jadwalZoom = new JadwalZoom();
             jadwalZoom.setWaktu(sesiKelas.getWaktuPelaksanaan());
             jadwalZoom.setZoom(zoom);
-            jadwalService.create(jadwalZoom);
+            jadwalService.save(jadwalZoom);
             jadwalZoom.setSesiKelas(sesiKelas);
             sesiKelas.setJadwalZoom(jadwalZoom);
             listJadwalZoom.add(jadwalZoom);
 
-            jadwalService.create(jadwalZoom);
-
+            jadwalService.save(jadwalZoom);
+            sesiKelasService.updateJadwal(sesiKelas);
         }
         return listJadwalZoom;
     }
