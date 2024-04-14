@@ -29,6 +29,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.PutMapping;
 
 @RestController
@@ -91,12 +92,6 @@ public class JenisKelasController {
     @GetMapping("/existing-attributes")
     public ResponseEntity<Object> getAllExistingAttributes() {
         Map<String, List<String>> existingAttributes = jenisKelasService.getAllExistingAttributes();
-        return ResponseUtil.okResponse(existingAttributes, "Success");
-    }
-
-    @GetMapping("/existing-attributes-detail")
-    public ResponseEntity<Object> getExistingAttributes(@RequestParam("nama") String nama) {
-        Map<String, List<String>> existingAttributes = jenisKelasService.getExistingAttributes(nama);
         return ResponseUtil.okResponse(existingAttributes, "Success");
     }
     

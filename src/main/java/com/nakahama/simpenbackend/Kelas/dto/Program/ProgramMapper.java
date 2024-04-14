@@ -24,7 +24,7 @@ public class ProgramMapper {
         response.setNama(request.getNama());
         response.setJumlahLevel(request.getJumlahLevel());
         response.setJumlahPertemuan(request.getJumlahPertemuan());
-        response.setJenisKelas(new ArrayList<JenisKelasDTO>());
+        response.setListJenisKelas(new ArrayList<JenisKelasDTO>());
         for (Kelas kelas : request.getKelas()) {
             response.getListJenisKelas().add(JenisKelasMapper.toDto(kelas.getJenisKelas()));
         }

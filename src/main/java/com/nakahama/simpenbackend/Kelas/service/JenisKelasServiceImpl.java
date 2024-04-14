@@ -236,10 +236,10 @@ public class JenisKelasServiceImpl implements JenisKelasService {
     }
 
     @Override
-    public ReadJenisKelas findJenisKelas(FindJenisKelas findJenisKelasRequest) {
-        List<JenisKelas> jenisKelas = jenisKelasDb.findAllByNama(findJenisKelasRequest.getNama());
+    public ReadJenisKelas findJenisKelas(String nama, String tipe, String moda, String bahasa) {
+        List<JenisKelas> jenisKelas = jenisKelasDb.findAllByNama(nama);
         for (JenisKelas jk : jenisKelas) {
-            if (jk.getTipe().equals(findJenisKelasRequest.getTipe()) && jk.getModaPertemuan().equals(findJenisKelasRequest.getModaPertemuan()) && jk.getBahasa().equals(findJenisKelasRequest.getBahasa())) {
+            if (jk.getTipe().equals(tipe) && jk.getModaPertemuan().equals(moda) && jk.getBahasa().equals(bahasa)) {
                 return JenisKelasMapper.toReadDto(jk);
             }
         }
