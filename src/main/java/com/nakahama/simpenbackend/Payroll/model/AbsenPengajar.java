@@ -1,5 +1,6 @@
 package com.nakahama.simpenbackend.Payroll.model;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 import jakarta.persistence.Id;
@@ -38,6 +39,14 @@ public class AbsenPengajar {
     @NotNull
     @ManyToOne
     private SesiKelas sesiKelas;
+
+    @NotNull
+    @ManyToOne
+    private PeriodePayroll periodePayroll;
+
+
+    @NotNull
+    private LocalDateTime tanggalUpdate;
 
     @NotNull
     private Integer jumlahFee = 200;
