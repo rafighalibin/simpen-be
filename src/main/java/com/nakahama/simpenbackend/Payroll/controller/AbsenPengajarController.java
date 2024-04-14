@@ -57,8 +57,14 @@ public class AbsenPengajarController {
     public ResponseEntity<Object> getAllAbsen() {
         List<ReadAbsenPengajar> listAbsenPengajar = new ArrayList<ReadAbsenPengajar>();
         for (AbsenPengajar absenPengajar : absenPengajarService.getAllAbsenPengajar()) {
-            listAbsenPengajar.add(AbsenPengajarMapper.toReadDto(absenPengajar, periodePayrollService.getAllPeriodePayroll()));
+            listAbsenPengajar.add(AbsenPengajarMapper.toReadDto(absenPengajar));
         }
         return ResponseUtil.okResponse(listAbsenPengajar, "Success");
+    }
+
+    @GetMapping("/periode-payroll")
+    public ResponseEntity<Object> getAllPeriodePayroll() {
+        List<PeriodePayroll> listPeriodePayroll = periodePayrollService.getAllPeriodePayroll();
+        return ResponseUtil.okResponse(listPeriodePayroll, "Success");
     }
 }
