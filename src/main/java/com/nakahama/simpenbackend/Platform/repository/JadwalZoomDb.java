@@ -18,10 +18,15 @@ import jakarta.transaction.Transactional;
 @Transactional
 public interface JadwalZoomDb extends JpaRepository<JadwalZoom, UUID> {
 
-    @Query("SELECT P FROM Platform P WHERE NOT EXISTS (SELECT j FROM JadwalZoom j WHERE j.waktu BETWEEN :startTime AND :endTime AND P = j.zoom)")
-    List<Platform> checkJadwal(@Param("startTime") LocalDateTime startTime, @Param("endTime") LocalDateTime endTime);
+        @Query("SELECT P FROM Platform P WHERE NOT EXISTS (SELECT j FROM JadwalZoom j WHERE j.waktu BETWEEN :startTime AND :endTime AND P = j.zoom)")
+        List<Platform> checkJadwal(@Param("startTime") LocalDateTime startTime,
+                        @Param("endTime") LocalDateTime endTime);
 
-    @Query("SELECT j FROM JadwalZoom j WHERE j.waktu BETWEEN :startTime AND :endTime AND j.zoom = :zoom")
-    List<JadwalZoom> checkJadwalForZoom(@Param("startTime") LocalDateTime startTime,
-            @Param("endTime") LocalDateTime endTime, @Param("zoom") Zoom zoom);
+        @Query("SELECT j FROM JadwalZoom j WHERE j.waktu BETWEEN :startTime AND :endTime AND j.zoom = :zoom")
+        List<JadwalZoom> checkJadwalForZoom(@Param("startTime") LocalDateTime startTime,
+                        @Param("endTime") LocalDateTime endTime, @Param("zoom") Zoom zoom);
+
+        @Query("SELECT P FROM Platform P WHERE NOT EXISTS (SELECT j FROM JadwalZoom j WHERE j.sesiKelas IS NOT NULL AND NOT (j.waktu BETWEEN :startTime AND :endTime OR NOT j.sesiKelas.id = :sesiId) AND P = j.zoom) ")
+        List<Platform> checkJadwalForSesi(@Param("startTime") LocalDateTime startTime,
+                        @Param("endTime") LocalDateTime endTime, @Param("sesiId") UUID sesiId);
 }

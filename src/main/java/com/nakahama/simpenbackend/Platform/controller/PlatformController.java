@@ -16,9 +16,11 @@ import com.nakahama.simpenbackend.Platform.dto.Ruangan.CreateRuanganRequest;
 import com.nakahama.simpenbackend.Platform.dto.Ruangan.UpdateRuanganRequest;
 import com.nakahama.simpenbackend.Platform.dto.Zoom.CreateZoomRequest;
 import com.nakahama.simpenbackend.Platform.dto.Zoom.UpdateZoomRequest;
+import com.nakahama.simpenbackend.Platform.dto.Zoom.ZoomMapper;
 import com.nakahama.simpenbackend.Platform.model.Platform;
 import com.nakahama.simpenbackend.Platform.model.Ruangan;
 import com.nakahama.simpenbackend.Platform.model.Zoom;
+import com.nakahama.simpenbackend.Platform.service.JadwalService;
 import com.nakahama.simpenbackend.Platform.service.PlatformService;
 import com.nakahama.simpenbackend.util.ResponseUtil;
 
@@ -34,6 +36,9 @@ public class PlatformController {
 
     @Autowired
     PlatformService platformService;
+
+    @Autowired
+    JadwalService jadwalService;
 
     @PostMapping(value = "", params = "zoom")
     public ResponseEntity<Object> CreateZoom(@RequestParam("zoom") String tipe,
@@ -85,5 +90,12 @@ public class PlatformController {
     public ResponseEntity<Object> DeletePlatform(@PathVariable("id") String id) {
         platformService.delete(UUID.fromString(id));
         return ResponseUtil.okResponse(null, "Success");
+    }
+
+    @GetMapping(value = "", params = { "zoom", "kelasId" })
+    public ResponseEntity<Object> getAvalaibleZoom(@RequestParam("zoom") String tipe,
+            @RequestParam("kelasId") Integer kelasId) {
+        List<List<Platform>> listSesiZoom = jadwalService.getAvalaibleZoom(kelasId);
+        return ResponseUtil.okResponse(ZoomMapper.toListReadSesiZoom(listSesiZoom), "Success");
     }
 }
