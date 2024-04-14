@@ -1,7 +1,6 @@
 package com.nakahama.simpenbackend.Payroll.dto.Fee;
 
 import java.util.UUID;
-import java.time.LocalDateTime;
 
 import com.nakahama.simpenbackend.Kelas.dto.JenisKelas.ReadJenisKelas;
 
@@ -21,7 +20,7 @@ import lombok.Setter;
 public class ReadFee {
     private UUID id;
 
-    private String program;
+    private UUID program;
 
     private ReadJenisKelas jenisKelas;
 
@@ -31,5 +30,5 @@ public class ReadFee {
 
     private int maxStudents;
 
-    private LocalDateTime lastUpdated;
+    private String lastUpdated;
 }

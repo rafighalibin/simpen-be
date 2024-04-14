@@ -6,6 +6,8 @@ import java.time.LocalDateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.nakahama.simpenbackend.Kelas.dto.Program.ReadProgram;
+import com.nakahama.simpenbackend.Kelas.dto.Program.ProgramMapper;
 import com.nakahama.simpenbackend.Kelas.model.JenisKelas;
 import com.nakahama.simpenbackend.Kelas.model.Kelas;
 import com.nakahama.simpenbackend.Kelas.model.Program;
@@ -14,6 +16,7 @@ import com.nakahama.simpenbackend.Kelas.service.ProgramService;
 import com.nakahama.simpenbackend.Payroll.dto.Fee.CreateFee;
 import com.nakahama.simpenbackend.Payroll.dto.Fee.FeeMapper;
 import com.nakahama.simpenbackend.Payroll.dto.Fee.ReadFee;
+import com.nakahama.simpenbackend.Payroll.dto.Fee.ReadFeeGrouped;
 import com.nakahama.simpenbackend.Payroll.dto.Fee.UpdateFee;
 import com.nakahama.simpenbackend.Payroll.model.FeeModel;
 import com.nakahama.simpenbackend.Payroll.repository.FeeDb;
@@ -52,6 +55,12 @@ public class FeeServiceImpl implements FeeService{
         Program program = programService.getById(feeRequest.getProgram());
         if (program == null) {
             throw new BadRequestException("Program with id " + feeRequest.getProgram() + " not found");
+        }
+        if(!program.getJenisKelas().contains(jenisKelas)){
+            throw new BadRequestException("Program with id " + feeRequest.getProgram() + " does not have jenis kelas with id " + feeRequest.getJenisKelas());
+        }
+        if(feeDb.findByProgramAndJenisKelas(program, jenisKelas) != null){
+            throw new BadRequestException("Fee for program with id " + feeRequest.getProgram() + " and jenis kelas with id " + feeRequest.getJenisKelas() + " already exists");
         }
         fee.setProgram(program);
         fee.setLastUpdated(LocalDateTime.now());
@@ -92,5 +101,42 @@ public class FeeServiceImpl implements FeeService{
         fee.setMaxStudents(feeRequest.getMaxStudents());
         fee.setLastUpdated(LocalDateTime.now());
         return feeDb.save(fee);
+    }
+
+    @Override
+    public List<ReadProgram> getDistinctProgram() {
+        List<Program> listProgramDistinct = feeDb.findDistinctProgram();
+        if(listProgramDistinct.isEmpty()){
+            throw new BadRequestException("No program found");
+        }
+
+        List<ReadProgram> listProgram = new ArrayList<ReadProgram>();
+
+        for (Program program : listProgramDistinct) {
+            ReadProgram response = ProgramMapper.toDto(program);
+            listProgram.add(response);
+        }
+        return listProgram;
+    }
+
+    @Override
+    public List<ReadFeeGrouped> getFeeGrouped() {
+        List<ReadFeeGrouped> listFeeGrouped = new ArrayList<ReadFeeGrouped>();
+        List<Program> listProgramDistinct = feeDb.findDistinctProgram();
+        if(listProgramDistinct.isEmpty()){
+            throw new BadRequestException("No program found");
+        }
+
+        for (Program program : listProgramDistinct) {
+            ReadFeeGrouped response = new ReadFeeGrouped();
+            response.setProgram(ProgramMapper.toDto(program));
+            response.setListFee(new ArrayList<ReadFee>());
+            for (FeeModel fee : feeDb.findByProgram(program)) {
+                ReadFee feeResponse = FeeMapper.toDto(fee);
+                response.getListFee().add(feeResponse);
+            }
+            listFeeGrouped.add(response);
+        }
+        return listFeeGrouped;
     }
 }

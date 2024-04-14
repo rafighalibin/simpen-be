@@ -20,10 +20,11 @@ public class FeeMapper {
         JenisKelas jenisKelas = entity.getJenisKelas();
         response.setJenisKelas(JenisKelasMapper.toReadDto(jenisKelas));
         Program program = entity.getProgram();
-        response.setProgram(program.getNama());
+        response.setProgram(program.getId());
         response.setBaseFee(entity.getBaseFee());
         response.setStudentMultiplier(entity.getStudentMultiplier());
         response.setMaxStudents(entity.getMaxStudents());
+        response.setLastUpdated(entity.getLastUpdated().toString());
         return response;
     }
 }
