@@ -6,9 +6,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.nakahama.simpenbackend.Kelas.dto.JenisKelas.CreateJenisKelas;
+import com.nakahama.simpenbackend.Kelas.dto.JenisKelas.JenisKelasDTO;
 import com.nakahama.simpenbackend.Kelas.dto.JenisKelas.JenisKelasMapper;
 import com.nakahama.simpenbackend.Kelas.dto.JenisKelas.ReadJenisKelas;
 import com.nakahama.simpenbackend.Kelas.dto.JenisKelas.UpdateJenisKelas;
+import com.nakahama.simpenbackend.Kelas.dto.Program.ProgramDTO;
+import com.nakahama.simpenbackend.Kelas.dto.Program.ProgramMapper;
 import com.nakahama.simpenbackend.Kelas.model.*;
 import com.nakahama.simpenbackend.Kelas.repository.ProgramDb;
 import com.nakahama.simpenbackend.Kelas.repository.JenisKelas.BahasaDb;
@@ -46,16 +49,31 @@ public class JenisKelasServiceImpl implements JenisKelasService {
         List<ReadJenisKelas> listJenisKelas = new ArrayList<ReadJenisKelas>();
         for (JenisKelas jenisKelas : jenisKelasDb.findAll()) {
             ReadJenisKelas response = JenisKelasMapper.toReadDto(jenisKelas);
+            response.setListProgram(new ArrayList<ProgramDTO>());
+            for (Program program : jenisKelas.getProgram()) {
+                response.getListProgram().add(ProgramMapper.toDto(program));
+            }
             listJenisKelas.add(response);
         }
         return listJenisKelas;
     }
 
     @Override
+    public ReadJenisKelas getJenisKelasById(UUID id) {
+        JenisKelas jenisKelas = getById(id);
+        ReadJenisKelas response = JenisKelasMapper.toReadDto(jenisKelas);
+        response.setListProgram(new ArrayList<ProgramDTO>());
+        for (Program program : jenisKelas.getProgram()) {
+            response.getListProgram().add(ProgramMapper.toDto(program));
+        }
+        return response;
+    }
+
+    @Override
     public void save(CreateJenisKelas jenisKelasRequest) {
 
         if (!getByNama(jenisKelasRequest.getNama()).isEmpty()) {
-            throw new BadRequestException("Tag with name " + jenisKelasRequest.getNama() + " already exists");
+            throw new BadRequestException("Jenis with name " + jenisKelasRequest.getNama() + " already exists");
         }
 
         UserModel picAkademikUserModel = userService.getUserById(jenisKelasRequest.getPicAkademikId());

@@ -18,6 +18,8 @@ public interface JenisKelasService {
 
     public JenisKelas getById(UUID id);
 
+    public ReadJenisKelas getJenisKelasById(UUID id);
+
     public void delete(UUID uuid);
 
     public List<JenisKelas> getByNama(String nama);

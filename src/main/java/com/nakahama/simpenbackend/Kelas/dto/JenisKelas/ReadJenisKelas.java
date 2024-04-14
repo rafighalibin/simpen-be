@@ -1,6 +1,9 @@
 package com.nakahama.simpenbackend.Kelas.dto.JenisKelas;
 
+import java.util.List;
 import java.util.UUID;
+
+import com.nakahama.simpenbackend.Kelas.dto.Program.ProgramDTO;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -27,4 +30,8 @@ public class ReadJenisKelas {
     private String bahasa;
 
     private UUID picAkademikId;
+
+    private String picAkademikNama;
+
+    List<ProgramDTO> listProgram;
 }

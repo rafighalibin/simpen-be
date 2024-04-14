@@ -85,7 +85,7 @@ public class KelasController {
     }
 
     @GetMapping("/kelas/{kelasId}")
-    public ResponseEntity<Object> detailKelas(@PathVariable int kelasId) {
+    public ResponseEntity<Object> detailKelas(@PathVariable("kelasId") int kelasId) {
 
         Kelas updatedKelas = kelasService.getById(kelasId);
         return ResponseUtil.okResponse(KelasMapper.toDetailDto(updatedKelas, updatedKelas.getListsesiKelas(),
@@ -95,7 +95,7 @@ public class KelasController {
 
     @PutMapping("/kelas/{kelasId}")
     public ResponseEntity<Object> updateKelas(@Valid @RequestBody UpdateKelas updateKelasRequest,
-            @PathVariable int kelasId) {
+            @PathVariable("kelasId") int kelasId) {
 
         updateKelasRequest.setId(kelasId);
         Kelas updatedKelas = kelasService.update(updateKelasRequest);
@@ -105,7 +105,7 @@ public class KelasController {
     }
 
     @PostMapping("/kelas/playlist/{kelasId}")
-    public ResponseEntity<Object> addPlaylist(@PathVariable int kelasId, @Valid @RequestBody AddPlaylist linkPlaylist) {
+    public ResponseEntity<Object> addPlaylist(@PathVariable("kelasId") int kelasId, @Valid @RequestBody AddPlaylist linkPlaylist) {
 
         Kelas updatedKelas = kelasService.addPlaylist(kelasId, linkPlaylist.getLinkPlaylist());
         return ResponseUtil.okResponse(KelasMapper.toDetailDto(updatedKelas, updatedKelas.getListsesiKelas(),
@@ -114,7 +114,7 @@ public class KelasController {
     }
 
     @DeleteMapping("/kelas/{kelasId}")
-    public ResponseEntity<Object> deleteKelas(@PathVariable int kelasId) {
+    public ResponseEntity<Object> deleteKelas(@PathVariable("kelasId") int kelasId) {
 
         kelasService.delete(kelasId);
         return ResponseUtil.okResponse(null, "Kelas dengan id " + kelasId + " berhasil dihapus");

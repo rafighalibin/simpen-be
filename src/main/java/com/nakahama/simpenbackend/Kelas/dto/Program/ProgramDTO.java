@@ -1,9 +1,6 @@
 package com.nakahama.simpenbackend.Kelas.dto.Program;
 
-import java.util.List;
 import java.util.UUID;
-
-import com.nakahama.simpenbackend.Kelas.dto.JenisKelas.JenisKelasDTO;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -18,15 +15,12 @@ import lombok.Setter;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class ReadProgram {
-
-    private UUID Id;
+public class ProgramDTO {
+    private UUID id;
 
     private String nama;
 
     private int jumlahLevel;
 
     private int jumlahPertemuan;
-
-    private List<JenisKelasDTO> listJenisKelas;
 }

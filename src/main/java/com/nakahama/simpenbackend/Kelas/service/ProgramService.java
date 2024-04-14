@@ -25,5 +25,7 @@ public interface ProgramService {
 
     public ReadProgram update(UpdateProgram programRequest);
 
+    public ReadProgram getProgramById(UUID id);
+
     public List<ReadDistinctJenisKelasProgram> getDistinctJenisKelas(UUID id);
 }

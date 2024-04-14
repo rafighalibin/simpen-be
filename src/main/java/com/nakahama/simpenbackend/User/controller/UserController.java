@@ -69,13 +69,13 @@ public class UserController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Object> deleteUser(@PathVariable String id) {
+    public ResponseEntity<Object> deleteUser(@PathVariable("id") String id) {
         userService.deleteUser(UUID.fromString(id));
         return ResponseUtil.okResponse(null, "User dengan id " + id + " berhasil dihapus");
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Object> editUser(@PathVariable String id,
+    public ResponseEntity<Object> editUser(@PathVariable("id") String id,
             @RequestBody EditUserRequestDTO editUserRequestDTO) {
         editUserRequestDTO.setId(UUID.fromString(id));
         UserModel user = userService.updateUser(editUserRequestDTO);
@@ -88,7 +88,7 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Object> getUser(@PathVariable String id) {
+    public ResponseEntity<Object> getUser(@PathVariable("id") String id) {
         UserWithTagsResponseDTO response = userService.getUserAndTag(UUID.fromString(id));
         return ResponseUtil.okResponse(response, "Success");
     }

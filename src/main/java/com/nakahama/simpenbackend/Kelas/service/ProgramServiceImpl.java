@@ -7,8 +7,10 @@ import org.springframework.stereotype.Service;
 
 import com.nakahama.simpenbackend.Kelas.dto.JenisKelas.JenisKelasDTO;
 import com.nakahama.simpenbackend.Kelas.dto.JenisKelas.JenisKelasMapper;
+import com.nakahama.simpenbackend.Kelas.dto.JenisKelas.ReadJenisKelas;
 import com.nakahama.simpenbackend.Kelas.dto.Program.CreateProgram;
 import com.nakahama.simpenbackend.Kelas.dto.Program.DeleteProgram;
+import com.nakahama.simpenbackend.Kelas.dto.Program.ProgramDTO;
 import com.nakahama.simpenbackend.Kelas.dto.Program.UpdateProgram;
 import com.nakahama.simpenbackend.Kelas.dto.Program.ProgramMapper;
 import com.nakahama.simpenbackend.Kelas.dto.Program.ReadDistinctJenisKelasProgram;
@@ -31,10 +33,10 @@ public class ProgramServiceImpl implements ProgramService {
     public List<ReadProgram> getAll() {
         List<ReadProgram> listProgram = new ArrayList<ReadProgram>();
         for (Program program : programDb.findAll()) {
-            ReadProgram response = ProgramMapper.toDto(program);
-            response.setJenisKelas(new ArrayList<JenisKelasDTO>());
+            ReadProgram response = ProgramMapper.toReadDto(program);
+            response.setListJenisKelas(new ArrayList<JenisKelasDTO>());
             for (JenisKelas jenisKelas : program.getJenisKelas()) {
-                response.getJenisKelas().add(JenisKelasMapper.toDto(jenisKelas));
+                response.getListJenisKelas().add(JenisKelasMapper.toDto(jenisKelas));
             }
             listProgram.add(response);
         }
@@ -45,10 +47,11 @@ public class ProgramServiceImpl implements ProgramService {
     public Program save(CreateProgram programRequest) {
         Program program = ProgramMapper.toEntity(programRequest);
         program.setJenisKelas(new ArrayList<JenisKelas>());
+        programDb.save(program);
         for (UUID jenisKelasId : programRequest.getJenisKelas()) {
             JenisKelas jenisKelas = jenisKelasService.getById(jenisKelasId);
-            if (jenisKelas == null) {
-                throw new BadRequestException("Jenis Kelas with id " + jenisKelasId + " not found");
+            if (!jenisKelas.getProgram().contains(program)) {
+                jenisKelas.getProgram().add(program);
             }
             program.getJenisKelas().add(jenisKelas);
         }
@@ -66,8 +69,24 @@ public class ProgramServiceImpl implements ProgramService {
 
     @Override
     public void delete(UUID id) {
-        getById(id);
+        Program programRequest = getById(id);
+        programRequest.getJenisKelas().forEach(jenisKelas -> {
+            jenisKelas.getProgram().remove(programRequest);
+        });
+        
         programDb.deleteById(id);
+        
+    }
+
+    @Override
+    public ReadProgram getProgramById(UUID id) {
+        Program program = getById(id);
+        ReadProgram response = ProgramMapper.toReadDto(program);
+        response.setListJenisKelas(new ArrayList<JenisKelasDTO>());
+        for (JenisKelas jenisKelas : program.getJenisKelas()) {
+            response.getListJenisKelas().add(JenisKelasMapper.toDto(jenisKelas));
+        }
+        return response;
     }
 
     @Override
@@ -83,10 +102,10 @@ public class ProgramServiceImpl implements ProgramService {
         existingProgram.setJumlahPertemuan(programRequest.getJumlahPertemuan());
         existingProgram = programDb.save(existingProgram);
 
-        ReadProgram response = ProgramMapper.toDto(existingProgram);
-        response.setJenisKelas(new ArrayList<JenisKelasDTO>());
+        ReadProgram response = ProgramMapper.toReadDto(existingProgram);
+        response.setListJenisKelas(new ArrayList<JenisKelasDTO>());
         for (JenisKelas jenisKelas : existingProgram.getJenisKelas()) {
-            response.getJenisKelas().add(JenisKelasMapper.toDto(jenisKelas));
+            response.getListJenisKelas().add(JenisKelasMapper.toDto(jenisKelas));
         }
         return response;
     }

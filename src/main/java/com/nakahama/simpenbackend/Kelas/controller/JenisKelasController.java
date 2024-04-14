@@ -11,8 +11,10 @@ import java.util.*;
 import com.nakahama.simpenbackend.Auth.service.AuthService;
 import com.nakahama.simpenbackend.Kelas.dto.JenisKelas.CreateJenisKelas;
 import com.nakahama.simpenbackend.Kelas.dto.JenisKelas.DeleteJenisKelas;
+import com.nakahama.simpenbackend.Kelas.dto.JenisKelas.JenisKelasMapper;
 import com.nakahama.simpenbackend.Kelas.dto.JenisKelas.ReadJenisKelas;
 import com.nakahama.simpenbackend.Kelas.dto.JenisKelas.UpdateJenisKelas;
+import com.nakahama.simpenbackend.Kelas.model.JenisKelas;
 import com.nakahama.simpenbackend.Kelas.service.JenisKelasService;
 import com.nakahama.simpenbackend.util.ResponseUtil;
 
@@ -51,12 +53,19 @@ public class JenisKelasController {
         return ResponseUtil.okResponse(listJenisKelas, "Success");
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<Object> getJenisKelasById(@PathVariable("id") String id) {
+        ReadJenisKelas jenisKelas = jenisKelasService.getJenisKelasById(UUID.fromString(id));
+        return ResponseUtil.okResponse(jenisKelas, "Success");
+    }
+
     @PutMapping("")
     public ResponseEntity<Object> updateJenisKelas(@Valid @RequestBody UpdateJenisKelas jenisKelasRequest) {
         ReadJenisKelas jenisKelas = jenisKelasService.update(jenisKelasRequest);
         return ResponseUtil.okResponse(jenisKelas,
                 "Jenis Kelas with name " + jenisKelas.getNama() + " has been updated");
     }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Object> deleteJenisKelasId(@PathVariable("id") String id) {
         jenisKelasService.delete(UUID.fromString(id));
@@ -70,14 +79,14 @@ public class JenisKelasController {
     }
 
     @GetMapping("/existing-attributes-detail")
-    public ResponseEntity<Object> getExistingAttributes(@RequestParam String nama) {
+    public ResponseEntity<Object> getExistingAttributes(@RequestParam("nama") String nama) {
         Map<String, List<String>> existingAttributes = jenisKelasService.getExistingAttributes(nama);
         return ResponseUtil.okResponse(existingAttributes, "Success");
     }
     
     @GetMapping("/find")
-    public ResponseEntity<Object> findJenisKelas(@RequestParam String nama, @RequestParam String tipe,
-            @RequestParam String modaPertemuan, @RequestParam String bahasa) {
+    public ResponseEntity<Object> findJenisKelas(@RequestParam("nama") String nama, @RequestParam("tipe") String tipe,
+            @RequestParam("modaPertemuan") String modaPertemuan, @RequestParam("bahasa") String bahasa) {
         ReadJenisKelas jenisKelas = jenisKelasService.findJenisKelas(nama, tipe, modaPertemuan, bahasa);
         return ResponseUtil.okResponse(jenisKelas, "Success");
     }
