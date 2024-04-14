@@ -10,8 +10,12 @@ import org.springframework.stereotype.Service;
 import com.nakahama.simpenbackend.Kelas.dto.SesiKelas.UpdateAbsensiMurid;
 import com.nakahama.simpenbackend.Kelas.model.*;
 import com.nakahama.simpenbackend.Kelas.repository.SesiKelasDb;
+import com.nakahama.simpenbackend.PerubahanKelas.model.PengajarMenggantikan;
+import com.nakahama.simpenbackend.PerubahanKelas.model.Reschedule;
+import com.nakahama.simpenbackend.Platform.service.PlatformService;
 import com.nakahama.simpenbackend.User.model.Pengajar;
 import com.nakahama.simpenbackend.User.model.UserModel; // need to change after Pengajar model is created
+import com.nakahama.simpenbackend.User.repository.PengajarDb;
 import com.nakahama.simpenbackend.User.service.UserService;
 
 @Service
@@ -19,6 +23,9 @@ public class SesiKelasServiceImpl implements SesiKelasService {
 
     @Autowired
     SesiKelasDb sesiKelasDb;
+
+    @Autowired
+    PengajarDb pengajarDb;
 
     @Autowired
     @Lazy
@@ -30,6 +37,10 @@ public class SesiKelasServiceImpl implements SesiKelasService {
     @Autowired
     @Lazy
     MuridSesiService muridSesiService;
+
+    @Autowired
+    @Lazy
+    PlatformService platformService;
 
     @Override
     public List<SesiKelas> getAll() {
@@ -57,11 +68,16 @@ public class SesiKelasServiceImpl implements SesiKelasService {
     @Override
     public List<SesiKelas> getByKelasId(int idKelas) {
         Kelas kelas = kelasService.getById(idKelas);
-        List<SesiKelas> sesiKelas = sesiKelasDb.findAllByKelas(kelas);
-        if (sesiKelas == null)
+        List<SesiKelas> listSesiKelas = sesiKelasDb.findAllByKelas(kelas);
+        if (listSesiKelas == null)
             throw new NoSuchElementException("Sesi Kelas with kelas " + kelas + " not found");
-        sesiKelas.sort(Comparator.comparing(SesiKelas::getNomorPertemuan));
-        return sesiKelas;
+        listSesiKelas.sort(Comparator.comparing(SesiKelas::getNomorPertemuan));
+        for (SesiKelas sesiKelas : listSesiKelas) {
+            sesiKelas.getListReschedule().sort(Comparator.comparing(Reschedule::getWaktuPermintaan));
+            sesiKelas.getListPengajarMenggantikan()
+                    .sort(Comparator.comparing(PengajarMenggantikan::getWaktuPermintaan));
+        }
+        return listSesiKelas;
     }
 
     @Override
@@ -111,7 +127,7 @@ public class SesiKelasServiceImpl implements SesiKelasService {
 
     @Override
     public List<SesiKelas> createListSesiKelas(List<LocalDateTime> jadwalKelas, Kelas createdKelas, Pengajar pengajar,
-            List<MuridKelas> listMurid, String platform) {
+            List<MuridKelas> listMurid) {
         List<SesiKelas> listSesiKelas = new ArrayList<>();
         int nomorPertemuan = 1;
         for (LocalDateTime e : jadwalKelas) {
@@ -119,7 +135,6 @@ public class SesiKelasServiceImpl implements SesiKelasService {
 
             sesiKelas.setKelas(createdKelas);
             sesiKelas.setPengajar(pengajar);
-            sesiKelas.setPlatform(platform);
             sesiKelas.setWaktuPelaksanaan(e);
             sesiKelas.setStatus("Scheduled");
             sesiKelas.setNomorPertemuan(nomorPertemuan);
@@ -129,8 +144,21 @@ public class SesiKelasServiceImpl implements SesiKelasService {
             sesiKelas.setListMuridSesi(muridSesiService.createListMuridSesi(listMurid, sesiKelas));
             save(sesiKelas);
 
+            if (pengajar.getSesiKelas().size() == 0) {
+                pengajar.setSesiKelas(new ArrayList<SesiKelas>());
+            }
+            pengajar.getSesiKelas().add(sesiKelas);
+            pengajarDb.save(pengajar);
+
             nomorPertemuan++;
         }
+
+        if (createdKelas.getJenisKelas().getModaPertemuan().equals("ONLINE")) {
+            platformService.assignZoom(listSesiKelas);
+        } else {
+            platformService.assignRuangan(listSesiKelas);
+        }
+
         return listSesiKelas;
     }
 
@@ -167,6 +195,22 @@ public class SesiKelasServiceImpl implements SesiKelasService {
             sesiKelas.setPersentaseKehadiran(0);
         }
         save(sesiKelas);
+        kelasService.updateRating(sesiKelas.getKelas().getKelasId());
+    }
+
+    @Override
+    public void updateStatus(SesiKelas sesiKelas) {
+        // TODO: adapt lagi
+        sesiKelas.setStatus("Finished");
+        save(sesiKelas);
+    }
+
+    @Override
+    public SesiKelas updateJadwal(SesiKelas sesiKelas) {
+        SesiKelas sesiKelasToUpdate = getById(sesiKelas.getId());
+        sesiKelasToUpdate.setJadwalZoom(sesiKelas.getJadwalZoom());
+        sesiKelasToUpdate.setJadwalRuangan(sesiKelas.getJadwalRuangan());
+        return save(sesiKelasToUpdate);
     }
 
 }

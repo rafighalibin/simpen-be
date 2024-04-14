@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.UUID;
 
 import com.nakahama.simpenbackend.PerubahanKelas.dto.Reschedule.CreateReschedule;
+import com.nakahama.simpenbackend.PerubahanKelas.dto.Reschedule.UpdateReschedule;
 import com.nakahama.simpenbackend.PerubahanKelas.model.Reschedule;
 
 public interface RescheduleService {
@@ -15,4 +16,6 @@ public interface RescheduleService {
     public Reschedule getById(UUID id);
 
     public List<Reschedule> getAllByKelasId(int kelasId);
+
+    public void approve(List<UpdateReschedule> listRescheduleRequest);
 }

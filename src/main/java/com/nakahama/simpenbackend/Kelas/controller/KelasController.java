@@ -17,6 +17,8 @@ import com.nakahama.simpenbackend.Kelas.dto.Kelas.KelasMapper;
 import com.nakahama.simpenbackend.Kelas.dto.Kelas.ReadKelas;
 import com.nakahama.simpenbackend.Kelas.dto.Kelas.UpdateKelas;
 import com.nakahama.simpenbackend.Kelas.service.*;
+import com.nakahama.simpenbackend.Notification.dto.GenerateNotifDTO;
+import com.nakahama.simpenbackend.Notification.service.NotificationService;
 import com.nakahama.simpenbackend.util.ResponseUtil;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -51,6 +53,9 @@ public class KelasController {
     @Autowired
     SesiKelasService sesiKelasService;
 
+    @Autowired
+    NotificationService notificationService;
+
     @SuppressWarnings("deprecation")
     @GetMapping("/kelas")
     public ResponseEntity<Object> getKelas(
@@ -76,6 +81,20 @@ public class KelasController {
         createKelasRequest.setOperasional(authService.getLoggedUser(request));
         Kelas createdKelas = kelasService.save(createKelasRequest);
 
+        // Generate Notification
+        GenerateNotifDTO notification = new GenerateNotifDTO();
+        notification.setAkunPenerima(createdKelas.getPengajar().getId());
+        notification.setTipe(1);
+
+        // Content of Notification
+        notification.setJudul("Anda mendapatkan jadwal kelas baru");
+        notification.getIsi().put("idKelas", String.valueOf(createdKelas.getKelasId()));
+        notification.getIsi().put("jadwalKelas", String.valueOf(createKelasRequest.getJadwalKelas()));
+        notification.getIsi().put("tanggalMulai", String.valueOf(createdKelas.getTanggalMulai()));
+        notification.getIsi().put("tanggalSelesai", String.valueOf(createdKelas.getTanggalSelesai()));
+
+        notificationService.generateNotification(notification);
+
         return ResponseUtil.okResponse(
                 KelasMapper.toDetailDto(
                         createdKelas,
@@ -85,7 +104,7 @@ public class KelasController {
     }
 
     @GetMapping("/kelas/{kelasId}")
-    public ResponseEntity<Object> detailKelas(@PathVariable("kelasId") int kelasId) {
+    public ResponseEntity<Object> detailKelas(@PathVariable(value="kelasId") int kelasId) {
 
         Kelas updatedKelas = kelasService.getById(kelasId);
         return ResponseUtil.okResponse(KelasMapper.toDetailDto(updatedKelas, updatedKelas.getListsesiKelas(),

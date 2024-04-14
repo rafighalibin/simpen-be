@@ -6,11 +6,17 @@ import org.springframework.web.bind.annotation.RestController;
 import com.nakahama.simpenbackend.Auth.dto.LoginReqDTO;
 import com.nakahama.simpenbackend.Auth.security.JwtUtils;
 import com.nakahama.simpenbackend.Auth.service.AuthService;
+import com.nakahama.simpenbackend.Notification.model.Notification;
 import com.nakahama.simpenbackend.User.model.UserModel;
+import com.nakahama.simpenbackend.User.repository.UserDb;
 import com.nakahama.simpenbackend.User.service.UserService;
 import com.nakahama.simpenbackend.util.BaseResponse;
 
 import jakarta.servlet.http.HttpServletRequest;
+
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -31,6 +37,9 @@ public class AuthController {
 
     @Autowired
     JwtUtils jwtUtils;
+
+    @Autowired
+    UserDb userDb;
 
     @Deprecated
     @PostMapping("/login")
@@ -70,6 +79,23 @@ public class AuthController {
         try {
             UserModel user = authService.getLoggedUser(request);
             if (user != null) {
+
+                // handle notif if expired
+                List<Notification> listNotif = user.getNotifikasi();
+                List<Notification> newNotif = new ArrayList<>();
+
+                for (Notification notif : listNotif) {
+                    LocalDateTime currDateTime = LocalDateTime.now();
+                    if (currDateTime.isAfter(notif.getExpirationDate())) {
+                        continue;
+                    } else {
+                        newNotif.add(notif);
+                    }
+                }
+
+                user.setNotifikasi(newNotif);
+                userDb.save(user);
+
                 response.setCode(HttpStatus.OK.value());
                 response.setStatus(HttpStatus.OK.getReasonPhrase());
                 response.setMessage("User found");

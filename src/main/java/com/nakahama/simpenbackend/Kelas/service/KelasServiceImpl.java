@@ -14,8 +14,11 @@ import com.nakahama.simpenbackend.Kelas.model.MuridKelas;
 import com.nakahama.simpenbackend.Kelas.model.Program;
 import com.nakahama.simpenbackend.Kelas.model.SesiKelas;
 import com.nakahama.simpenbackend.Kelas.repository.KelasDb;
+import com.nakahama.simpenbackend.Kelas.repository.ProgramDb;
+import com.nakahama.simpenbackend.Kelas.repository.JenisKelas.JenisKelasDb;
 import com.nakahama.simpenbackend.User.model.Pengajar;
 import com.nakahama.simpenbackend.User.model.UserModel;
+import com.nakahama.simpenbackend.User.repository.PengajarDb;
 import com.nakahama.simpenbackend.User.service.UserService;
 
 @Service
@@ -23,6 +26,15 @@ public class KelasServiceImpl implements KelasService {
 
     @Autowired
     KelasDb kelasDb;
+
+    @Autowired
+    JenisKelasDb jenisKelasDb;
+
+    @Autowired
+    ProgramDb programDb;
+
+    @Autowired
+    PengajarDb pengajarDb;
 
     @Autowired
     ProgramService programService;
@@ -65,9 +77,30 @@ public class KelasServiceImpl implements KelasService {
         kelasDb.save(createdKelas);
 
         List<SesiKelas> listSesiKelas = sesiKelasService.createListSesiKelas(request.getJadwalKelas(), createdKelas,
-                pengajar, listMurid, request.getPlatform());
+                pengajar, listMurid);
         createdKelas.setListsesiKelas(listSesiKelas);
-        return kelasDb.save(createdKelas);
+
+        kelasDb.save(createdKelas);
+
+        if(jenisKelas.getKelas().size() == 0){
+            jenisKelas.setKelas(new ArrayList<Kelas>());
+        }
+        jenisKelas.getKelas().add(createdKelas);
+        jenisKelasDb.save(jenisKelas);
+
+        if(program.getKelas().size() == 0){
+            program.setKelas(new ArrayList<Kelas>());
+        }
+        program.getKelas().add(createdKelas);
+        programDb.save(program);
+
+        if(pengajar.getKelas().size() == 0){
+            pengajar.setKelas(new ArrayList<Kelas>());
+        }
+        pengajar.getKelas().add(createdKelas);
+        pengajarDb.save(pengajar);
+
+        return createdKelas;
 
     }
 
@@ -115,4 +148,22 @@ public class KelasServiceImpl implements KelasService {
         return kelasDb.save(kelas);
     }
 
+    @Override
+    public void updateRating(int kelasId) {
+        Kelas kelas = getById(kelasId);
+
+        List<SesiKelas> listSesiKelas = kelas.getListsesiKelas();
+        double totalRating = 0;
+        int totalSesiSudahBerlangsung = 0;
+
+        for (SesiKelas sesiKelas : listSesiKelas) {
+            if (sesiKelas.getAverageRating() == 0) {
+                continue;
+            }
+            totalRating += sesiKelas.getAverageRating();
+            totalSesiSudahBerlangsung++;
+        }
+        kelas.setAverageRating(totalRating / totalSesiSudahBerlangsung);
+        kelasDb.save(kelas);
+    }
 }

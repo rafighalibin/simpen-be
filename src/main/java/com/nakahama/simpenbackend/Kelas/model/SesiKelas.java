@@ -3,6 +3,8 @@ package com.nakahama.simpenbackend.Kelas.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.nakahama.simpenbackend.PerubahanKelas.model.PengajarMenggantikan;
 import com.nakahama.simpenbackend.PerubahanKelas.model.Reschedule;
+import com.nakahama.simpenbackend.Platform.model.JadwalRuangan;
+import com.nakahama.simpenbackend.Platform.model.JadwalZoom;
 import com.nakahama.simpenbackend.User.model.Pengajar;
 import java.time.LocalDateTime;
 import java.util.*;
@@ -13,6 +15,7 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.*;
 import lombok.*;
@@ -44,8 +47,11 @@ public class SesiKelas {
     @JsonIgnore
     private Kelas kelas;
 
-    @NotNull
-    private String platform; // need to change after platform model is created (Sprint 2)
+    @OneToOne(orphanRemoval = true, cascade = CascadeType.ALL)
+    private JadwalRuangan jadwalRuangan;
+
+    @OneToOne
+    private JadwalZoom jadwalZoom;
 
     @NotNull
     private LocalDateTime waktuPelaksanaan;

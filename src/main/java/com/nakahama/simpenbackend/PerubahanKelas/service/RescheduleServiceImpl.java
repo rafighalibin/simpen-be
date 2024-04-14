@@ -10,9 +10,14 @@ import com.nakahama.simpenbackend.Kelas.model.SesiKelas;
 import com.nakahama.simpenbackend.Kelas.service.KelasService;
 import com.nakahama.simpenbackend.Kelas.service.SesiKelasService;
 import com.nakahama.simpenbackend.PerubahanKelas.dto.Reschedule.RescheduleMapper;
+import com.nakahama.simpenbackend.PerubahanKelas.dto.Reschedule.UpdateReschedule;
 import com.nakahama.simpenbackend.PerubahanKelas.dto.Reschedule.CreateReschedule;
 import com.nakahama.simpenbackend.PerubahanKelas.model.Reschedule;
 import com.nakahama.simpenbackend.PerubahanKelas.repository.RescheduleDb;
+import com.nakahama.simpenbackend.Platform.model.JadwalZoom;
+import com.nakahama.simpenbackend.Platform.model.Zoom;
+import com.nakahama.simpenbackend.Platform.service.JadwalService;
+import com.nakahama.simpenbackend.Platform.service.PlatformService;
 
 @Service
 public class RescheduleServiceImpl implements RescheduleService {
@@ -25,6 +30,12 @@ public class RescheduleServiceImpl implements RescheduleService {
 
     @Autowired
     KelasService kelasService;
+
+    @Autowired
+    PlatformService platformService;
+
+    @Autowired
+    JadwalService jadwalService;
 
     @Override
     public List<Reschedule> getAll() {
@@ -62,6 +73,38 @@ public class RescheduleServiceImpl implements RescheduleService {
     public List<Reschedule> getAllByKelasId(int kelasId) {
         Kelas kelas = kelasService.getById(kelasId);
         return rescheduleDb.findAllByKelas(kelas);
+    }
+
+    @Override
+    public void approve(List<UpdateReschedule> listRescheduleRequest) {
+        for (UpdateReschedule request : listRescheduleRequest) {
+            Reschedule reschedule = getById(request.getId());
+            if (request.getZoomId() != null) {
+                reschedule.getSesiKelas().getJadwalZoom().setSesiKelas(null);
+                jadwalService.save(reschedule.getSesiKelas().getJadwalZoom());
+
+                reschedule.getSesiKelas().setJadwalZoom(null);
+                sesiKelasService.save(reschedule.getSesiKelas());
+
+                JadwalZoom jadwalZoom = new JadwalZoom();
+                Zoom zoom = (Zoom) platformService.getById(request.getZoomId());
+                jadwalZoom.setZoom(zoom);
+                jadwalZoom.setWaktu(reschedule.getWaktuBaru());
+                jadwalZoom.setSesiKelas(reschedule.getSesiKelas());
+                jadwalService.save(jadwalZoom);
+
+                reschedule.getSesiKelas().setJadwalZoom(jadwalZoom);
+                reschedule.getSesiKelas().setStatus("Scheduled");
+                reschedule.getSesiKelas().setWaktuPelaksanaan(reschedule.getWaktuBaru());
+                sesiKelasService.save(reschedule.getSesiKelas());
+
+                reschedule.setStatus("Approved");
+            } else {
+                reschedule.getSesiKelas().setStatus("Scheduled");
+                reschedule.setStatus("Rejected");
+            }
+            rescheduleDb.save(reschedule);
+        }
     }
 
 }

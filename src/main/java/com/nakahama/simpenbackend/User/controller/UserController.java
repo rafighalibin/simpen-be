@@ -23,6 +23,8 @@ import com.nakahama.simpenbackend.User.model.UserModel;
 import com.nakahama.simpenbackend.User.repository.UserDb;
 import com.nakahama.simpenbackend.User.service.UserServiceImpl;
 import com.nakahama.simpenbackend.util.ResponseUtil;
+import com.nakahama.simpenbackend.Notification.dto.GenerateNotifDTO;
+import com.nakahama.simpenbackend.Notification.service.NotificationService;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
@@ -32,7 +34,8 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.UUID;
-import org.springframework.web.bind.annotation.RequestParam;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 
 @RestController
 @RequestMapping("/user")
@@ -47,6 +50,9 @@ public class UserController {
     @Autowired
     AuthService authService;
 
+    @Autowired
+    NotificationService notificationService;
+
     @PostMapping("")
     public ResponseEntity<Object> AddUser(@Valid @RequestBody AddUserRequestDTO addUserRequestDTO) {
         UserModel newUser = userService.addUser(addUserRequestDTO.getEmail(), addUserRequestDTO.getRole(),
@@ -56,10 +62,49 @@ public class UserController {
 
     @GetMapping("")
     public ResponseEntity<Object> getAllUser() {
-        Map<String, List<UserModel>> listUser = userService.getAllUsersGroupedByCategory();
+
+        List<UserModel> listUser = userService.retrieveAllUser();
+        List<UserModel> listAkademik = new ArrayList<>();
+
+        for (UserModel userModel : listUser) {
+            if (userModel.getRole().equals("akademik")) {
+                listAkademik.add(userModel);
+            }
+        }
+
+        for (UserModel userModel : listUser) {
+            LocalDateTime currTime = LocalDateTime.now();
+            LocalDateTime lastLogin = userModel.getLastLogin();
+            long monthDiff = 0;
+
+            if (lastLogin != null) {
+                monthDiff = ChronoUnit.MONTHS.between(lastLogin, currTime);
+            }
+
+            if ((monthDiff >= 3 && !userModel.isInactive() &&
+                    userModel.getRole().equals("pengajar"))) {
+                userModel.setInactive(true);
+
+                for (UserModel userModel2 : listAkademik) {
+                    // Generate Notification
+                    GenerateNotifDTO notification = new GenerateNotifDTO();
+                    notification.setAkunPenerima(userModel2.getId());
+                    notification.setTipe(8);
+
+                    // Content of Notification
+                    notification.setJudul("tidak aktif selama 3 bulan");
+                    notification.getIsi().put("idPengajar", String.valueOf(userModel.getId()));
+                    notification.getIsi().put("namaPengajar", String.valueOf(userModel.getNama()));
+
+                    notificationService.generateNotification(notification);
+                }
+            }
+        }
+
+        Map<String, List<UserModel>> listUser2 = userService.getAllUsersGroupedByCategory();
 
         List<Map<String, Object>> contentList = new ArrayList<>();
-        for (Map.Entry<String, List<UserModel>> entry : listUser.entrySet()) {
+        for (Map.Entry<String, List<UserModel>> entry : listUser2.entrySet()) {
             Map<String, Object> roleUserMap = new LinkedHashMap<>();
             roleUserMap.put("role", entry.getKey());
             roleUserMap.put("user", entry.getValue());

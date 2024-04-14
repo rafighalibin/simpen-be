@@ -1,5 +1,8 @@
 package com.nakahama.simpenbackend.Kelas.dto.Program;
 
+import java.util.ArrayList;
+
+import com.nakahama.simpenbackend.Kelas.dto.JenisKelas.JenisKelasDTO;
 import com.nakahama.simpenbackend.Kelas.dto.JenisKelas.JenisKelasMapper;
 import com.nakahama.simpenbackend.Kelas.model.Kelas;
 import com.nakahama.simpenbackend.Kelas.model.Program;
@@ -21,6 +24,7 @@ public class ProgramMapper {
         response.setNama(request.getNama());
         response.setJumlahLevel(request.getJumlahLevel());
         response.setJumlahPertemuan(request.getJumlahPertemuan());
+        response.setJenisKelas(new ArrayList<JenisKelasDTO>());
         for (Kelas kelas : request.getKelas()) {
             response.getListJenisKelas().add(JenisKelasMapper.toDto(kelas.getJenisKelas()));
         }

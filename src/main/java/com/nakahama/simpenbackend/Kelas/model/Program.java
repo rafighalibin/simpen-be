@@ -3,6 +3,7 @@ package com.nakahama.simpenbackend.Kelas.model;
 import java.util.*;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.nakahama.simpenbackend.Payroll.model.FeeModel;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -38,4 +39,8 @@ public class Program {
     @OneToMany
     @JsonIgnore
     private List<Kelas> kelas;
+
+    @OneToMany
+    @JsonIgnore
+    private List<FeeModel> fee;
 }
