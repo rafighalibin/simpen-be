@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import com.nakahama.simpenbackend.PerubahanKelas.service.RescheduleService;
@@ -18,6 +19,8 @@ import com.nakahama.simpenbackend.Kelas.service.SesiKelasService;
 import com.nakahama.simpenbackend.Notification.dto.GenerateNotifDTO;
 import com.nakahama.simpenbackend.Notification.service.NotificationService;
 import com.nakahama.simpenbackend.PerubahanKelas.dto.Reschedule.RescheduleMapper;
+import com.nakahama.simpenbackend.PerubahanKelas.dto.Reschedule.UpdateReschedule;
+import com.nakahama.simpenbackend.PerubahanKelas.model.Reschedule;
 import com.nakahama.simpenbackend.PerubahanKelas.dto.Reschedule.CreateReschedule;
 
 import jakarta.validation.Valid;
@@ -67,4 +70,38 @@ public class RescheduleController {
         return ResponseUtil.okResponse(RescheduleMapper.toReadDetailReschedule(response), "Success");
     }
 
+    @PutMapping("/create/{kelasId}")
+    public ResponseEntity<Object> approveReschedule(
+            @Valid @RequestBody List<UpdateReschedule> listRescheduleRequest) {
+        rescheduleService.approve(listRescheduleRequest);
+
+        // // Generate Notification for requestee
+        // for (UpdateReschedule request : listRescheduleRequest) {
+        // GenerateNotifDTO notification = new GenerateNotifDTO();
+        // Reschedule pengajarMenggantikan = rescheduleService.getById(request.getId());
+        // UUID idPengajarRequest =
+        // pengajarMenggantikan.getSesiKelas().getPengajar().getId();
+
+        // notification.setAkunPenerima(idPengajarRequest);
+        // notification.setTipe(4);
+
+        // // Content of Notification
+        // if (request.getPengajarPenggantiId() != null) {
+        // notification.setJudul("permintaan pengajar pengganti diterima");
+        // notification.getIsi().put("sesiKelas",
+        // String.valueOf(pengajarMenggantikan.getSesiKelas()));
+        // notification.getIsi().put("pengganti",
+        // String.valueOf(request.getPengajarPenggantiId()));
+
+        // notificationService.generateNotification(notification);
+        // } else {
+        // notification.setJudul("permintaan pengajar pengganti ditolak");
+        // notification.getIsi().put("sesiKelas",
+        // String.valueOf(pengajarMenggantikan.getSesiKelas()));
+
+        // }
+
+        // }
+        return ResponseUtil.okResponse(null, listRescheduleRequest.size() + " Ganti Pengajar Request changed");
+    }
 }

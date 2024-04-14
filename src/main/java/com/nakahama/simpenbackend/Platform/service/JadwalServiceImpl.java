@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.nakahama.simpenbackend.Kelas.model.SesiKelas;
+import com.nakahama.simpenbackend.Kelas.service.SesiKelasService;
+import com.nakahama.simpenbackend.PerubahanKelas.model.Reschedule;
 import com.nakahama.simpenbackend.Platform.model.JadwalZoom;
 import com.nakahama.simpenbackend.Platform.model.Platform;
 import com.nakahama.simpenbackend.Platform.model.Zoom;
@@ -17,6 +19,9 @@ import com.nakahama.simpenbackend.exception.BadRequestException;
 public class JadwalServiceImpl implements JadwalService {
     @Autowired
     JadwalZoomDb jadwalZoomDb;
+
+    @Autowired
+    SesiKelasService sesiKelasService;
 
     @Override
     public Zoom findAvalaibleZoom(List<SesiKelas> listSesiKelas) {
@@ -41,8 +46,34 @@ public class JadwalServiceImpl implements JadwalService {
     }
 
     @Override
-    public void create(JadwalZoom jadwalZoom) {
+    public void save(JadwalZoom jadwalZoom) {
         jadwalZoomDb.save(jadwalZoom);
+    }
+
+    @Override
+    public List<List<Platform>> getAvalaibleZoom(int kelasId) {
+        List<List<Platform>> result = new ArrayList<>();
+        List<SesiKelas> listSesiKelas = sesiKelasService.getByKelasId(kelasId);
+        for (SesiKelas sesiKelas : listSesiKelas) {
+            List<Platform> listZoom = new ArrayList<>();
+            if (sesiKelas.getListReschedule().size() > 0) {
+                if (sesiKelas.getListReschedule().get(sesiKelas.getListReschedule().size() - 1).getStatus()
+                        .equals("Requested")) {
+                    Reschedule activeReschedule = sesiKelas.getListReschedule()
+                            .get(sesiKelas.getListReschedule().size() - 1);
+                    listZoom = jadwalZoomDb.checkJadwalForSesi(activeReschedule.getWaktuBaru().minusMinutes(5),
+                            activeReschedule.getWaktuBaru().plusMinutes(90), sesiKelas.getId());
+                }
+            }
+            result.add(listZoom);
+        }
+        return result;
+    }
+
+    @Override
+    public void deleteById(UUID jadwalZoomId) {
+        jadwalZoomDb.deleteById(jadwalZoomId);
+        jadwalZoomDb.flush();
     }
 
 }

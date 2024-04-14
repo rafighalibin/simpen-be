@@ -10,8 +10,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import org.hibernate.annotations.SQLDelete;
-
 import com.nakahama.simpenbackend.Kelas.model.JenisKelas;
 import com.nakahama.simpenbackend.Kelas.model.Program;
 
@@ -20,15 +18,20 @@ import com.nakahama.simpenbackend.Kelas.model.Program;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "fee")
+@Table(
+    name = "fee",
+    uniqueConstraints = {@UniqueConstraint(columnNames = {"jenisKelas_id", "program_id"})}
+)
 public class FeeModel {
     @Id
     private UUID id = UUID.randomUUID();
 
     @ManyToOne
+    @JoinColumn(name = "jenisKelas_id", referencedColumnName = "id")
     private JenisKelas jenisKelas;
 
     @ManyToOne
+    @JoinColumn(name = "program_id", referencedColumnName = "id")
     private Program program;
 
     @Column(name = "base_fee")

@@ -5,6 +5,7 @@ import java.util.*;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.nakahama.simpenbackend.Kelas.dto.Murid.ReadMuridSesi;
+import com.nakahama.simpenbackend.Platform.dto.Zoom.ReadJadwalZoom;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -33,5 +34,7 @@ public class ReadDetailSesiKelas {
     private double persentaseKehadiran;
 
     private double averageRating;
+
+    private ReadJadwalZoom jadwalZoom;
 
 }
