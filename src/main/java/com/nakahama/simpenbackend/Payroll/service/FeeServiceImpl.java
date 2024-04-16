@@ -113,7 +113,7 @@ public class FeeServiceImpl implements FeeService{
         List<ReadProgram> listProgram = new ArrayList<ReadProgram>();
 
         for (Program program : listProgramDistinct) {
-            ReadProgram response = ProgramMapper.toDto(program);
+            ReadProgram response = ProgramMapper.toReadDto(program);
             listProgram.add(response);
         }
         return listProgram;
@@ -129,7 +129,7 @@ public class FeeServiceImpl implements FeeService{
 
         for (Program program : listProgramDistinct) {
             ReadFeeGrouped response = new ReadFeeGrouped();
-            response.setProgram(ProgramMapper.toDto(program));
+            response.setProgram(ProgramMapper.toReadDto(program));
             response.setListFee(new ArrayList<ReadFee>());
             for (FeeModel fee : feeDb.findByProgram(program)) {
                 ReadFee feeResponse = FeeMapper.toDto(fee);

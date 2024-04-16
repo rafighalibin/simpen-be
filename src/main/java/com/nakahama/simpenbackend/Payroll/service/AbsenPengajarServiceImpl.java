@@ -3,14 +3,12 @@ package com.nakahama.simpenbackend.Payroll.service;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.Month;
-import java.time.Period;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.security.SecurityProperties.User;
 import org.springframework.stereotype.Service;
 
 import com.nakahama.simpenbackend.Kelas.model.SesiKelas;

@@ -20,6 +20,8 @@ public interface JenisKelasService {
 
     public JenisKelas getById(UUID id);
 
+    public ReadJenisKelas getJenisKelasById(UUID id);
+
     public void delete(UUID uuid);
 
     public List<JenisKelas> getByNama(String nama);
@@ -30,5 +32,5 @@ public interface JenisKelasService {
 
     public Map<String, List<String>> getExistingAttributes(ProgramJenisKelasAttributes programJenisKelasAttributes);
 
-    public ReadJenisKelas findJenisKelas(FindJenisKelas findJenisKelasRequest);
+    public ReadJenisKelas findJenisKelas(String nama, String tipe, String moda, String bahasa);
 }
