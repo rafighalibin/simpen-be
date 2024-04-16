@@ -87,9 +87,10 @@ public class ProgramServiceImpl implements ProgramService {
         Program programRequest = getById(id);
         programRequest.getJenisKelas().forEach(jenisKelas -> {
             jenisKelas.getProgram().remove(programRequest);
+            jenisKelasDb.save(jenisKelas);
         });
         
-        programDb.deleteById(id);
+        programDb.deleteById(programRequest.getId());
         
     }
 
