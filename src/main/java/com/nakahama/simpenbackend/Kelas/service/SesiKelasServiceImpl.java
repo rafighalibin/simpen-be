@@ -201,7 +201,7 @@ public class SesiKelasServiceImpl implements SesiKelasService {
     @Override
     public void updateStatus(SesiKelas sesiKelas) {
         // TODO: adapt lagi
-        sesiKelas.setStatus("Finished");
+        sesiKelas.setStatus("On going");
         save(sesiKelas);
     }
 

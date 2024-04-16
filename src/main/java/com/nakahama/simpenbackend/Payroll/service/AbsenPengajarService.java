@@ -17,5 +17,7 @@ public interface AbsenPengajarService {
 
     public List<AbsenPengajar> getAllAbsenPengajar();
 
-    public PeriodePayroll getCurrentPeriodePayroll(LocalDateTime date);    
+    public PeriodePayroll getCurrentPeriodePayroll(LocalDateTime date);   
+    
+
 }

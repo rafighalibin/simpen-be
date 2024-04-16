@@ -5,6 +5,7 @@ import java.util.UUID;
 
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 
 import com.nakahama.simpenbackend.Kelas.model.Kelas;
 import com.nakahama.simpenbackend.Kelas.model.SesiKelas;
@@ -49,6 +50,10 @@ public class AbsenPengajar {
     private LocalDateTime tanggalUpdate;
 
     @NotNull
-    private Integer jumlahFee = 200;
+    private Integer jumlahFee;
+
+    @NotNull
+    @ManyToOne
+    private FeeModel fee;
 
 }

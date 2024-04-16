@@ -16,6 +16,7 @@ import com.nakahama.simpenbackend.Kelas.model.SesiKelas;
 import com.nakahama.simpenbackend.Kelas.service.SesiKelasService;
 import com.nakahama.simpenbackend.Payroll.dto.createAbsenPengajarDTO;
 import com.nakahama.simpenbackend.Payroll.model.AbsenPengajar;
+import com.nakahama.simpenbackend.Payroll.model.FeeModel;
 import com.nakahama.simpenbackend.Payroll.model.PeriodePayroll;
 import com.nakahama.simpenbackend.Payroll.repository.AbsenPengajarDb;
 import com.nakahama.simpenbackend.Payroll.repository.PeriodePayrollDb;
@@ -37,6 +38,9 @@ public class AbsenPengajarServiceImpl implements AbsenPengajarService{
 
     @Autowired
     PeriodePayrollDb periodePayrollDb;
+
+    @Autowired
+    FeeService feeService;
 
     @Override
     public AbsenPengajar save(AbsenPengajar absenPengajar) {
@@ -61,6 +65,9 @@ public class AbsenPengajarServiceImpl implements AbsenPengajarService{
         absenPengajar.setPeriodePayroll(periodePayroll);
         absenPengajar.setSesiKelas(sesiKelas);
         absenPengajar.setKelas(sesiKelas.getKelas());
+        FeeModel fee = feeService.getByProgramAndJenisKelas(sesiKelas.getKelas().getProgram().getId(), sesiKelas.getKelas().getJenisKelas().getId());
+        absenPengajar.setFee(fee);
+        absenPengajar.setJumlahFee(fee.getBaseFee() + (fee.getStudentMultiplier() * sesiKelas.getKelas().getJumlahMurid()));
         sesiKelasService.updateStatus(sesiKelas);
         
         absenPengajarDb.save(absenPengajar);
@@ -77,35 +84,39 @@ public class AbsenPengajarServiceImpl implements AbsenPengajarService{
     public PeriodePayroll getCurrentPeriodePayroll(LocalDateTime date) {
         int bulan = date.getMonthValue();
         int tahun = date.getYear();
-        String namaBulan = Month.of(bulan).name();
-
-
-    // Ambil tanggal 14 dari bulan sebelumnya
-    LocalDateTime tanggalMulai = LocalDateTime.of(tahun, bulan - 1, 14, 0, 0);
-
-    // Ambil tanggal 15 dari bulan saat ini
-    LocalDateTime tanggalSelesai = LocalDateTime.of(tahun, bulan, 15, 23, 59);
-
-    Date mulaiDate = Timestamp.valueOf(tanggalMulai);
-    Date selesaiDate = Timestamp.valueOf(tanggalSelesai);
-        
-    PeriodePayroll periodePayroll = periodePayrollDb.findByTanggalMulaiAndTanggalSelesai(mulaiDate, selesaiDate);
-
-    if (periodePayroll == null) {
-        // Jika tidak ada periode payroll, buat periode baru
-        periodePayroll = new PeriodePayroll();
-        periodePayroll.setBulan(namaBulan);
-        periodePayroll.setTahun(tahun);
-        periodePayroll.setTanggalMulai(mulaiDate);
-        periodePayroll.setTanggalSelesai(selesaiDate);
-        // Tentukan tanggal pembayaran sesuai kebutuhan Anda
-        periodePayroll.setListAbsenPengajar(new ArrayList<AbsenPengajar>());
-        periodePayroll.setTanggalPembayaran(Timestamp.valueOf(date));
-        // Simpan periode payroll baru ke dalam database
-        periodePayrollDb.save(periodePayroll);
-    }
-
-    return periodePayroll;
+        String namaBulan = "";
+    
+        LocalDateTime tanggalMulai;
+        LocalDateTime tanggalSelesai;
+    
+        if (date.getDayOfMonth() <= 14) {
+            namaBulan = Month.of(bulan - 1).name();
+            tanggalMulai = LocalDateTime.of(tahun, bulan - 1, 15, 0, 0);
+            tanggalSelesai = LocalDateTime.of(tahun, bulan, 14, 23, 59);
+        } else {
+            namaBulan = Month.of(bulan).name();
+            tanggalMulai = LocalDateTime.of(tahun, bulan, 15, 0, 0);
+            tanggalSelesai = LocalDateTime.of(tahun, bulan + 1, 14, 23, 59);
+        }
+    
+        Date mulaiDate = Timestamp.valueOf(tanggalMulai);
+        Date selesaiDate = Timestamp.valueOf(tanggalSelesai);
+    
+        PeriodePayroll periodePayroll = periodePayrollDb.findByTanggalMulaiAndTanggalSelesai(mulaiDate, selesaiDate);
+    
+        if (periodePayroll == null) {
+            // Jika tidak ada periode payroll, buat periode baru
+            periodePayroll = new PeriodePayroll();
+            periodePayroll.setTanggalMulai(mulaiDate);
+            periodePayroll.setTanggalSelesai(selesaiDate);
+            // Tentukan tanggal pembayaran setiap bulan pada tanggal 25
+            LocalDateTime tanggalPembayaran = LocalDateTime.of(tahun, bulan, 25, 0, 0);
+            periodePayroll.setTanggalPembayaran(Timestamp.valueOf(tanggalPembayaran));
+            // Simpan periode payroll baru ke dalam database
+            periodePayrollDb.save(periodePayroll);
+        }
+    
+        return periodePayroll;
     }
     
 }

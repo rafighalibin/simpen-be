@@ -139,4 +139,21 @@ public class FeeServiceImpl implements FeeService{
         }
         return listFeeGrouped;
     }
+
+    @Override
+    public FeeModel getByProgramAndJenisKelas(UUID programId, UUID jenisKelasId) {
+        Program program = programService.getById(programId);
+        if (program == null) {
+            throw new BadRequestException("Program with id " + programId + " not found");
+        }
+        JenisKelas jenisKelas = jenisKelasService.getById(jenisKelasId);
+        if (jenisKelas == null) {
+            throw new BadRequestException("Jenis Kelas with id " + jenisKelasId + " not found");
+        }
+        FeeModel fee = feeDb.findByProgramAndJenisKelas(program, jenisKelas);
+        if (fee == null) {
+            throw new BadRequestException("Fee for program with id " + programId + " and jenis kelas with id " + jenisKelasId + " not found");
+        }
+        return fee;
+    }
 }

@@ -26,4 +26,6 @@ public interface FeeService {
     public List<ReadProgram> getDistinctProgram();
 
     public List<ReadFeeGrouped> getFeeGrouped();
+
+    public FeeModel getByProgramAndJenisKelas(UUID programId, UUID jenisKelasId);
 }

@@ -1,12 +1,9 @@
 package com.nakahama.simpenbackend.Payroll.dto;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Date;
-import java.util.List;
 import java.util.UUID;
 
-import com.nakahama.simpenbackend.Payroll.model.PeriodePayroll;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -37,8 +34,6 @@ public class ReadAbsenPengajar {
     private Date tanggalMulai;
 
     private Date tanggalSelesai;
-
-    private List<PeriodePayroll> listPeriodePayroll;
 
 
 }
