@@ -32,6 +32,6 @@ public class CreateJenisKelas {
     @NotEmpty(message = "Bahasa required")
     private List<String> bahasa;
 
-    @NotNull(message = "Bahasa required")
+    @NotNull(message = "PIC required")
     private UUID picAkademikId;
 }

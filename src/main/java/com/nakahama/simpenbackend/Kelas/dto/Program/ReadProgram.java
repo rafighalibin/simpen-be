@@ -28,5 +28,5 @@ public class ReadProgram {
 
     private int jumlahPertemuan;
 
-    private List<JenisKelasDTO> jenisKelas;
+    private List<JenisKelasDTO> listJenisKelas;
 }

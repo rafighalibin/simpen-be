@@ -40,7 +40,7 @@ public class MuridController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Object> getMurid(@PathVariable int id) {
+    public ResponseEntity<Object> getMurid(@PathVariable("id") int id) {
         ReadDetailMurid response = MuridMapper.toReadDetailDto(muridService.getById(id));
         return ResponseUtil.okResponse(response, "Success");
     }
@@ -52,7 +52,7 @@ public class MuridController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Object> updateMurid(@PathVariable int id, @Valid @RequestBody UpdateMurid muridRequest) {
+    public ResponseEntity<Object> updateMurid(@PathVariable("id") int id, @Valid @RequestBody UpdateMurid muridRequest) {
         muridRequest.setId(id);
         Murid murid = muridService.update(muridRequest);
         return ResponseUtil.okResponse(MuridMapper.toReadDetailDto(murid), "Success");

@@ -8,6 +8,7 @@ import com.nakahama.simpenbackend.Kelas.model.Kelas;
 import com.nakahama.simpenbackend.Kelas.model.MuridKelas;
 import com.nakahama.simpenbackend.Kelas.model.Program;
 import com.nakahama.simpenbackend.Kelas.model.SesiKelas;
+import com.nakahama.simpenbackend.Platform.dto.Zoom.ZoomMapper;
 import com.nakahama.simpenbackend.User.model.Pengajar;
 import com.nakahama.simpenbackend.User.model.UserModel;
 
@@ -71,6 +72,7 @@ public class KelasMapper {
         response.setMuridKelas(listMurid);
         response.setJumlahMurid(request.getListMurid().size());
         response.setLevel(request.getLevel());
+        response.setStatus(request.getStatus());
         return response;
     }
 
@@ -95,7 +97,7 @@ public class KelasMapper {
         response.setStatus(createdKelas.getStatus());
         // TODO: IMPLEMENT AVERAGE RATING
         // TODO: IMPLEMENT PLATFORM
-        response.setPlatform("TODO: IMPLEMENT PLATFORM");
+        response.setZoom(ZoomMapper.toReadZoom(createdKelas.getListsesiKelas().get(0).getJadwalZoom().getZoom()));
         return response;
 
     }

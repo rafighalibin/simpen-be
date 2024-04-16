@@ -4,6 +4,7 @@ import java.util.*;
 
 import com.nakahama.simpenbackend.Kelas.dto.Murid.MuridMapper;
 import com.nakahama.simpenbackend.Kelas.model.SesiKelas;
+import com.nakahama.simpenbackend.Platform.dto.Zoom.ZoomMapper;
 
 public class SesiKelasMapper {
 
@@ -21,6 +22,7 @@ public class SesiKelasMapper {
         response.setSesi_id(request.getId());
         response.setStatus(request.getStatus());
         response.setWaktuPelaksanaan(request.getWaktuPelaksanaan());
+        response.setZoom(ZoomMapper.toReadZoom(request.getJadwalZoom().getZoom()));
         return response;
     }
 
@@ -33,7 +35,7 @@ public class SesiKelasMapper {
         return response;
     }
 
-    private static ReadDetailSesiKelas toReadDetailDto(SesiKelas sesiKelas) {
+    public static ReadDetailSesiKelas toReadDetailDto(SesiKelas sesiKelas) {
         ReadDetailSesiKelas response = new ReadDetailSesiKelas();
         response.setSesi_id(sesiKelas.getId());
         response.setStatus(sesiKelas.getStatus());
@@ -42,6 +44,7 @@ public class SesiKelasMapper {
         response.setNomorPertemuan(sesiKelas.getNomorPertemuan());
         response.setAverageRating(sesiKelas.getAverageRating());
         response.setPersentaseKehadiran(sesiKelas.getPersentaseKehadiran());
+        response.setJadwalZoom(ZoomMapper.toReadJadwalZoom(sesiKelas.getJadwalZoom()));
 
         return response;
     }

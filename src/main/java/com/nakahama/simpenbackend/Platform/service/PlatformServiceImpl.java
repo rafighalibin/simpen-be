@@ -5,12 +5,16 @@ import java.util.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.nakahama.simpenbackend.Kelas.model.SesiKelas;
+import com.nakahama.simpenbackend.Kelas.service.SesiKelasService;
 import com.nakahama.simpenbackend.Platform.dto.Ruangan.CreateRuanganRequest;
 import com.nakahama.simpenbackend.Platform.dto.Ruangan.RuanganMapper;
 import com.nakahama.simpenbackend.Platform.dto.Ruangan.UpdateRuanganRequest;
 import com.nakahama.simpenbackend.Platform.dto.Zoom.CreateZoomRequest;
 import com.nakahama.simpenbackend.Platform.dto.Zoom.UpdateZoomRequest;
 import com.nakahama.simpenbackend.Platform.dto.Zoom.ZoomMapper;
+import com.nakahama.simpenbackend.Platform.model.JadwalRuangan;
+import com.nakahama.simpenbackend.Platform.model.JadwalZoom;
 import com.nakahama.simpenbackend.Platform.model.Platform;
 import com.nakahama.simpenbackend.Platform.model.Ruangan;
 import com.nakahama.simpenbackend.Platform.model.Zoom;
@@ -30,6 +34,12 @@ public class PlatformServiceImpl implements PlatformService {
 
     @Autowired
     RuanganDb ruanganDb;
+
+    @Autowired
+    JadwalService jadwalService;
+
+    @Autowired
+    SesiKelasService sesiKelasService;
 
     @Override
     public Platform save(CreateZoomRequest createZoomRequest) {
@@ -95,4 +105,32 @@ public class PlatformServiceImpl implements PlatformService {
     public void delete(UUID id) {
         platformDb.delete(getById(id));
     }
+
+    @Override
+    public List<JadwalZoom> assignZoom(List<SesiKelas> listSesiKelas) {
+
+        Zoom zoom = jadwalService.findAvalaibleZoom(listSesiKelas);
+        List<JadwalZoom> listJadwalZoom = new ArrayList<>();
+        for (SesiKelas sesiKelas : listSesiKelas) {
+
+            JadwalZoom jadwalZoom = new JadwalZoom();
+            jadwalZoom.setWaktu(sesiKelas.getWaktuPelaksanaan());
+            jadwalZoom.setZoom(zoom);
+            jadwalService.save(jadwalZoom);
+            jadwalZoom.setSesiKelas(sesiKelas);
+            sesiKelas.setJadwalZoom(jadwalZoom);
+            listJadwalZoom.add(jadwalZoom);
+
+            jadwalService.save(jadwalZoom);
+            sesiKelasService.updateJadwal(sesiKelas);
+        }
+        return listJadwalZoom;
+    }
+
+    @Override
+    public List<JadwalRuangan> assignRuangan(List<SesiKelas> listSesiKelas) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'assignRuangan'");
+    }
+
 }

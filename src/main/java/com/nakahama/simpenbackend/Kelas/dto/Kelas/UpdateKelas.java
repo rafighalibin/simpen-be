@@ -48,4 +48,6 @@ public class UpdateKelas {
 
     private String linkPlaylist;
 
+    private String status;
+
 }

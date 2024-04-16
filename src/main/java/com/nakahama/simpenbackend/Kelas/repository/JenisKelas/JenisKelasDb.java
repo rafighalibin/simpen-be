@@ -23,6 +23,12 @@ public interface JenisKelasDb extends JpaRepository<JenisKelas, UUID> {
 
     Optional<JenisKelas> findByProgram(Program program);
 
+    List<JenisKelas> findByTipe(String tipe);
+
+    List<JenisKelas> findByBahasa(String bahasa);
+
+    List<JenisKelas> findByModaPertemuan(String modaPertemuan);
+
     @Query("SELECT DISTINCT jk.modaPertemuan FROM JenisKelas jk WHERE jk.nama = :nama")
     List<String> findDistinctModaPertemuanByNama(@Param("nama") String nama);
 

@@ -4,14 +4,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 import java.util.*;
 
 import com.nakahama.simpenbackend.Auth.service.AuthService;
 import com.nakahama.simpenbackend.Kelas.dto.JenisKelas.CreateJenisKelas;
 import com.nakahama.simpenbackend.Kelas.dto.JenisKelas.DeleteJenisKelas;
+import com.nakahama.simpenbackend.Kelas.dto.JenisKelas.JenisKelasMapper;
+import com.nakahama.simpenbackend.Kelas.dto.JenisKelas.FindJenisKelas;
+import com.nakahama.simpenbackend.Kelas.dto.JenisKelas.ProgramJenisKelasAttributes;
 import com.nakahama.simpenbackend.Kelas.dto.JenisKelas.ReadJenisKelas;
 import com.nakahama.simpenbackend.Kelas.dto.JenisKelas.UpdateJenisKelas;
+import com.nakahama.simpenbackend.Kelas.model.JenisKelas;
 import com.nakahama.simpenbackend.Kelas.service.JenisKelasService;
 import com.nakahama.simpenbackend.Notification.dto.GenerateNotifDTO;
 import com.nakahama.simpenbackend.Notification.service.NotificationService;
@@ -51,9 +56,7 @@ public class JenisKelasController {
         notification.setTipe(7);
 
         // Content of Notification
-        notification
-                .setJudul("Anda menjadi PIC akademik untuk jenis kelas " + String.valueOf(jenisKelasRequest.getNama()));
-        notification.getIsi().put("namaJenisKelas", String.valueOf(jenisKelasRequest.getNama()));
+        notification.setJudul("Anda menjadi PIC jenis kelas " + String.valueOf(jenisKelasRequest.getNama()));
 
         notificationService.generateNotification(notification);
 
@@ -67,6 +70,12 @@ public class JenisKelasController {
         return ResponseUtil.okResponse(listJenisKelas, "Success");
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<Object> getJenisKelasById(@PathVariable("id") String id) {
+        ReadJenisKelas jenisKelas = jenisKelasService.getJenisKelasById(UUID.fromString(id));
+        return ResponseUtil.okResponse(jenisKelas, "Success");
+    }
+
     @PutMapping("")
     public ResponseEntity<Object> updateJenisKelas(@Valid @RequestBody UpdateJenisKelas jenisKelasRequest) {
         ReadJenisKelas jenisKelas = jenisKelasService.update(jenisKelasRequest);
@@ -74,12 +83,10 @@ public class JenisKelasController {
                 "Jenis Kelas with name " + jenisKelas.getNama() + " has been updated");
     }
 
-    @DeleteMapping(value = "")
-    public ResponseEntity<Object> deleteJenisKelas(@Valid @RequestBody DeleteJenisKelas jenisKelasRequest) {
-        jenisKelasService.delete(jenisKelasRequest.getId());
-        return ResponseUtil.okResponse(null,
-                "Jenis Kelas dengan ID " + jenisKelasRequest.getId() + " has been deleted");
-
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Object> deleteJenisKelasId(@PathVariable("id") String id) {
+        jenisKelasService.delete(UUID.fromString(id));
+        return ResponseUtil.okResponse(null, "Jenis Kelas dengan ID " + id + " has been deleted");
     }
 
     @GetMapping("/existing-attributes")
@@ -88,15 +95,9 @@ public class JenisKelasController {
         return ResponseUtil.okResponse(existingAttributes, "Success");
     }
 
-    @GetMapping("/existing-attributes-detail")
-    public ResponseEntity<Object> getExistingAttributes(@RequestParam String nama) {
-        Map<String, List<String>> existingAttributes = jenisKelasService.getExistingAttributes(nama);
-        return ResponseUtil.okResponse(existingAttributes, "Success");
-    }
-
     @GetMapping("/find")
-    public ResponseEntity<Object> findJenisKelas(@RequestParam String nama, @RequestParam String tipe,
-            @RequestParam String modaPertemuan, @RequestParam String bahasa) {
+    public ResponseEntity<Object> findJenisKelas(@RequestParam("nama") String nama, @RequestParam("tipe") String tipe,
+            @RequestParam("modaPertemuan") String modaPertemuan, @RequestParam("bahasa") String bahasa) {
         ReadJenisKelas jenisKelas = jenisKelasService.findJenisKelas(nama, tipe, modaPertemuan, bahasa);
         return ResponseUtil.okResponse(jenisKelas, "Success");
     }

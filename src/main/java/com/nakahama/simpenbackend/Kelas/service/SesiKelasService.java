@@ -17,6 +17,8 @@ public interface SesiKelasService {
 
     public SesiKelas save(SesiKelas sesiKelas);
 
+    public SesiKelas updateJadwal(SesiKelas sesiKelas);
+
     public SesiKelas getById(UUID id);
 
     public void delete(UUID id);
@@ -34,7 +36,7 @@ public interface SesiKelasService {
     public SesiKelas getByPlatformId(String idPlatform);
 
     public List<SesiKelas> createListSesiKelas(List<LocalDateTime> jadwalKelas, Kelas createdKelas, Pengajar pengajar,
-            List<MuridKelas> listMurid, String platform);
+            List<MuridKelas> listMurid);
 
     public void uppdateAbsenSesi(UUID idSesi, List<UpdateAbsensiMurid> updateAbsensiMurid);
 
