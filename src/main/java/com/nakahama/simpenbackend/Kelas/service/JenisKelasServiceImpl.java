@@ -160,11 +160,14 @@ public class JenisKelasServiceImpl implements JenisKelasService {
 
         List<JenisKelas> addedJenisKelas = new ArrayList<JenisKelas>();
         for (JenisKelas jenisKelas : listJenisKelas) {
-            try {
-                jenisKelasDb.save(jenisKelas);
-                addedJenisKelas.add(jenisKelas);
-            } catch (Exception e) {
-                continue;
+            // Check if the combination already exists
+            if (jenisKelasDb.findByTipeAndModaPertemuanAndBahasa(jenisKelas.getTipe(), jenisKelas.getModaPertemuan(), jenisKelas.getBahasa()).isEmpty()) {
+                try {
+                    jenisKelasDb.save(jenisKelas);
+                    addedJenisKelas.add(jenisKelas);
+                } catch (Exception e) {
+                    continue;
+                }
             }
         }
         saveJenisAttr(jenisKelasRequest.getModaPertemuan(), jenisKelasRequest.getTipe(), jenisKelasRequest.getBahasa());
