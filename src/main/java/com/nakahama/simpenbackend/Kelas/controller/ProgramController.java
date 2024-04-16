@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 
+
 @RestController
 @RequestMapping("/kelas/program")
 public class ProgramController {
@@ -51,10 +52,16 @@ public class ProgramController {
         return ResponseUtil.okResponse(program, "Program with name " + program.getNama() + " has been updated");
     }
 
-    @DeleteMapping(value = "")
-    public ResponseEntity<Object> deleteProgram(@Valid @RequestBody DeleteProgram programRequest) {
-        programService.delete(programRequest);
-        return ResponseUtil.okResponse(null, "Program with id " + programRequest.getId() + " has been deleted");
+    @GetMapping("/{id}")
+    public ResponseEntity<Object> getProgramById(@PathVariable("id") String id) {
+        ReadProgram program = programService.getProgramById(UUID.fromString(id));
+        return ResponseUtil.okResponse(program, "Success");
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Object> deleteProgramId(@PathVariable("id") String id) {
+        programService.delete(UUID.fromString(id));
+        return ResponseUtil.okResponse(null, "Program dengan ID " + id + " has been deleted");
     }
 
     @GetMapping(value = "{id}/jenis-kelas")

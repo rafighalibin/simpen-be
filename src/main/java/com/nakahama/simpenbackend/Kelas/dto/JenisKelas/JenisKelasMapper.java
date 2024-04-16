@@ -1,6 +1,8 @@
 package com.nakahama.simpenbackend.Kelas.dto.JenisKelas;
 
+import com.nakahama.simpenbackend.Kelas.dto.Program.ProgramMapper;
 import com.nakahama.simpenbackend.Kelas.model.JenisKelas;
+import com.nakahama.simpenbackend.Kelas.model.Kelas;
 import com.nakahama.simpenbackend.User.model.Akademik;
 
 import java.util.List;
@@ -55,15 +57,20 @@ public class JenisKelasMapper {
         return jenisKelasDTO;
     }
 
-    public static ReadJenisKelas toReadDto(JenisKelas jenisKelas) {
-        ReadJenisKelas jenisKelasDTO = new ReadJenisKelas();
-        jenisKelasDTO.setId(jenisKelas.getId());
-        jenisKelasDTO.setBahasa(jenisKelas.getBahasa());
-        jenisKelasDTO.setNama(jenisKelas.getNama());
-        jenisKelasDTO.setPertemuan(jenisKelas.getModaPertemuan());
-        jenisKelasDTO.setTipe(jenisKelas.getTipe());
+    public static ReadJenisKelas toReadDto(JenisKelas request) {
+        ReadJenisKelas response = new ReadJenisKelas();
+        response.setId(request.getId());
+        response.setBahasa(request.getBahasa());
+        response.setNama(request.getNama());
+        response.setPertemuan(request.getModaPertemuan());
+        response.setTipe(request.getTipe());
+        response.setPicAkademikId(request.getPicAkademik().getId());
+        response.setPicAkademikNama(request.getPicAkademik().getNama());
+        for (Kelas kelas : request.getKelas()) {
+            response.getListProgram().add(ProgramMapper.toDto(kelas.getProgram()));
+        }
 
-        return jenisKelasDTO;
+        return response;
     }
 
 }
