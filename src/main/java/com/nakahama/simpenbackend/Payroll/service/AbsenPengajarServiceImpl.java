@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.security.SecurityProperties.User;
 import org.springframework.stereotype.Service;
 
 import com.nakahama.simpenbackend.Kelas.model.SesiKelas;
@@ -21,6 +22,7 @@ import com.nakahama.simpenbackend.Payroll.model.PeriodePayroll;
 import com.nakahama.simpenbackend.Payroll.repository.AbsenPengajarDb;
 import com.nakahama.simpenbackend.Payroll.repository.PeriodePayrollDb;
 import com.nakahama.simpenbackend.User.model.Pengajar;
+import com.nakahama.simpenbackend.User.model.UserModel;
 import com.nakahama.simpenbackend.User.service.UserService;
 import com.nakahama.simpenbackend.exception.BadRequestException;
 
@@ -76,7 +78,12 @@ public class AbsenPengajarServiceImpl implements AbsenPengajarService{
     }
 
     @Override
-    public List<AbsenPengajar> getAllAbsenPengajar() {
+    public List<AbsenPengajar> getAllAbsenPengajar(UserModel userModel) {
+        return absenPengajarDb.findAllByPengajar((Pengajar) userModel);    
+    }
+
+    @Override
+    public List<AbsenPengajar> getAll() {
         return absenPengajarDb.findAll();
     }
 
@@ -112,6 +119,7 @@ public class AbsenPengajarServiceImpl implements AbsenPengajarService{
             // Tentukan tanggal pembayaran setiap bulan pada tanggal 25
             LocalDateTime tanggalPembayaran = LocalDateTime.of(tahun, bulan, 25, 0, 0);
             periodePayroll.setTanggalPembayaran(Timestamp.valueOf(tanggalPembayaran));
+            periodePayroll.setListAbsenPengajar(new ArrayList<AbsenPengajar>());
             // Simpan periode payroll baru ke dalam database
             periodePayrollDb.save(periodePayroll);
         }
