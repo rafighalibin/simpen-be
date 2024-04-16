@@ -51,7 +51,9 @@ public class JenisKelasController {
         notification.setTipe(7);
 
         // Content of Notification
-        notification.setJudul("Anda menjadi PIC jenis kelas " + String.valueOf(jenisKelasRequest.getNama()));
+        notification
+                .setJudul("Anda menjadi PIC akademik untuk jenis kelas " + String.valueOf(jenisKelasRequest.getNama()));
+        notification.getIsi().put("namaJenisKelas", String.valueOf(jenisKelasRequest.getNama()));
 
         notificationService.generateNotification(notification);
 

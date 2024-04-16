@@ -37,7 +37,7 @@ public class SecurityConfig {
                                         auth.requestMatchers("auth/test-role").hasAuthority("superadmin");
                                         auth.requestMatchers(HttpMethod.POST, "user").hasAuthority("superadmin");
                                         auth.requestMatchers(HttpMethod.GET, "user").hasAnyAuthority("operasional",
-                                                        "superadmin");
+                                                        "superadmin", "akademik");
                                         auth.requestMatchers(HttpMethod.PUT, "user").hasAnyAuthority("pengajar",
                                                         "operasional", "akademik");
                                         auth.requestMatchers(HttpMethod.DELETE, "user/**").hasAuthority("superadmin");
