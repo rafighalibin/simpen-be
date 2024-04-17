@@ -94,7 +94,7 @@ public class JenisKelasController {
         Map<String, List<String>> existingAttributes = jenisKelasService.getAllExistingAttributes();
         return ResponseUtil.okResponse(existingAttributes, "Success");
     }
-    
+
     @GetMapping("/find")
     public ResponseEntity<Object> findJenisKelas(@RequestParam("nama") String nama, @RequestParam("tipe") String tipe,
             @RequestParam("modaPertemuan") String modaPertemuan, @RequestParam("bahasa") String bahasa) {

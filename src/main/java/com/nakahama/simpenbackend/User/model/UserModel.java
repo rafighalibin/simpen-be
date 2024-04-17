@@ -64,6 +64,9 @@ public class UserModel implements Serializable {
     @Column(name = "is_inactive")
     private boolean isInactive = false;
 
+    @Column(name = "is_logged_in")
+    private boolean isLoggedIn = false;
+
     @OneToMany(mappedBy = "akunPenerima", cascade = CascadeType.ALL)
     private List<Notification> notifikasi;
 

@@ -75,33 +75,35 @@ public class RescheduleController {
             @Valid @RequestBody List<UpdateReschedule> listRescheduleRequest) {
         rescheduleService.approve(listRescheduleRequest);
 
-        // // Generate Notification for requestee
-        // for (UpdateReschedule request : listRescheduleRequest) {
-        // GenerateNotifDTO notification = new GenerateNotifDTO();
-        // Reschedule pengajarMenggantikan = rescheduleService.getById(request.getId());
-        // UUID idPengajarRequest =
-        // pengajarMenggantikan.getSesiKelas().getPengajar().getId();
+        // Generate Notification for requestee
+        for (UpdateReschedule request : listRescheduleRequest) {
+            GenerateNotifDTO notification = new GenerateNotifDTO();
+            Reschedule reschedule = rescheduleService.getById(request.getId());
+            UUID sesiKelasId = reschedule.getSesiKelas().getId();
 
-        // notification.setAkunPenerima(idPengajarRequest);
-        // notification.setTipe(4);
+            notification.setAkunPenerima(sesiKelasService
+                    .getById(rescheduleService.getById(request.getId()).getSesiKelas().getId()).getPengajar().getId());
+            notification.setTipe(4);
 
-        // // Content of Notification
-        // if (request.getPengajarPenggantiId() != null) {
-        // notification.setJudul("permintaan pengajar pengganti diterima");
-        // notification.getIsi().put("sesiKelas",
-        // String.valueOf(pengajarMenggantikan.getSesiKelas()));
-        // notification.getIsi().put("pengganti",
-        // String.valueOf(request.getPengajarPenggantiId()));
+            // Content of Notification
+            if (request.getZoomId() != null) {
+                notification.setJudul("permintaan perubahan jadwal diterima");
+                notification.getIsi().put("sesiKelas",
+                        String.valueOf(sesiKelasId));
+                notification.getIsi().put("status",
+                        "disetujui");
+                notificationService.generateNotification(notification);
+            } else {
+                notification.setJudul("permintaan pengajar pengganti ditolak");
+                notification.getIsi().put("sesiKelas",
+                        String.valueOf(sesiKelasId));
+                notification.getIsi().put("status",
+                        "ditolak");
+                notificationService.generateNotification(notification);
 
-        // notificationService.generateNotification(notification);
-        // } else {
-        // notification.setJudul("permintaan pengajar pengganti ditolak");
-        // notification.getIsi().put("sesiKelas",
-        // String.valueOf(pengajarMenggantikan.getSesiKelas()));
+            }
 
-        // }
-
-        // }
+        }
         return ResponseUtil.okResponse(null, listRescheduleRequest.size() + " Ganti Pengajar Request changed");
     }
 }
