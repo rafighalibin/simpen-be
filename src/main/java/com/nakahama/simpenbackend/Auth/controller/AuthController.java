@@ -23,6 +23,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 @RestController
@@ -93,6 +94,9 @@ public class AuthController {
                     }
                 }
 
+                // handle login session
+                user.setLoggedIn(true);
+
                 user.setNotifikasi(newNotif);
                 userDb.save(user);
 
@@ -113,7 +117,14 @@ public class AuthController {
         return ResponseEntity.status(response.getCode()).body(response);
     }
 
-    // <-- testing security config -->
+    @Deprecated
+    @PutMapping("/logout")
+    public String userLogout(HttpServletRequest request) {
+        UserModel user = authService.getLoggedUser(request);
+        user.setLoggedIn(false);
+        userDb.save(user);
+        return "success";
+    }
 
     @PostMapping("/test")
     public ResponseEntity<?> testAuthorized() {
