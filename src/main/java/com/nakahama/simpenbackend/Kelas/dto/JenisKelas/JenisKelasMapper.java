@@ -66,8 +66,10 @@ public class JenisKelasMapper {
         response.setTipe(request.getTipe());
         response.setPicAkademikId(request.getPicAkademik().getId());
         response.setPicAkademikNama(request.getPicAkademik().getNama());
-        for (Kelas kelas : request.getKelas()) {
-            response.getListProgram().add(ProgramMapper.toDto(kelas.getProgram()));
+        if (request.getKelas() != null) {
+            for (Kelas kelas : request.getKelas()) {
+                response.getListProgram().add(ProgramMapper.toDto(kelas.getProgram()));
+            }
         }
 
         return response;
