@@ -28,6 +28,8 @@ public interface JenisKelasService {
 
     public ReadJenisKelas update(UpdateJenisKelas jenisKelasRequest);
 
+    public ReadJenisKelas createToUpdate(CreateJenisKelas jenisKelasRequest);
+
     public Map<String, List<String>> getAllExistingAttributes();
 
     public Map<String, List<String>> getExistingAttributes(ProgramJenisKelasAttributes programJenisKelasAttributes);

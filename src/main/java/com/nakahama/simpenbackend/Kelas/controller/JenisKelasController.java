@@ -1,5 +1,6 @@
 package com.nakahama.simpenbackend.Kelas.controller;
 
+import org.hibernate.sql.Update;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -46,22 +47,30 @@ public class JenisKelasController {
     NotificationService notificationService;
 
     @PostMapping("")
-    public ResponseEntity<Object> createJenisKelas(@Valid @RequestBody CreateJenisKelas jenisKelasRequest,
+    public ResponseEntity<Object> createOrUpdateJenisKelas(@Valid @RequestBody CreateJenisKelas jenisKelasRequest,
             HttpServletRequest request) {
-        jenisKelasService.save(jenisKelasRequest);
+        List<JenisKelas> existingJenisKelas = jenisKelasService.getByNama(jenisKelasRequest.getNama());
+        if (existingJenisKelas.isEmpty()) {
+            // Name not found, save as new
+            jenisKelasService.save(jenisKelasRequest);
 
-        // Generate Notification
-        GenerateNotifDTO notification = new GenerateNotifDTO();
-        notification.setAkunPenerima(jenisKelasRequest.getPicAkademikId());
-        notification.setTipe(7);
+            // Generate Notification
+            GenerateNotifDTO notification = new GenerateNotifDTO();
+            notification.setAkunPenerima(jenisKelasRequest.getPicAkademikId());
+            notification.setTipe(7);
 
-        // Content of Notification
-        notification.setJudul("Anda menjadi PIC jenis kelas " + String.valueOf(jenisKelasRequest.getNama()));
+            // Content of Notification
+            notification.setJudul("Anda menjadi PIC jenis kelas " + String.valueOf(jenisKelasRequest.getNama()));
 
-        notificationService.generateNotification(notification);
-
-        return ResponseUtil.okResponse(null,
-                "Jenis Kelas with name " + jenisKelasRequest.getNama() + " has been created");
+            notificationService.generateNotification(notification);
+            return ResponseUtil.okResponse(null,
+                    "Jenis Kelas with name " + jenisKelasRequest.getNama() + " has been created");
+        } else {
+            // Name found, update the existing record
+            ReadJenisKelas updatedJenisKelas = jenisKelasService.createToUpdate(jenisKelasRequest);
+            return ResponseUtil.okResponse(updatedJenisKelas,
+                    "Jenis Kelas with name " + jenisKelasRequest.getNama() + " has been updated");
+        }
     }
 
     @GetMapping(value = "")

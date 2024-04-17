@@ -160,11 +160,48 @@ public class JenisKelasServiceImpl implements JenisKelasService {
 
         List<JenisKelas> addedJenisKelas = new ArrayList<JenisKelas>();
         for (JenisKelas jenisKelas : listJenisKelas) {
-            try {
-                jenisKelasDb.save(jenisKelas);
-                addedJenisKelas.add(jenisKelas);
-            } catch (Exception e) {
-                continue;
+            // Check if the combination already exists
+            if (jenisKelasDb.findByTipeAndModaPertemuanAndBahasa(jenisKelas.getTipe(), jenisKelas.getModaPertemuan(), jenisKelas.getBahasa()).isEmpty()) {
+                try {
+                    jenisKelasDb.save(jenisKelas);
+                    addedJenisKelas.add(jenisKelas);
+                } catch (Exception e) {
+                    continue;
+                }
+            }
+        }
+        saveJenisAttr(jenisKelasRequest.getModaPertemuan(), jenisKelasRequest.getTipe(), jenisKelasRequest.getBahasa());
+
+        if (addedJenisKelas.isEmpty()) {
+            throw new BadRequestException("Jenis Kelas with name " + jenisKelasRequest.getNama() + " does not change");
+        }
+
+        return JenisKelasMapper.toReadDto(addedJenisKelas.get(0));
+    }
+
+    @Override
+    public ReadJenisKelas createToUpdate(CreateJenisKelas jenisKelasRequest) {
+        List<JenisKelas> existingJenisKelas = jenisKelasDb.findAllByNama(jenisKelasRequest.getNama());
+
+        if (existingJenisKelas == null)
+            throw new BadRequestException("Jenis Kelas with nama " + jenisKelasRequest.getNama() + " not found");
+
+        UserModel picAkademikUserModel = userService.getUserById(jenisKelasRequest.getPicAkademikId());
+        Akademik picAkademik = (Akademik) picAkademikUserModel;
+        List<JenisKelas> listJenisKelas = JenisKelasMapper.toEntity(jenisKelasRequest, picAkademik);
+
+        List<JenisKelas> addedJenisKelas = new ArrayList<JenisKelas>();
+        for (JenisKelas jenisKelas : listJenisKelas) {
+            // Check if the combination already exists
+            if (existingJenisKelas != null) {
+                if (jenisKelasDb.findByTipeAndModaPertemuanAndBahasa(jenisKelas.getTipe(), jenisKelas.getModaPertemuan(), jenisKelas.getBahasa()).isEmpty()) {
+                    try {
+                        jenisKelasDb.save(jenisKelas);
+                        addedJenisKelas.add(jenisKelas);
+                    } catch (Exception e) {
+                        continue;
+                    }
+            }
             }
         }
         saveJenisAttr(jenisKelasRequest.getModaPertemuan(), jenisKelasRequest.getTipe(), jenisKelasRequest.getBahasa());
