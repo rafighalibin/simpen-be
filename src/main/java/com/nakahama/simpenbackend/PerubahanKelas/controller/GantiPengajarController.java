@@ -81,6 +81,7 @@ public class GantiPengajarController {
         for (UpdateGantiPengajar request : listGantiPengajarRequest) {
             GenerateNotifDTO notification = new GenerateNotifDTO();
             PengajarMenggantikan pengajarMenggantikan = gantiPengajarService.getById(request.getId());
+            String namaPengajarMenggantikan = userService.getUserById(pengajarMenggantikan.getId()).getNama();
             UUID idPengajarRequest = pengajarMenggantikan.getSesiKelas().getPengajar().getId();
 
             notification.setAkunPenerima(idPengajarRequest);
@@ -88,14 +89,17 @@ public class GantiPengajarController {
 
             // Content of Notification
             if (request.getPengajarPenggantiId() != null) {
-                notification.setJudul("permintaan pengajar pengganti diterima");
-                notification.getIsi().put("sesiKelas", String.valueOf(pengajarMenggantikan.getSesiKelas()));
-                notification.getIsi().put("pengganti", String.valueOf(request.getPengajarPenggantiId()));
+                notification.setJudul("Permintaan pengajar pengganti disetujui");
+                notification.getIsi().put("status", "disetujui");
+                notification.getIsi().put("sesiKelas", String.valueOf(pengajarMenggantikan.getSesiKelas().getId()));
+                notification.getIsi().put("pengganti", String.valueOf(namaPengajarMenggantikan));
 
                 notificationService.generateNotification(notification);
             } else {
-                notification.setJudul("permintaan pengajar pengganti ditolak");
-                notification.getIsi().put("sesiKelas", String.valueOf(pengajarMenggantikan.getSesiKelas()));
+                notification.getIsi().put("status", "ditolak");
+                notification.setJudul("Permintaan pengajar pengganti ditolak");
+                notification.getIsi().put("sesiKelas", String.valueOf(pengajarMenggantikan.getSesiKelas().getId()));
+                notificationService.generateNotification(notification);
 
             }
 
