@@ -50,7 +50,6 @@ public class JenisKelasController {
     public ResponseEntity<Object> createOrUpdateJenisKelas(@Valid @RequestBody CreateJenisKelas jenisKelasRequest,
             HttpServletRequest request) {
         List<JenisKelas> existingJenisKelas = jenisKelasService.getByNama(jenisKelasRequest.getNama());
-        System.out.println("existingJenisKelas: " + existingJenisKelas);
         if (existingJenisKelas.isEmpty()) {
             // Name not found, save as new
             jenisKelasService.save(jenisKelasRequest);
