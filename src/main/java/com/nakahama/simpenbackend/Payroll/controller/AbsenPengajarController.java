@@ -53,11 +53,20 @@ public class AbsenPengajarController {
 
     }
 
+    @SuppressWarnings("deprecation")
     @GetMapping("")
-    public ResponseEntity<Object> getAllAbsen() {
+    public ResponseEntity<Object> getAllAbsen( HttpServletRequest request) {
+        String role = authService.getRoleLoggedUser(request);
         List<ReadAbsenPengajar> listAbsenPengajar = new ArrayList<ReadAbsenPengajar>();
-        for (AbsenPengajar absenPengajar : absenPengajarService.getAllAbsenPengajar()) {
-            listAbsenPengajar.add(AbsenPengajarMapper.toReadDto(absenPengajar));
+        if (role.equals("pengajar")) {
+            for (AbsenPengajar absenPengajar : absenPengajarService.getAllAbsenPengajar(authService.getLoggedUser(request))) {
+                listAbsenPengajar.add(AbsenPengajarMapper.toReadDto(absenPengajar));
+            }
+        }
+        else{
+            for (AbsenPengajar absenPengajar : absenPengajarService.getAll()) {
+                listAbsenPengajar.add(AbsenPengajarMapper.toReadDto(absenPengajar));
+            }
         }
         return ResponseUtil.okResponse(listAbsenPengajar, "Success");
     }
