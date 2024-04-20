@@ -85,13 +85,6 @@ public class JenisKelasController {
         return ResponseUtil.okResponse(jenisKelas, "Success");
     }
 
-    @PutMapping("")
-    public ResponseEntity<Object> updateJenisKelas(@Valid @RequestBody UpdateJenisKelas jenisKelasRequest) {
-        ReadJenisKelas jenisKelas = jenisKelasService.update(jenisKelasRequest);
-        return ResponseUtil.okResponse(jenisKelas,
-                "Jenis Kelas with name " + jenisKelas.getNama() + " has been updated");
-    }
-
     @DeleteMapping("/{id}")
     public ResponseEntity<Object> deleteJenisKelasId(@PathVariable("id") String id) {
         jenisKelasService.delete(UUID.fromString(id));

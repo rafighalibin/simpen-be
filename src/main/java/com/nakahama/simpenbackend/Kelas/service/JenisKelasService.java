@@ -26,8 +26,6 @@ public interface JenisKelasService {
 
     public List<JenisKelas> getByNama(String nama);
 
-    public ReadJenisKelas update(UpdateJenisKelas jenisKelasRequest);
-
     public ReadJenisKelas createToUpdate(CreateJenisKelas jenisKelasRequest);
 
     public Map<String, List<String>> getAllExistingAttributes();
