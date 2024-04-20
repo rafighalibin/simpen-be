@@ -243,4 +243,16 @@ public class JenisKelasServiceImpl implements JenisKelasService {
         }
         throw new BadRequestException("Jenis Kelas not found");
     }
+
+    @Override
+    public ReadJenisKelas findJenisKelasRequest(FindJenisKelas findJenisKelasRequest) {
+        List<JenisKelas> jenisKelas = jenisKelasDb.findAllByNama(findJenisKelasRequest.getNama());
+        for (JenisKelas jk : jenisKelas) {
+            if (jk.getTipe().equals(findJenisKelasRequest.getTipe()) && jk.getModaPertemuan().equals(findJenisKelasRequest.getModaPertemuan()) && jk.getBahasa().equals(findJenisKelasRequest.getBahasa())) {
+                return JenisKelasMapper.toReadDto(jk);
+            }
+        }
+        throw new BadRequestException("Jenis Kelas not found");
+    }
+
 }

@@ -33,4 +33,6 @@ public interface JenisKelasService {
     public Map<String, List<String>> getExistingAttributes(ProgramJenisKelasAttributes programJenisKelasAttributes);
 
     public ReadJenisKelas findJenisKelas(String nama, String tipe, String moda, String bahasa);
+
+    public ReadJenisKelas findJenisKelasRequest(FindJenisKelas findJenisKelasRequest);
 }
