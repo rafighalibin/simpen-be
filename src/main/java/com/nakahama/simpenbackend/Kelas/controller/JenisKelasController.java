@@ -85,13 +85,6 @@ public class JenisKelasController {
         return ResponseUtil.okResponse(jenisKelas, "Success");
     }
 
-    @PutMapping("")
-    public ResponseEntity<Object> updateJenisKelas(@Valid @RequestBody UpdateJenisKelas jenisKelasRequest) {
-        ReadJenisKelas jenisKelas = jenisKelasService.update(jenisKelasRequest);
-        return ResponseUtil.okResponse(jenisKelas,
-                "Jenis Kelas with name " + jenisKelas.getNama() + " has been updated");
-    }
-
     @DeleteMapping("/{id}")
     public ResponseEntity<Object> deleteJenisKelasId(@PathVariable("id") String id) {
         jenisKelasService.delete(UUID.fromString(id));
@@ -104,10 +97,22 @@ public class JenisKelasController {
         return ResponseUtil.okResponse(existingAttributes, "Success");
     }
 
+    @PostMapping("/existing-attributes-detail")
+    public ResponseEntity<Object> getExistingAttributes(@Valid @RequestBody ProgramJenisKelasAttributes programJenisKelasAttributes) {
+        Map<String, List<String>> existingAttributes = jenisKelasService.getExistingAttributes(programJenisKelasAttributes);
+        return ResponseUtil.okResponse(existingAttributes, "Success");
+    }
+
     @GetMapping("/find")
     public ResponseEntity<Object> findJenisKelas(@RequestParam("nama") String nama, @RequestParam("tipe") String tipe,
             @RequestParam("modaPertemuan") String modaPertemuan, @RequestParam("bahasa") String bahasa) {
         ReadJenisKelas jenisKelas = jenisKelasService.findJenisKelas(nama, tipe, modaPertemuan, bahasa);
+        return ResponseUtil.okResponse(jenisKelas, "Success");
+    }
+
+    @PostMapping("/find")
+    public ResponseEntity<Object> findJenisKelas(@Valid @RequestBody FindJenisKelas findJenisKelasRequest) {
+        ReadJenisKelas jenisKelas = jenisKelasService.findJenisKelasRequest(findJenisKelasRequest);
         return ResponseUtil.okResponse(jenisKelas, "Success");
     }
 }
