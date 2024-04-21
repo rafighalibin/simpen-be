@@ -13,4 +13,6 @@ import java.util.Optional;
 @Transactional
 public interface MuridSesiDb extends JpaRepository<MuridSesi, UUID> {
     Optional<MuridSesi> findByMuridAndSesiKelas(Murid murid, SesiKelas sesiKelas);
+
+    Iterable<MuridSesi> findBySesiKelas(SesiKelas sesiKelas);
 }

@@ -24,8 +24,10 @@ public interface MuridKelasService {
 
     public Optional<MuridKelas> getByLinkReport(String linkReport);
 
-    public List<MuridKelas> getListMurid(List<Integer> listMurid);
+    public List<MuridKelas> getListMurid(List<Integer> listMurid, Kelas kelas);
 
     public List<MuridKelas> createListMuridKelas(List<Integer> listMurid, Kelas kelas);
+
+    public List<MuridKelas> updateListMurid(List<Integer> listMurid, Kelas updatedKelas);
 
 }
