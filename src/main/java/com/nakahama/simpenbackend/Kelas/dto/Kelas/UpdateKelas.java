@@ -43,9 +43,6 @@ public class UpdateKelas {
     @Min(value = 0, message = "Tidak Boleh Kurang dari 0")
     private int level;
 
-    @NotBlank(message = "Platform is mandatory")
-    private String platform; // need to delete after platform model created (sprint 2)
-
     private String linkPlaylist;
 
     private String status;

@@ -41,4 +41,6 @@ public interface SesiKelasService {
     public void uppdateAbsenSesi(UUID idSesi, List<UpdateAbsensiMurid> updateAbsensiMurid);
 
     public void updateStatus(SesiKelas sesiKelas);
+
+    public List<SesiKelas> updateListSesiKelas(Kelas updatedKelas, Pengajar newpengajar, List<MuridKelas> newlistMurid);
 }

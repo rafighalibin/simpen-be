@@ -41,7 +41,7 @@ public class MuridSesiServiceImpl implements MuridSesiService {
 
     @Override
     public List<MuridSesi> createListMuridSesi(List<MuridKelas> listMurid, SesiKelas sesiKelas) {
-
+        muridSesiDb.findBySesiKelas(sesiKelas).forEach(muridSesiDb::delete);
         List<MuridSesi> listMuridSesi = new ArrayList<>();
         for (MuridKelas muridKelas : listMurid) {
             MuridSesi muridSesi = new MuridSesi();

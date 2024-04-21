@@ -82,19 +82,19 @@ public class KelasServiceImpl implements KelasService {
 
         kelasDb.save(createdKelas);
 
-        if(jenisKelas.getKelas().size() == 0){
+        if (jenisKelas.getKelas().size() == 0) {
             jenisKelas.setKelas(new ArrayList<Kelas>());
         }
         jenisKelas.getKelas().add(createdKelas);
         jenisKelasDb.save(jenisKelas);
 
-        if(program.getKelas().size() == 0){
+        if (program.getKelas().size() == 0) {
             program.setKelas(new ArrayList<Kelas>());
         }
         program.getKelas().add(createdKelas);
         programDb.save(program);
 
-        if(pengajar.getKelas().size() == 0){
+        if (pengajar.getKelas().size() == 0) {
             pengajar.setKelas(new ArrayList<Kelas>());
         }
         pengajar.getKelas().add(createdKelas);
@@ -135,10 +135,16 @@ public class KelasServiceImpl implements KelasService {
     public Kelas update(UpdateKelas kelasRequest) {
 
         Kelas updatedKelas = kelasDb.findById(kelasRequest.getId()).get();
-        Pengajar pengajar = (Pengajar) userService.getUserById(kelasRequest.getPengajarId());
-        List<MuridKelas> listMurid = muridKelasService.getListMurid(kelasRequest.getListMurid());
+        Pengajar newpengajar = (Pengajar) userService.getUserById(kelasRequest.getPengajarId());
+        List<MuridKelas> newlistMurid = muridKelasService.updateListMurid(kelasRequest.getListMurid(), updatedKelas);
 
-        return kelasDb.save(KelasMapper.toEntity(kelasRequest, updatedKelas, pengajar, listMurid));
+        updatedKelas = KelasMapper.toEntity(kelasRequest, updatedKelas, newpengajar, newlistMurid);
+        kelasDb.save(updatedKelas);
+
+        sesiKelasService.updateListSesiKelas(
+                updatedKelas,
+                newpengajar, newlistMurid);
+        return updatedKelas;
     }
 
     @Override
