@@ -1,0 +1,27 @@
+package com.nakahama.simpenbackend.User.dto.availability;
+
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.nakahama.simpenbackend.User.model.Pengajar;
+
+import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@AllArgsConstructor
+@NoArgsConstructor
+@Data
+@Getter
+@Setter
+public class UpdateAvailabilityRequest {
+    @NotNull
+    @JsonFormat(pattern = "MM-dd-yyyy HH:mm:ss")
+    private LocalDateTime waktu;
+
+    Pengajar pengajar;
+}
