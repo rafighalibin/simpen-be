@@ -15,6 +15,7 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.nakahama.simpenbackend.Feedback.model.Feedback;
 import com.nakahama.simpenbackend.Kelas.model.Kelas;
 import com.nakahama.simpenbackend.Kelas.model.SesiKelas;
 
@@ -100,4 +101,8 @@ public class Pengajar extends UserModel {
     @OneToMany(cascade = { CascadeType.ALL })
     @JsonIgnore
     private List<Kelas> kelas;
+
+    @OneToMany(cascade = { CascadeType.ALL })
+    @JsonIgnore
+    private List<Feedback> feedback;
 }
