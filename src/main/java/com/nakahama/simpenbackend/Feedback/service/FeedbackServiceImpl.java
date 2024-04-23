@@ -24,22 +24,22 @@ public class FeedbackServiceImpl implements FeedbackService{
     @Autowired
     UserService userService;
 
-    @Override
-    public void createFeedback(CreateFeedback createFeedbackRequest) {
+    // @Override
+    // public void createFeedback(CreateFeedback createFeedbackRequest) {
         
-        UserModel pengajar = userService.getUserById(createFeedbackRequest.getIdPenerima());
+    //     UserModel pengajar = userService.getUserById(createFeedbackRequest.getIdPenerima());
 
-        Pengajar pengajarPenerima = (Pengajar) pengajar;
+    //     Pengajar pengajarPenerima = (Pengajar) pengajar;
 
-        UserModel akademik = userService.getUserById(createFeedbackRequest.getIdPembuat());
+    //     UserModel akademik = userService.getUserById(createFeedbackRequest.getIdPembuat());
 
-        Akademik akademikPengirim = (Akademik) akademik;
+    //     Akademik akademikPengirim = (Akademik) akademik;
 
-        Feedback feedback = new Feedback();
-        feedback.setAkunPenerima(pengajarPenerima);
-        feedback.setAkunPembuat(akademikPengirim);
-        feedback.setIsi(createFeedbackRequest.getIsi());
-        feedback.setStatus("Pending");
-        feedbackDb.save(feedback);
-    }
+    //     Feedback feedback = new Feedback();
+    //     feedback.setAkunPenerima(pengajarPenerima);
+    //     feedback.setAkunPembuat(akademikPengirim);
+    //     feedback.setIsi(createFeedbackRequest.getIsi());
+    //     feedback.setStatus("Pending");
+    //     feedbackDb.save(feedback);
+    // }
 }

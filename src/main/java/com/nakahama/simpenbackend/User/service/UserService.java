@@ -25,7 +25,7 @@ public interface UserService {
 
     public UserModel addUser(String email, String role, String nama);
 
-    public UserModel getUserById(org.hibernate.validator.constraints.UUID uuid);
+    public UserModel getUserById(UUID uuid);
 
     public void addDummySuperadmin();
 
