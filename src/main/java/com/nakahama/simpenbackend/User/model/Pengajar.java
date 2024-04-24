@@ -1,12 +1,15 @@
 package com.nakahama.simpenbackend.User.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -88,6 +91,9 @@ public class Pengajar extends UserModel {
     @Size(max = 100)
     @Column(name = "no_telp_darurat")
     private String noTelpDarurat;
+
+    @Column(name = "last_update_availability")
+    private LocalDateTime lastUpdateAvailability;
 
     @ManyToMany
     @JoinTable(name = "pengajar_tag", joinColumns = @JoinColumn(name = "idPengajar"), inverseJoinColumns = @JoinColumn(name = "id"))
