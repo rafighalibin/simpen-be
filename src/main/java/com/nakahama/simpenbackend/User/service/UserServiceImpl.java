@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.Random;
 import java.util.UUID;
 import java.util.stream.Collectors;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
 
@@ -266,6 +267,15 @@ public class UserServiceImpl implements UserService {
 
         return listOps;
 
+    }
+
+    @Override
+    public Pengajar setLastUpdateAvailability(UUID id) {
+        Pengajar pengajar = pengajarDb.findById(id).orElseThrow(
+                () -> new BadRequestException("Pengajar with id " + id + " not found"));
+        pengajar.setLastUpdateAvailability(LocalDateTime.now());
+        
+        return pengajarDb.save(pengajar);
     }
 
 }

@@ -43,4 +43,6 @@ public interface UserService {
 
     public UserWithTagsResponseDTO getUserAndTag(UUID id);
 
+    public Pengajar setLastUpdateAvailability(UUID id);
+
 }
