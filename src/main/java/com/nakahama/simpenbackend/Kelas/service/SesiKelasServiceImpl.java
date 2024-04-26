@@ -177,7 +177,7 @@ public class SesiKelasServiceImpl implements SesiKelasService {
             muridSesiToUpdate.setIsPresent(updateAbsensiMurid.get(i).getIsPresent() == null ? false
                     : updateAbsensiMurid.get(i).getIsPresent());
             muridSesiToUpdate.setRating(updateAbsensiMurid.get(i).getRating() == null ? 0
-                    : updateAbsensiMurid.get(i).getRating());
+                    : updateAbsensiMurid.get(i).getRating() > 5 ? 5 : updateAbsensiMurid.get(i).getRating());
             muridSesiToUpdate.setKomentar(updateAbsensiMurid.get(i).getKomentar());
             muridSesiService.save(muridSesiToUpdate);
 
@@ -202,6 +202,7 @@ public class SesiKelasServiceImpl implements SesiKelasService {
     public void updateStatus(SesiKelas sesiKelas) {
         // TODO: adapt lagi
         sesiKelas.setStatus("Finished");
+        sesiKelas.getKelas().setStatus("Ongoing");
         save(sesiKelas);
     }
 
@@ -211,6 +212,21 @@ public class SesiKelasServiceImpl implements SesiKelasService {
         sesiKelasToUpdate.setJadwalZoom(sesiKelas.getJadwalZoom());
         sesiKelasToUpdate.setJadwalRuangan(sesiKelas.getJadwalRuangan());
         return save(sesiKelasToUpdate);
+    }
+
+    @Override
+    public List<SesiKelas> updateListSesiKelas(Kelas updatedKelas, Pengajar newpengajar,
+            List<MuridKelas> newlistMurid) {
+        List<SesiKelas> listSesiKelas = getByKelasId(updatedKelas.getKelasId());
+        for (SesiKelas sesiKelas : listSesiKelas) {
+            if (sesiKelas.getStatus() != "Scheduled")
+                continue;
+
+            sesiKelas.setPengajar(newpengajar);
+            sesiKelas.setListMuridSesi(muridSesiService.createListMuridSesi(newlistMurid, sesiKelas));
+            save(sesiKelas);
+        }
+        return listSesiKelas;
     }
 
 }

@@ -26,11 +26,13 @@ public interface JenisKelasService {
 
     public List<JenisKelas> getByNama(String nama);
 
-    public ReadJenisKelas update(UpdateJenisKelas jenisKelasRequest);
+    public ReadJenisKelas createToUpdate(CreateJenisKelas jenisKelasRequest);
 
     public Map<String, List<String>> getAllExistingAttributes();
 
     public Map<String, List<String>> getExistingAttributes(ProgramJenisKelasAttributes programJenisKelasAttributes);
 
     public ReadJenisKelas findJenisKelas(String nama, String tipe, String moda, String bahasa);
+
+    public ReadJenisKelas findJenisKelasRequest(FindJenisKelas findJenisKelasRequest);
 }

@@ -25,10 +25,6 @@ public class PeriodePayroll {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String bulan;
-
-    private Integer tahun;
-
     private Date tanggalMulai;
 
     private Date tanggalSelesai;

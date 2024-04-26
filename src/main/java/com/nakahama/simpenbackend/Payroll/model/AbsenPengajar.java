@@ -49,6 +49,10 @@ public class AbsenPengajar {
     private LocalDateTime tanggalUpdate;
 
     @NotNull
-    private Integer jumlahFee = 200;
+    private Integer jumlahFee;
+
+    @NotNull
+    @ManyToOne
+    private FeeModel fee;
 
 }

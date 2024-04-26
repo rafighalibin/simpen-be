@@ -61,10 +61,17 @@ public class MuridKelasServiceImpl implements MuridKelasService {
     }
 
     @Override
-    public List<MuridKelas> getListMurid(List<Integer> listMurid) {
+    public List<MuridKelas> getListMurid(List<Integer> listMurid, Kelas kelas) {
         List<MuridKelas> muridKelas = new ArrayList<>();
         for (int idMurid : listMurid) {
-            MuridKelas muridKelasTemp = getByMurid(muridService.getById(idMurid));
+            Murid murid = muridService.getById(idMurid);
+            MuridKelas muridKelasTemp = muridKelasDb.findByMuridAndKelas(murid, kelas).orElse(null);
+            if (muridKelasTemp == null) {
+                muridKelasTemp = new MuridKelas();
+                muridKelasTemp.setMurid(murid);
+                muridKelasTemp.setKelas(kelas);
+                save(muridKelasTemp);
+            }
             muridKelas.add(muridKelasTemp);
         }
         return muridKelas;
@@ -81,6 +88,27 @@ public class MuridKelasServiceImpl implements MuridKelasService {
             muridKelas.add(muridKelasTemp);
         }
         return muridKelas;
+    }
+
+    @Override
+    public List<MuridKelas> updateListMurid(List<Integer> listMurid, Kelas updatedKelas) {
+        List<MuridKelas> listMuridKelas = new ArrayList<>();
+        List<MuridKelas> existingListMuridKelas = updatedKelas.getMuridKelas();
+
+        for (MuridKelas muridKelasToDelete : existingListMuridKelas)
+            delete(muridKelasToDelete.getMuridKelasId());
+
+        for (int idMurid : listMurid) {
+            Murid murid = muridService.getById(idMurid);
+
+            MuridKelas muridKelasTemp = new MuridKelas();
+            muridKelasTemp.setMurid(murid);
+            muridKelasTemp.setKelas(updatedKelas);
+            save(muridKelasTemp);
+
+            listMuridKelas.add(muridKelasTemp);
+        }
+        return listMuridKelas;
     }
 
 }

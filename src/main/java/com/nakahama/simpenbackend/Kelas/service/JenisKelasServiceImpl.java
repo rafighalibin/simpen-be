@@ -148,23 +148,21 @@ public class JenisKelasServiceImpl implements JenisKelasService {
     }
 
     @Override
-    public ReadJenisKelas update(UpdateJenisKelas jenisKelasRequest) {
-        List<JenisKelas> existingJenisKelas = jenisKelasDb.findAllByNama(jenisKelasRequest.getNama());
-
-        if (existingJenisKelas == null)
-            throw new BadRequestException("Jenis Kelas with nama " + jenisKelasRequest.getNama() + " not found");
-
+    public ReadJenisKelas createToUpdate(CreateJenisKelas jenisKelasRequest) {
         UserModel picAkademikUserModel = userService.getUserById(jenisKelasRequest.getPicAkademikId());
         Akademik picAkademik = (Akademik) picAkademikUserModel;
         List<JenisKelas> listJenisKelas = JenisKelasMapper.toEntity(jenisKelasRequest, picAkademik);
 
         List<JenisKelas> addedJenisKelas = new ArrayList<JenisKelas>();
         for (JenisKelas jenisKelas : listJenisKelas) {
-            try {
-                jenisKelasDb.save(jenisKelas);
-                addedJenisKelas.add(jenisKelas);
-            } catch (Exception e) {
-                continue;
+            // Check if the combination already exists
+            if (jenisKelasDb.findByNamaAndTipeAndModaPertemuanAndBahasa(jenisKelas.getNama(), jenisKelas.getTipe(), jenisKelas.getModaPertemuan(), jenisKelas.getBahasa()).isEmpty()) {
+                try {
+                    jenisKelasDb.save(jenisKelas);
+                    addedJenisKelas.add(jenisKelas);
+                } catch (Exception e) {
+                    continue;
+                }
             }
         }
         saveJenisAttr(jenisKelasRequest.getModaPertemuan(), jenisKelasRequest.getTipe(), jenisKelasRequest.getBahasa());
@@ -245,4 +243,16 @@ public class JenisKelasServiceImpl implements JenisKelasService {
         }
         throw new BadRequestException("Jenis Kelas not found");
     }
+
+    @Override
+    public ReadJenisKelas findJenisKelasRequest(FindJenisKelas findJenisKelasRequest) {
+        List<JenisKelas> jenisKelas = jenisKelasDb.findAllByNama(findJenisKelasRequest.getNama());
+        for (JenisKelas jk : jenisKelas) {
+            if (jk.getTipe().equals(findJenisKelasRequest.getTipe()) && jk.getModaPertemuan().equals(findJenisKelasRequest.getModaPertemuan()) && jk.getBahasa().equals(findJenisKelasRequest.getBahasa())) {
+                return JenisKelasMapper.toReadDto(jk);
+            }
+        }
+        throw new BadRequestException("Jenis Kelas not found");
+    }
+
 }
