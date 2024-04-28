@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.nakahama.simpenbackend.Auth.service.AuthService;
@@ -155,5 +156,20 @@ public class UserController {
             return ResponseUtil.okResponse(akademik,
                     "User berhasil diupdate");
         }
+    }
+
+    @GetMapping("/pengajar")
+    public ResponseEntity<Object> getAllPengajar() {
+        List<UserModel> response = userService.getAllPengajar();
+        return ResponseUtil.okResponse(response, "Success");
+    }
+
+    @GetMapping(value = "/pengajar/availability", params = { "hari", "waktuStart", "waktuEnd" })
+    public ResponseEntity<Object> getAllPengajarByAvailability(
+            @RequestParam(required = true, value = "hari") String hari,
+            @RequestParam(required = true, value = "waktuStart") String waktuStart,
+            @RequestParam(required = true, value = "waktuEnd") String waktuEnd) {
+        List<UserModel> response = userService.getAllPengajarByAvailability(hari, waktuStart, waktuEnd);
+        return ResponseUtil.okResponse(response, "Success");
     }
 }

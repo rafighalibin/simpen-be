@@ -1,6 +1,7 @@
 package com.nakahama.simpenbackend.User.service;
 
 import java.util.List;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Random;
 import java.util.UUID;
@@ -274,8 +275,42 @@ public class UserServiceImpl implements UserService {
         Pengajar pengajar = pengajarDb.findById(id).orElseThrow(
                 () -> new BadRequestException("Pengajar with id " + id + " not found"));
         pengajar.setLastUpdateAvailability(LocalDateTime.now());
-        
+
         return pengajarDb.save(pengajar);
     }
 
+    @Override
+    public List<UserModel> getAllPengajar() {
+        List<UserModel> listPengajar = userDb.findAll().stream()
+                .filter(user -> user.getRole().equals("pengajar"))
+                .collect(Collectors.toList());
+        return listPengajar;
+
+    }
+
+    private LocalDateTime fromHariAndWaktu(String hari, String waktu) {
+        Map<String, Integer> hariMap = new LinkedHashMap<>();
+        hariMap.put("senin", 1);
+        hariMap.put("selasa", 2);
+        hariMap.put("rabu", 3);
+        hariMap.put("kamis", 4);
+        hariMap.put("jumat", 5);
+        hariMap.put("sabtu", 6);
+        hariMap.put("minggu", 7);
+
+        int dayOfMonth = hariMap.get(hari.toLowerCase());
+        int hour = Integer.parseInt(waktu.substring(0, 2));
+        int minute = Integer.parseInt(waktu.substring(4, 5));
+        LocalDateTime waktuStart = LocalDateTime.of(2024, 1, dayOfMonth, hour, minute, 0);
+        return waktuStart;
+    }
+
+    @Override
+    public List<UserModel> getAllPengajarByAvailability(String hari, String waktuStart, String waktuEnd) {
+        LocalDateTime start = fromHariAndWaktu(hari, waktuStart);
+        LocalDateTime end = fromHariAndWaktu(hari, waktuEnd);
+
+        List<UserModel> listPengajar = userDb.findPengajarByAvailability(start, end);
+        return listPengajar;
+    }
 }
