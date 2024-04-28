@@ -33,6 +33,7 @@ public class SecurityConfig {
                                 .authorizeHttpRequests(auth -> {
                                         // Auth, User, Tag
                                         auth.requestMatchers("auth/login").permitAll();
+                                        auth.requestMatchers("auth/logout").authenticated();
                                         auth.requestMatchers("auth/test").authenticated();
                                         auth.requestMatchers("auth/test-role").hasAuthority("superadmin");
                                         auth.requestMatchers(HttpMethod.POST, "user").hasAuthority("superadmin");
@@ -61,15 +62,18 @@ public class SecurityConfig {
                                                         "superadmin");
                                         auth.requestMatchers("kelas/program/**").hasAnyAuthority("operasional",
                                                         "superadmin");
-                                        auth.requestMatchers(HttpMethod.POST, "kelas").hasAnyAuthority("operasional", "superadmin");
+                                        auth.requestMatchers(HttpMethod.POST, "kelas").hasAnyAuthority("operasional",
+                                                        "superadmin");
                                         auth.requestMatchers(HttpMethod.GET, "kelas").hasAnyAuthority("pengajar",
                                                         "operasional",
                                                         "akademik", "superadmin");
                                         auth.requestMatchers(HttpMethod.GET, "kelas/**").hasAnyAuthority("pengajar",
                                                         "operasional",
                                                         "akademik", "superadmin");
-                                        auth.requestMatchers(HttpMethod.PUT, "kelas/**").hasAnyAuthority("operasional", "superadmin");
-                                        auth.requestMatchers(HttpMethod.DELETE, "kelas/**").hasAnyAuthority("operasional", "superadmin");
+                                        auth.requestMatchers(HttpMethod.PUT, "kelas/**").hasAnyAuthority("operasional",
+                                                        "superadmin");
+                                        auth.requestMatchers(HttpMethod.DELETE, "kelas/**")
+                                                        .hasAnyAuthority("operasional", "superadmin");
 
                                         // Announcement
                                         auth.requestMatchers(HttpMethod.POST, "announcement")
@@ -81,8 +85,33 @@ public class SecurityConfig {
                                         auth.requestMatchers(HttpMethod.GET, "announcement/**")
                                                         .hasAnyAuthority("operasional", "akademik", "pengajar");
 
+                                        // Murid
+                                        auth.requestMatchers(HttpMethod.POST, "murid/**").hasAnyAuthority("operasional",
+                                                        "superadmin", "akademik");
+                                        auth.requestMatchers("murid").authenticated();
+
+                                        // Sesi
+                                        auth.requestMatchers("sesi").authenticated();
+
+                                        // Perubahan Kelas
+                                        auth.requestMatchers(HttpMethod.POST, "/ganti-pengajar/**")
+                                                        .hasAnyAuthority("pengajar");
+                                        auth.requestMatchers(HttpMethod.PUT, "/ganti-pengajar/**").hasAnyAuthority(
+                                                        "operasional");
+                                        auth.requestMatchers(HttpMethod.GET, "/ganti-pengajar/**")
+                                                        .hasAnyAuthority("operasional");
+                                        auth.requestMatchers(HttpMethod.POST, "/reschedule/**")
+                                                        .hasAnyAuthority("pengajar");
+                                        auth.requestMatchers(HttpMethod.PUT, "/reschedule/**").hasAnyAuthority(
+                                                        "operasional");
+                                        auth.requestMatchers(HttpMethod.GET, "/reschedule/**")
+                                                        .hasAnyAuthority("operasional");
+                                        auth.requestMatchers(HttpMethod.GET, "/permintaan-perubahan")
+                                                        .hasAnyAuthority("operasional");
+
                                         // TODO: set the appropriate authorities for the corresponding endpoints
-                                        auth.anyRequest().permitAll();
+                                        // auth.anyRequest().permitAll();
+
                                 })
                                 .sessionManagement(sessionAuthenticationStrategy -> sessionAuthenticationStrategy
                                                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
