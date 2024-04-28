@@ -2,6 +2,7 @@ package com.nakahama.simpenbackend.Auth.controller;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
 
 import com.nakahama.simpenbackend.Auth.dto.LoginReqDTO;
 import com.nakahama.simpenbackend.Auth.security.JwtUtils;
@@ -11,6 +12,7 @@ import com.nakahama.simpenbackend.User.model.UserModel;
 import com.nakahama.simpenbackend.User.repository.UserDb;
 import com.nakahama.simpenbackend.User.service.UserService;
 import com.nakahama.simpenbackend.util.BaseResponse;
+import com.nakahama.simpenbackend.util.ResponseUtil;
 
 import jakarta.servlet.http.HttpServletRequest;
 
@@ -119,11 +121,12 @@ public class AuthController {
 
     @Deprecated
     @PutMapping("/logout")
-    public String userLogout(HttpServletRequest request) {
+    public ResponseEntity<Object> userLogout(HttpServletRequest request) {
         UserModel user = authService.getLoggedUser(request);
         user.setLoggedIn(false);
         userDb.save(user);
-        return "success";
+        return ResponseUtil.okResponse(null,
+                "User " + user.getNama() + " has been logged out");
     }
 
     @PostMapping("/test")

@@ -43,7 +43,7 @@ public class GantiPengajarController {
     @Autowired
     UserService userService;
 
-    @PostMapping("/create/{kelasId}")
+    @PostMapping("/{kelasId}")
     public ResponseEntity<Object> createGantiPengajar(
             @Valid @RequestBody List<CreateGantiPengajar> listGantiPengajarRequest) {
         gantiPengajarService.save(listGantiPengajarRequest);
@@ -72,7 +72,7 @@ public class GantiPengajarController {
         return ResponseUtil.okResponse(GantiPengajarMapper.toReadDetailGantiPengajar(response), "Success");
     }
 
-    @PutMapping("/create/{kelasId}")
+    @PutMapping("/{kelasId}")
     public ResponseEntity<Object> approveGantiPengajar(
             @Valid @RequestBody List<UpdateGantiPengajar> listGantiPengajarRequest) {
         gantiPengajarService.approve(listGantiPengajarRequest);
