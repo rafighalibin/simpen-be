@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.UUID;
 import java.util.List;
+import java.time.LocalDateTime;
 
 @Repository
 @Transactional
@@ -30,5 +31,8 @@ public interface UserDb extends JpaRepository<UserModel, UUID> {
 
     @Query("FROM UserModel WHERE email = :email")
     UserModel findByEmailIncludingDeleted(@Param("email") String email);
+
+    @Query("SELECT U FROM UserModel U WHERE U.role = 'pengajar' AND U.isDeleted = false AND EXISTS (SELECT A FROM Availability A WHERE A.pengajar = U AND A.waktu BETWEEN :start AND :end)")
+    List<UserModel> findPengajarByAvailability(@Param("start") LocalDateTime start, @Param("end") LocalDateTime end);
 
 }
