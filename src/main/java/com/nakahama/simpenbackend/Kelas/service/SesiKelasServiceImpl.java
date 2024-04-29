@@ -209,6 +209,8 @@ public class SesiKelasServiceImpl implements SesiKelasService {
         sesiKelas.getKelas().setStatus("Ongoing");
         save(sesiKelas);
 
+        feedbackService.generateFeedback(sesiKelas.getKelas());
+
     }
 
     @Override
