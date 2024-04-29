@@ -4,6 +4,7 @@ import java.util.*;
 
 import com.nakahama.simpenbackend.Feedback.dto.FillFeedbackRequestDTO;
 import com.nakahama.simpenbackend.Feedback.model.Feedback;
+import com.nakahama.simpenbackend.Kelas.model.Kelas;
 
 public interface FeedbackService {
     public List<Feedback> retrieveAllFeedback();
