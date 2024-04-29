@@ -206,7 +206,11 @@ public class SesiKelasServiceImpl implements SesiKelasService {
     public void updateStatus(SesiKelas sesiKelas) {
         // TODO: adapt lagi
         sesiKelas.setStatus("Finished");
-        sesiKelas.getKelas().setStatus("Ongoing");
+        if(sesiKelas.getKelas().getListsesiKelas().stream().allMatch(s -> s.getStatus().equals("Finished"))){
+            sesiKelas.getKelas().setStatus("Finished");
+        }else{
+            sesiKelas.getKelas().setStatus("Ongoing");
+        }
         save(sesiKelas);
 
     }
