@@ -42,7 +42,7 @@ public class RescheduleController {
     @Autowired
     UserService userService;
 
-    @PostMapping("/create/{kelasId}")
+    @PostMapping("/{kelasId}")
     public ResponseEntity<Object> createReschedule(@Valid @RequestBody List<CreateReschedule> rescheduleRequest) {
         rescheduleService.save(rescheduleRequest);
 
@@ -70,7 +70,7 @@ public class RescheduleController {
         return ResponseUtil.okResponse(RescheduleMapper.toReadDetailReschedule(response), "Success");
     }
 
-    @PutMapping("/create/{kelasId}")
+    @PutMapping("/{kelasId}")
     public ResponseEntity<Object> approveReschedule(
             @Valid @RequestBody List<UpdateReschedule> listRescheduleRequest) {
         rescheduleService.approve(listRescheduleRequest);
