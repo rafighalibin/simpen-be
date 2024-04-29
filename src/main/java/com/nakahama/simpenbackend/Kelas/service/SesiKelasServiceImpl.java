@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
+import com.nakahama.simpenbackend.Feedback.service.FeedbackService;
 import com.nakahama.simpenbackend.Kelas.dto.SesiKelas.UpdateAbsensiMurid;
 import com.nakahama.simpenbackend.Kelas.model.*;
 import com.nakahama.simpenbackend.Kelas.repository.SesiKelasDb;
@@ -41,6 +42,9 @@ public class SesiKelasServiceImpl implements SesiKelasService {
     @Autowired
     @Lazy
     PlatformService platformService;
+
+    @Autowired
+    FeedbackService feedbackService;
 
     @Override
     public List<SesiKelas> getAll() {
@@ -204,6 +208,7 @@ public class SesiKelasServiceImpl implements SesiKelasService {
         sesiKelas.setStatus("Finished");
         sesiKelas.getKelas().setStatus("Ongoing");
         save(sesiKelas);
+
     }
 
     @Override
