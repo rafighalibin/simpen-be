@@ -8,6 +8,8 @@ import com.nakahama.simpenbackend.Feedback.model.Feedback;
 public interface FeedbackService {
     public List<Feedback> retrieveAllFeedback();
 
+    public void generateFeedback(Kelas kelas);
+
     public List<Feedback> feedbackByUserId(UUID id);
 
     public Feedback getFeedbackById(UUID id);
