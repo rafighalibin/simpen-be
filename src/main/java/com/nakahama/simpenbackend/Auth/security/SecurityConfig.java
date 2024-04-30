@@ -110,7 +110,7 @@ public class SecurityConfig {
                                                         .hasAnyAuthority("operasional");
 
                                         // TODO: set the appropriate authorities for the corresponding endpoints
-                                        // auth.anyRequest().permitAll();
+                                        auth.anyRequest().permitAll();
 
                                 })
                                 .sessionManagement(sessionAuthenticationStrategy -> sessionAuthenticationStrategy
