@@ -50,6 +50,10 @@ public class SecurityConfig {
                                                         "akademik");
                                         auth.requestMatchers(HttpMethod.GET, "tag").hasAnyAuthority("operasional",
                                                         "akademik");
+                                        auth.requestMatchers(HttpMethod.PUT, "tag").hasAnyAuthority("operasional",
+                                                        "akademik");
+                                        auth.requestMatchers(HttpMethod.DELETE, "tag/**").hasAnyAuthority("operasional",
+                                                        "akademik");
                                         auth.requestMatchers(HttpMethod.POST, "tag/assign")
                                                         .hasAnyAuthority("operasional", "akademik");
                                         auth.requestMatchers(HttpMethod.GET, "tag/assign")
@@ -92,6 +96,12 @@ public class SecurityConfig {
 
                                         // Sesi
                                         auth.requestMatchers("sesi").authenticated();
+
+                                        //absen
+                                        auth.requestMatchers(HttpMethod.POST, "absen-pengajar").hasAnyAuthority("pengajar");
+                                        auth.requestMatchers(HttpMethod.GET, "absen-pengajar").hasAnyAuthority("pengajar",
+                                                        "operasional", "akademik");
+                                        auth.requestMatchers(HttpMethod.GET, "absen-pengajar/**").hasAnyAuthority("pengajar", "operasional", "akademik");
 
                                         // Perubahan Kelas
                                         auth.requestMatchers(HttpMethod.POST, "/ganti-pengajar/**")
