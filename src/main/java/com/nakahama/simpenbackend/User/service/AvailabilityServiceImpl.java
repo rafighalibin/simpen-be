@@ -54,6 +54,7 @@ public class AvailabilityServiceImpl implements AvailabilityService {
 
     @Override
     public void deleteAvailability(Pengajar pengajar, LocalDateTime waktu) {
+        waktu = LocalDateTime.of(2024, 1, waktu.getDayOfWeek().getValue(), waktu.getHour(), waktu.getMinute());
         availabilityDb.deleteByPengajarAndWaktu(pengajar, waktu.minusMinutes(15), waktu.plusMinutes(15));
         userService.setLastUpdateAvailability(pengajar.getId());
     }
