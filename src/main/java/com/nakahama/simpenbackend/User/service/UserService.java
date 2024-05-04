@@ -43,4 +43,11 @@ public interface UserService {
 
     public UserWithTagsResponseDTO getUserAndTag(UUID id);
 
+    public Pengajar setLastUpdateAvailability(UUID id);
+
+    public List<UserModel> getAllPengajar();
+
+    public List<UserModel> getAllPengajarByAvailability(String hari, String waktuStart, String waktuEnd);
+
+    public UserModel getPengajar(UUID fromString);
 }

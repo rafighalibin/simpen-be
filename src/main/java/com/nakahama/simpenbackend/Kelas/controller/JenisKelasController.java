@@ -98,8 +98,10 @@ public class JenisKelasController {
     }
 
     @PostMapping("/existing-attributes-detail")
-    public ResponseEntity<Object> getExistingAttributes(@Valid @RequestBody ProgramJenisKelasAttributes programJenisKelasAttributes) {
-        Map<String, List<String>> existingAttributes = jenisKelasService.getExistingAttributes(programJenisKelasAttributes);
+    public ResponseEntity<Object> getExistingAttributes(
+            @Valid @RequestBody ProgramJenisKelasAttributes programJenisKelasAttributes) {
+        Map<String, List<String>> existingAttributes = jenisKelasService
+                .getExistingAttributes(programJenisKelasAttributes);
         return ResponseUtil.okResponse(existingAttributes, "Success");
     }
 

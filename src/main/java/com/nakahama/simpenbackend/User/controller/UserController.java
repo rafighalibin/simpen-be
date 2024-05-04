@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.nakahama.simpenbackend.Auth.service.AuthService;
@@ -21,7 +22,7 @@ import com.nakahama.simpenbackend.User.model.Operasional;
 import com.nakahama.simpenbackend.User.model.Pengajar;
 import com.nakahama.simpenbackend.User.model.UserModel;
 import com.nakahama.simpenbackend.User.repository.UserDb;
-import com.nakahama.simpenbackend.User.service.UserServiceImpl;
+import com.nakahama.simpenbackend.User.service.UserService;
 import com.nakahama.simpenbackend.util.ResponseUtil;
 import com.nakahama.simpenbackend.Notification.dto.GenerateNotifDTO;
 import com.nakahama.simpenbackend.Notification.service.NotificationService;
@@ -42,7 +43,7 @@ import java.time.temporal.ChronoUnit;
 public class UserController {
 
     @Autowired
-    UserServiceImpl userService;
+    UserService userService;
 
     @Autowired
     UserDb userDb;
@@ -155,5 +156,26 @@ public class UserController {
             return ResponseUtil.okResponse(akademik,
                     "User berhasil diupdate");
         }
+    }
+
+    @GetMapping("/pengajar")
+    public ResponseEntity<Object> getAllPengajar() {
+        List<UserModel> response = userService.getAllPengajar();
+        return ResponseUtil.okResponse(response, "Success");
+    }
+
+    @GetMapping("/pengajar/{id}")
+    public ResponseEntity<Object> getPengajar(@PathVariable("id") String id) {
+        UserModel response = userService.getPengajar(UUID.fromString(id));
+        return ResponseUtil.okResponse(response, "Success");
+    }
+
+    @GetMapping(value = "/pengajar/availability", params = { "hari", "waktuStart", "waktuEnd" })
+    public ResponseEntity<Object> getAllPengajarByAvailability(
+            @RequestParam(required = true, value = "hari") String hari,
+            @RequestParam(required = true, value = "waktuStart") String waktuStart,
+            @RequestParam(required = true, value = "waktuEnd") String waktuEnd) {
+        List<UserModel> response = userService.getAllPengajarByAvailability(hari, waktuStart, waktuEnd);
+        return ResponseUtil.okResponse(response, "Success");
     }
 }

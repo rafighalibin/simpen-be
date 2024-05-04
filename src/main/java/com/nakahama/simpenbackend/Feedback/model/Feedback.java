@@ -1,13 +1,13 @@
 package com.nakahama.simpenbackend.Feedback.model;
 
+import java.time.LocalDateTime;
+import java.util.UUID;
+
 import org.hibernate.annotations.SQLDelete;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.nakahama.simpenbackend.Kelas.model.Kelas;
-import com.nakahama.simpenbackend.User.model.UserModel;
-
-import java.util.UUID;
-import java.time.LocalDateTime;
+import com.nakahama.simpenbackend.User.model.Pengajar;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -27,19 +27,14 @@ public class Feedback {
     private UUID id = UUID.randomUUID();
 
     @ManyToOne
-    @JoinColumn(name = "akun_penerima")
+    @JoinColumn(name = "pengajar")
     @JsonIgnore
-    private UserModel akunPenerima;
+    private Pengajar pengajar;
 
     @ManyToOne
-    @JoinColumn(name = "akun_pembuat")
+    @JoinColumn(name = "kelas")
     @JsonIgnore
-    private UserModel akunPembuat;
-
-    // @ManyToOne
-    // @JoinColumn(name = "kelas_pengajaran")
-    // @JsonIgnore
-    // private Kelas kelasPengajaran;
+    private Kelas kelas;
 
     @Column(name = "tanggal_pembuatan")
     private LocalDateTime tanggalPembuatan;
@@ -48,11 +43,12 @@ public class Feedback {
     private String isi;
 
     @Column(name = "rating")
-    private int rating;
+    private double rating;
 
     @Column(name = "status")
-    private String status;
+    private boolean isFinished = false;
 
     @Column(name = "is_deleted")
     private boolean isDeleted = false;
+
 }
