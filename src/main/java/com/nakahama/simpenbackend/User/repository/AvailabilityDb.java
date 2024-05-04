@@ -26,7 +26,8 @@ public interface AvailabilityDb extends JpaRepository<Availability, UUID> {
     List<Availability> findByPengajar(@Param("pengajar") Pengajar pengajar);
 
     @Modifying
-    @Query("DELETE FROM Availability m WHERE m.pengajar = :pengajar AND m.waktu = :waktu")
-    void deleteByPengajarAndWaktu(@Param("pengajar") Pengajar pengajar, @Param("waktu") LocalDateTime waktu);
+    @Query("DELETE FROM Availability m WHERE m.pengajar = :pengajar AND m.waktu BETWEEN :waktustart AND :waktuEnd")
+    void deleteByPengajarAndWaktu(@Param("pengajar") Pengajar pengajar, @Param("waktustart") LocalDateTime waktuStart,
+            @Param("waktuEnd") LocalDateTime waktuEnd);
 
 }
