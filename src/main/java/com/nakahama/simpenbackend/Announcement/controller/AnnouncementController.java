@@ -46,13 +46,13 @@ public class AnnouncementController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Object> getAnnouncement(@PathVariable String id) {
+    public ResponseEntity<Object> getAnnouncement(@PathVariable("id") String id) {
         Announcement announcement = announcementService.getAnnouncementById(Long.parseLong(id));
         return ResponseUtil.okResponse(announcement, "Success");
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Object> deleteAnnouncement(@PathVariable String id) {
+    public ResponseEntity<Object> deleteAnnouncement(@PathVariable("id") String id) {
         announcementService.deleteAnnouncement(Long.parseLong(id));
         return ResponseUtil.okResponse(null, "Announcement dengan id " + id + " berhasil dihapus");
     }
