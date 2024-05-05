@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import com.nakahama.simpenbackend.Platform.model.Platform;
 import com.nakahama.simpenbackend.Platform.model.Ruangan;
 
 import jakarta.transaction.Transactional;
@@ -20,4 +21,9 @@ public interface RuanganDb extends JpaRepository<Ruangan, UUID> {
     void deleteById(@Param("id") UUID id);
 
     List<Ruangan> findByNamaAndCabang(String nama, String cabang);
+
+    @Query("SELECT DISTINCT r.cabang FROM Ruangan r")
+    List<String> findDistinctCabang();
+
+    List<Platform> findByCabang(String cabang);
 }

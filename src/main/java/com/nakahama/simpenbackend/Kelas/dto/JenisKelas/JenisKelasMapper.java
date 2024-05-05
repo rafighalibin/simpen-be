@@ -1,5 +1,6 @@
 package com.nakahama.simpenbackend.Kelas.dto.JenisKelas;
 
+import com.nakahama.simpenbackend.Kelas.dto.Program.ProgramDTO;
 import com.nakahama.simpenbackend.Kelas.dto.Program.ProgramMapper;
 import com.nakahama.simpenbackend.Kelas.model.JenisKelas;
 import com.nakahama.simpenbackend.Kelas.model.Kelas;
@@ -68,10 +69,28 @@ public class JenisKelasMapper {
         response.setPicAkademikNama(request.getPicAkademik().getNama());
         if (request.getKelas() != null) {
             for (Kelas kelas : request.getKelas()) {
-                response.getListProgram().add(ProgramMapper.toDto(kelas.getProgram()));
+                if (response.getListProgram() != null){
+                    response.getListProgram().add(ProgramMapper.toDto(kelas.getProgram()));
+                } else{
+                    response.setListProgram(new ArrayList<ProgramDTO>());
+                }
             }
         }
 
+        return response;
+    }
+
+    public static ReadJenisAddKelas toReadAddDto(ReadJenisKelas request, Boolean hasFee) {
+        ReadJenisAddKelas response = new ReadJenisAddKelas();
+        response.setId(request.getId());
+        response.setBahasa(request.getBahasa());
+        response.setNama(request.getNama());
+        response.setPertemuan(request.getPertemuan());
+        response.setTipe(request.getTipe());
+        response.setPicAkademikId(request.getPicAkademikId());
+        response.setPicAkademikNama(request.getPicAkademikNama());
+        response.setListProgram(request.getListProgram());
+        response.setHasFee(hasFee);
         return response;
     }
 

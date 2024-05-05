@@ -98,4 +98,16 @@ public class PlatformController {
         List<List<Platform>> listSesiZoom = jadwalService.getAvalaibleZoom(kelasId);
         return ResponseUtil.okResponse(ZoomMapper.toListReadSesiZoom(listSesiZoom), "Success");
     }
+
+    @GetMapping(value = "", params = {"ruangan", "cabang"})
+    public ResponseEntity<Object> getAllCabangRuangan(@RequestParam("ruangan") String tipe, @RequestParam("cabang") String cabang) {
+        List<String> listCabang = platformService.getDistinctCabang();
+        return ResponseUtil.okResponse(listCabang, "Success");
+    }
+
+    @GetMapping(value = "/ruangan/{cabang}")
+    public ResponseEntity<Object> getAllRuanganByCabang(@PathVariable("cabang") String cabang){
+        List<Platform> listRuangan = platformService.getByCabang(cabang);
+        return ResponseUtil.okResponse(listRuangan, "Success");
+    }
 }
