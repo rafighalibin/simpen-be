@@ -131,7 +131,7 @@ public class SesiKelasServiceImpl implements SesiKelasService {
 
     @Override
     public List<SesiKelas> createListSesiKelas(List<LocalDateTime> jadwalKelas, Kelas createdKelas, Pengajar pengajar,
-            List<MuridKelas> listMurid) {
+            List<MuridKelas> listMurid, String idRuangan) {
         List<SesiKelas> listSesiKelas = new ArrayList<>();
         int nomorPertemuan = 1;
         for (LocalDateTime e : jadwalKelas) {
@@ -157,10 +157,10 @@ public class SesiKelasServiceImpl implements SesiKelasService {
             nomorPertemuan++;
         }
 
-        if (createdKelas.getJenisKelas().getModaPertemuan().equals("ONLINE")) {
+        if (createdKelas.getJenisKelas().getModaPertemuan().equals("ONLINE") || idRuangan == null){
             platformService.assignZoom(listSesiKelas);
         } else {
-            platformService.assignRuangan(listSesiKelas);
+            platformService.assignRuangan(listSesiKelas, idRuangan);
         }
 
         return listSesiKelas;

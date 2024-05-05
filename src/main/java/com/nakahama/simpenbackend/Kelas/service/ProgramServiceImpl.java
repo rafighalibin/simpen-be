@@ -7,10 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.nakahama.simpenbackend.Kelas.dto.JenisKelas.JenisKelasDTO;
 import com.nakahama.simpenbackend.Kelas.dto.JenisKelas.JenisKelasMapper;
-import com.nakahama.simpenbackend.Kelas.dto.JenisKelas.ReadJenisKelas;
 import com.nakahama.simpenbackend.Kelas.dto.Program.CreateProgram;
-import com.nakahama.simpenbackend.Kelas.dto.Program.DeleteProgram;
-import com.nakahama.simpenbackend.Kelas.dto.Program.ProgramDTO;
 import com.nakahama.simpenbackend.Kelas.dto.Program.UpdateProgram;
 import com.nakahama.simpenbackend.Kelas.dto.Program.ProgramMapper;
 import com.nakahama.simpenbackend.Kelas.dto.Program.ReadDistinctJenisKelasProgram;
