@@ -85,9 +85,9 @@ public class SecurityConfig {
                                         auth.requestMatchers(HttpMethod.DELETE, "announcement/**")
                                                         .hasAnyAuthority("operasional", "akademik");
                                         auth.requestMatchers(HttpMethod.GET, "announcement")
-                                                        .hasAnyAuthority("operasional", "akademik", "pengajar");
+                                                        .hasAnyAuthority("operasional", "akademik", "pengajar", "superadmin");
                                         auth.requestMatchers(HttpMethod.GET, "announcement/**")
-                                                        .hasAnyAuthority("operasional", "akademik", "pengajar");
+                                                        .hasAnyAuthority("operasional", "akademik", "pengajar", "superadmin");
 
                                         // Murid
                                         auth.requestMatchers(HttpMethod.POST, "murid/**").hasAnyAuthority("operasional",
@@ -133,6 +133,14 @@ public class SecurityConfig {
                                                         .hasAnyAuthority("akademik", "pengajar");
                                         auth.requestMatchers(HttpMethod.DELETE, "/feedback/**")
                                                         .hasAnyAuthority("akademik");
+
+                                        // Availability
+                                        auth.requestMatchers(HttpMethod.PUT, "/availability")
+                                                        .hasAnyAuthority( "pengajar");
+                                        auth.requestMatchers(HttpMethod.GET, "/availability").hasAnyAuthority(
+                                                        "pengajar", "operasional");
+                                        auth.requestMatchers(HttpMethod.GET, "/availability/**").hasAnyAuthority(
+                                                        "pengajar", "operasional");
                                         // TODO: set the appropriate authorities for the corresponding endpoints
                                         auth.anyRequest().permitAll();
 
