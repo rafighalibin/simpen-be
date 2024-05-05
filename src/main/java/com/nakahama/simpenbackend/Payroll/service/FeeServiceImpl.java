@@ -23,7 +23,7 @@ import com.nakahama.simpenbackend.Payroll.repository.FeeDb;
 import com.nakahama.simpenbackend.exception.BadRequestException;
 
 @Service
-public class FeeServiceImpl implements FeeService{
+public class FeeServiceImpl implements FeeService {
 
     @Autowired
     FeeDb feeDb;
@@ -33,7 +33,7 @@ public class FeeServiceImpl implements FeeService{
 
     @Autowired
     ProgramService programService;
-    
+
     @Override
     public List<ReadFee> getAll() {
         List<ReadFee> listFee = new ArrayList<ReadFee>();
@@ -56,11 +56,13 @@ public class FeeServiceImpl implements FeeService{
         if (program == null) {
             throw new BadRequestException("Program with id " + feeRequest.getProgram() + " not found");
         }
-        if(!program.getJenisKelas().contains(jenisKelas)){
-            throw new BadRequestException("Program with id " + feeRequest.getProgram() + " does not have jenis kelas with id " + feeRequest.getJenisKelas());
+        if (!program.getJenisKelas().contains(jenisKelas)) {
+            throw new BadRequestException("Program with id " + feeRequest.getProgram()
+                    + " does not have jenis kelas with id " + feeRequest.getJenisKelas());
         }
-        if(feeDb.findByProgramAndJenisKelas(program, jenisKelas) != null){
-            throw new BadRequestException("Fee for program with id " + feeRequest.getProgram() + " and jenis kelas with id " + feeRequest.getJenisKelas() + " already exists");
+        if (feeDb.findByProgramAndJenisKelas(program, jenisKelas) != null) {
+            throw new BadRequestException("Fee for program with id " + feeRequest.getProgram()
+                    + " and jenis kelas with id " + feeRequest.getJenisKelas() + " already exists");
         }
         fee.setProgram(program);
         fee.setLastUpdated(LocalDateTime.now());
@@ -81,8 +83,8 @@ public class FeeServiceImpl implements FeeService{
         FeeModel fee = getById(id);
         List<Kelas> kelasList = fee.getJenisKelas().getKelas();
         for (Kelas kelas : kelasList) {
-            if(!(kelas.getStatus().equals("Finished"))){
-                if(kelas.getProgram().getId().equals(fee.getProgram().getId())){
+            if (!(kelas.getStatus().equals("Finished"))) {
+                if (kelas.getProgram().getId().equals(fee.getProgram().getId())) {
                     throw new BadRequestException("Fee with id " + id + " is still being used in a class");
                 }
             }
@@ -106,7 +108,7 @@ public class FeeServiceImpl implements FeeService{
     @Override
     public List<ReadProgram> getDistinctProgram() {
         List<Program> listProgramDistinct = feeDb.findDistinctProgram();
-        if(listProgramDistinct.isEmpty()){
+        if (listProgramDistinct.isEmpty()) {
             throw new BadRequestException("No program found");
         }
 
@@ -123,8 +125,8 @@ public class FeeServiceImpl implements FeeService{
     public List<ReadFeeGrouped> getFeeGrouped() {
         List<ReadFeeGrouped> listFeeGrouped = new ArrayList<ReadFeeGrouped>();
         List<Program> listProgramDistinct = feeDb.findDistinctProgram();
-        if(listProgramDistinct.isEmpty()){
-            throw new BadRequestException("No program found");
+        if (listProgramDistinct.isEmpty()) {
+            return listFeeGrouped;
         }
 
         for (Program program : listProgramDistinct) {
@@ -152,7 +154,8 @@ public class FeeServiceImpl implements FeeService{
         }
         FeeModel fee = feeDb.findByProgramAndJenisKelas(program, jenisKelas);
         if (fee == null) {
-            throw new BadRequestException("Fee for program with id " + programId + " and jenis kelas with id " + jenisKelasId + " not found");
+            throw new BadRequestException(
+                    "Fee for program with id " + programId + " and jenis kelas with id " + jenisKelasId + " not found");
         }
         return fee;
     }
