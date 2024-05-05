@@ -6,12 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.nakahama.simpenbackend.Kelas.dto.JenisKelas.CreateJenisKelas;
-import com.nakahama.simpenbackend.Kelas.dto.JenisKelas.JenisKelasDTO;
 import com.nakahama.simpenbackend.Kelas.dto.JenisKelas.FindJenisKelas;
 import com.nakahama.simpenbackend.Kelas.dto.JenisKelas.JenisKelasMapper;
 import com.nakahama.simpenbackend.Kelas.dto.JenisKelas.ProgramJenisKelasAttributes;
 import com.nakahama.simpenbackend.Kelas.dto.JenisKelas.ReadJenisKelas;
-import com.nakahama.simpenbackend.Kelas.dto.JenisKelas.UpdateJenisKelas;
 import com.nakahama.simpenbackend.Kelas.dto.Program.ProgramDTO;
 import com.nakahama.simpenbackend.Kelas.dto.Program.ProgramMapper;
 import com.nakahama.simpenbackend.Kelas.model.*;
@@ -24,6 +22,8 @@ import com.nakahama.simpenbackend.User.model.Akademik;
 import com.nakahama.simpenbackend.User.model.UserModel;
 import com.nakahama.simpenbackend.User.service.UserService;
 import com.nakahama.simpenbackend.exception.BadRequestException;
+import com.nakahama.simpenbackend.Payroll.model.FeeModel;
+import com.nakahama.simpenbackend.Payroll.repository.FeeDb;
 
 @Service
 public class JenisKelasServiceImpl implements JenisKelasService {
@@ -36,6 +36,9 @@ public class JenisKelasServiceImpl implements JenisKelasService {
 
     @Autowired
     UserService userService;
+
+    @Autowired
+    FeeDb feeDb;
 
     @Autowired
     ModaPertemuanDb modaPertemuanDb;
@@ -255,4 +258,16 @@ public class JenisKelasServiceImpl implements JenisKelasService {
         throw new BadRequestException("Jenis Kelas not found");
     }
 
+    @Override
+    public Boolean hasFee(UUID jenisKelasId, UUID programId) {
+        JenisKelas jenisKelas = getById(jenisKelasId);
+        Optional<Program> program = programDb.findById(programId);
+        FeeModel fee = feeDb.findByProgramAndJenisKelas(program.get(), jenisKelas);
+
+        if (fee != null) {
+            return true;
+        }
+        
+        return false;
+    }
 }
