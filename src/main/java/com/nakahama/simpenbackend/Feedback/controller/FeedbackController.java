@@ -37,9 +37,9 @@ public class FeedbackController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Object> getFeedbackByUser(@PathVariable("id") String id) {
-        List<Feedback> listFeedback = feedbackService.feedbackByUserId(UUID.fromString(id));
-        return ResponseUtil.okResponse(listFeedback, "Success");
+    public ResponseEntity<Object> getFeedbackById(@PathVariable("id") String id) {
+        Feedback feedback = feedbackService.getFeedbackById(UUID.fromString(id));
+        return ResponseUtil.okResponse(feedback, "Success");
 
         // if (authService.checkOwnership(request, UUID.fromString(id))) {
         // List<Feedback> listFeedback =

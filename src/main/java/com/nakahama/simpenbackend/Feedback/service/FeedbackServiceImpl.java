@@ -97,7 +97,9 @@ public class FeedbackServiceImpl implements FeedbackService {
         if (!kelasIsCreated) {
             Feedback feedback = new Feedback();
             feedback.setPengajar(kelas.getPengajar());
+            feedback.setNamaPengajar(kelas.getPengajar().getNama());
             feedback.setKelas(kelas);
+            feedback.setNamaProgram(kelas.getProgram().getNama());
             feedback.setTanggalPembuatan(LocalDateTime.now());
 
             feedbackDb.save(feedback);
