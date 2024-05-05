@@ -3,6 +3,7 @@ package com.nakahama.simpenbackend.Feedback.model;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.SQLDelete;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -31,10 +32,16 @@ public class Feedback {
     @JsonIgnore
     private Pengajar pengajar;
 
+    @Column(name = "nama_pengajar")
+    private String namaPengajar;
+
     @ManyToOne
     @JoinColumn(name = "kelas")
     @JsonIgnore
     private Kelas kelas;
+
+    @Column(name = "nama_program")
+    private String namaProgram;
 
     @Column(name = "tanggal_pembuatan")
     private LocalDateTime tanggalPembuatan;
