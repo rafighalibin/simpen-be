@@ -17,7 +17,8 @@ public class RatingServiceImpl implements RatingService {
         List<Kelas> listKelas = pengajar.getKelas();
         ListRatingResponseDTO listRatingResponseDTO = new ListRatingResponseDTO();
         if (listKelas != null) {
-            listRatingResponseDTO.setPengajar(pengajar);
+            listRatingResponseDTO.setIdPengajar(pengajar.getId());
+            listRatingResponseDTO.setNamaPengajar(pengajar.getNama());
             for (Kelas kelas : listKelas) {
                 if (kelas.getAverageRating() != null) {
                     RatingMuridResponseDTO ratingMuridResponseDTO = new RatingMuridResponseDTO();
