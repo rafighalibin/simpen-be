@@ -51,6 +51,12 @@ public class FeedbackController {
         // }
     }
 
+    @GetMapping("/user/{id}")
+    public ResponseEntity<Object> getFeedbackByUserId(@PathVariable("id") String id) {
+        List<Feedback> listFeedback = feedbackService.feedbackByUserId(UUID.fromString(id));
+        return ResponseUtil.okResponse(listFeedback, "Success");
+    }
+
     @PutMapping("")
     public ResponseEntity<Object> fillFeedbackById(@Valid @RequestBody FillFeedbackRequestDTO fillFeedbackRequestDTO) {
         Feedback feedback = feedbackService.fillFeedback(fillFeedbackRequestDTO);
