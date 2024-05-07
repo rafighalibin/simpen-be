@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.nakahama.simpenbackend.Kelas.dto.SesiKelas.ReadDetailSesiKelas;
 import com.nakahama.simpenbackend.Kelas.dto.SesiKelas.UpdateAbsensiMurid;
+import com.nakahama.simpenbackend.Kelas.model.Kelas;
 import com.nakahama.simpenbackend.Kelas.dto.SesiKelas.SesiKelasMapper;
 import com.nakahama.simpenbackend.Kelas.service.SesiKelasService;
 import com.nakahama.simpenbackend.util.ResponseUtil;
@@ -37,8 +38,15 @@ public class SesiKelasController {
     @PutMapping("/absen/{idSesi}")
     public ResponseEntity<Object> update(@Valid @RequestBody List<UpdateAbsensiMurid> updateAbsensiMurid,
             @PathVariable(value = "idSesi") String idSesi) {
-        sesiKelasService.uppdateAbsenSesi(UUID.fromString(idSesi), updateAbsensiMurid);
+
+        Kelas sesiKelas = sesiKelasService.getKelasBySesiKelasId(UUID.fromString(idSesi));
+
+        if (sesiKelas.getLinkPlaylist().isEmpty()) {
+            return ResponseUtil.badRequest(null, "Link playlist tidak boleh kosong");
+        } else {
+            sesiKelasService.uppdateAbsenSesi(UUID.fromString(idSesi), updateAbsensiMurid);
         return ResponseUtil.okResponse(null, "Success");
+        }
     }
 
 }

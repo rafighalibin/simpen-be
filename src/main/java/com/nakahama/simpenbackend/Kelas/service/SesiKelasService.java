@@ -21,6 +21,8 @@ public interface SesiKelasService {
 
     public SesiKelas getById(UUID id);
 
+    public Kelas getKelasBySesiKelasId(UUID id);
+
     public void delete(UUID id);
 
     public List<SesiKelas> getByKelasId(int idKelas);

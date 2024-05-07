@@ -65,6 +65,12 @@ public class SesiKelasServiceImpl implements SesiKelasService {
     }
 
     @Override
+    public Kelas getKelasBySesiKelasId(UUID id) {
+        SesiKelas sesiKelas = getById(id);
+        return sesiKelas.getKelas();
+    }
+
+    @Override
     public void delete(UUID id) {
         sesiKelasDb.deleteById(id);
     }
@@ -214,7 +220,6 @@ public class SesiKelasServiceImpl implements SesiKelasService {
         save(sesiKelas);
 
         feedbackService.generateFeedback(sesiKelas.getKelas());
-
     }
 
     @Override

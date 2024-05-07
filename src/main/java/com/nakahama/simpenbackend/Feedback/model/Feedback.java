@@ -40,6 +40,9 @@ public class Feedback {
     @JsonIgnore
     private Kelas kelas;
 
+    @Column(name = "link_playlist")
+    private String linkPlaylist;
+
     @Column(name = "nama_program")
     private String namaProgram;
 

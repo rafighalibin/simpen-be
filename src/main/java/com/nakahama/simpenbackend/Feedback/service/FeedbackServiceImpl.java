@@ -99,6 +99,7 @@ public class FeedbackServiceImpl implements FeedbackService {
             feedback.setPengajar(kelas.getPengajar());
             feedback.setNamaPengajar(kelas.getPengajar().getNama());
             feedback.setKelas(kelas);
+            feedback.setLinkPlaylist(kelas.getLinkPlaylist());
             feedback.setNamaProgram(kelas.getProgram().getNama());
             feedback.setTanggalPembuatan(LocalDateTime.now());
 
