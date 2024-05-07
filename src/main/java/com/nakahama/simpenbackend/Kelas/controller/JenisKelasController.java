@@ -1,6 +1,5 @@
 package com.nakahama.simpenbackend.Kelas.controller;
 
-import org.hibernate.sql.Update;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -11,14 +10,14 @@ import java.util.*;
 
 import com.nakahama.simpenbackend.Auth.service.AuthService;
 import com.nakahama.simpenbackend.Kelas.dto.JenisKelas.CreateJenisKelas;
-import com.nakahama.simpenbackend.Kelas.dto.JenisKelas.DeleteJenisKelas;
-import com.nakahama.simpenbackend.Kelas.dto.JenisKelas.JenisKelasMapper;
 import com.nakahama.simpenbackend.Kelas.dto.JenisKelas.FindJenisKelas;
 import com.nakahama.simpenbackend.Kelas.dto.JenisKelas.ProgramJenisKelasAttributes;
 import com.nakahama.simpenbackend.Kelas.dto.JenisKelas.ReadJenisKelas;
-import com.nakahama.simpenbackend.Kelas.dto.JenisKelas.UpdateJenisKelas;
+import com.nakahama.simpenbackend.Kelas.dto.JenisKelas.ReadJenisAddKelas;
 import com.nakahama.simpenbackend.Kelas.model.JenisKelas;
 import com.nakahama.simpenbackend.Kelas.service.JenisKelasService;
+import com.nakahama.simpenbackend.Kelas.dto.JenisKelas.JenisKelasMapper;
+
 import com.nakahama.simpenbackend.Notification.dto.GenerateNotifDTO;
 import com.nakahama.simpenbackend.Notification.service.NotificationService;
 import com.nakahama.simpenbackend.util.ResponseUtil;
@@ -31,7 +30,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.PutMapping;
 
 @RestController
 @RequestMapping("/kelas/jenis")
@@ -115,6 +113,8 @@ public class JenisKelasController {
     @PostMapping("/find")
     public ResponseEntity<Object> findJenisKelas(@Valid @RequestBody FindJenisKelas findJenisKelasRequest) {
         ReadJenisKelas jenisKelas = jenisKelasService.findJenisKelasRequest(findJenisKelasRequest);
-        return ResponseUtil.okResponse(jenisKelas, "Success");
+        Boolean hasFee = jenisKelasService.hasFee(jenisKelas.getId(), UUID.fromString(findJenisKelasRequest.getProgramId()));
+        ReadJenisAddKelas response = JenisKelasMapper.toReadAddDto(jenisKelas, hasFee);
+        return ResponseUtil.okResponse(response, "Success");
     }
 }
