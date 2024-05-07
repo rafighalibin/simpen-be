@@ -51,8 +51,7 @@ public class CreateKelas {
     @Min(value = 0, message = "Tidak Boleh Kurang dari 0")
     private int level;
 
-    @NotBlank(message = "Platform is mandatory")
-    private String platform; // need to delete after platform model created (sprint 2)
+    private String platform;
 
     // assigned at controller
     private UserModel operasional;

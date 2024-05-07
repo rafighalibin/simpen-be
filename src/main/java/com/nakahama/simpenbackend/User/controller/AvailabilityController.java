@@ -55,7 +55,7 @@ public class AvailabilityController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Object> getPengajarAvailability(HttpServletRequest request, @PathVariable String id) {
+    public ResponseEntity<Object> getPengajarAvailability(HttpServletRequest request, @PathVariable(value = "id") String id) {
         ReadAvailability listJadwalAvailability = availabilityService
                 .getAvailability((Pengajar) userService.getUserById(UUID.fromString(id)));
 

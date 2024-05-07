@@ -128,9 +128,30 @@ public class PlatformServiceImpl implements PlatformService {
     }
 
     @Override
-    public List<JadwalRuangan> assignRuangan(List<SesiKelas> listSesiKelas) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'assignRuangan'");
+    public List<JadwalRuangan> assignRuangan(List<SesiKelas> listSesiKelas, String idRuangan) {
+        Ruangan ruangan = ruanganDb.findById(UUID.fromString(idRuangan)).get();
+        List<JadwalRuangan> listJadwalRuangan = new ArrayList<>();
+        for (SesiKelas sesiKelas : listSesiKelas) {
+            JadwalRuangan jadwalRuangan = new JadwalRuangan();
+            jadwalRuangan.setWaktu(sesiKelas.getWaktuPelaksanaan());
+            jadwalRuangan.setRuangan(ruangan);
+            jadwalService.save(jadwalRuangan);
+            jadwalRuangan.setSesiKelas(sesiKelas);
+            listJadwalRuangan.add(jadwalRuangan);
+
+            jadwalService.save(jadwalRuangan);
+            sesiKelasService.updateJadwal(sesiKelas);
+        }
+        return listJadwalRuangan;
     }
 
+    @Override
+    public List<String> getDistinctCabang() {
+        return ruanganDb.findDistinctCabang();
+    }
+
+    @Override
+    public List<Platform> getByCabang(String cabang) {
+        return ruanganDb.findByCabang(cabang);
+    }
 }
