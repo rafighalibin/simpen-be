@@ -26,6 +26,7 @@ public class RatingServiceImpl implements RatingService {
                     ratingMuridResponseDTO.setJenisKelas(kelas.getJenisKelas());
                     ratingMuridResponseDTO.setRating(kelas.getAverageRating());
                     ratingMuridResponseDTO.setLinkPlaylist(kelas.getLinkPlaylist());
+                    ratingMuridResponseDTO.setTanggalSelesai(kelas.getTanggalSelesai());
                     listRatingResponseDTO.getListRatingMurid().add(ratingMuridResponseDTO);
                 }
             }
