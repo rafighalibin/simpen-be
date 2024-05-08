@@ -1,4 +1,4 @@
-package com.nakahama.simpenbackend.Platform.dto.Zoom;
+package com.nakahama.simpenbackend.Platform.dto.Ruangan;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -14,17 +14,16 @@ import lombok.Setter;
 @Data
 @Getter
 @Setter
-public class ReadJadwalZoom {
-
+public class ReadJadwalRuangan {
     private UUID id;
 
     private UUID platformId;
 
     private String nama;
 
-    private String hostKey;
+    private String cabang;
 
-    private String link;
+    private int kapasitas;
 
     private LocalDateTime waktu;
 

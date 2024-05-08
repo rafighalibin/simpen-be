@@ -1,7 +1,8 @@
 package com.nakahama.simpenbackend.Platform.dto.Zoom;
 
-import java.time.LocalDateTime;
 import java.util.UUID;
+
+import java.util.List;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -14,11 +15,9 @@ import lombok.Setter;
 @Data
 @Getter
 @Setter
-public class ReadJadwalZoom {
+public class ReadDetailZoom {
 
     private UUID id;
-
-    private UUID platformId;
 
     private String nama;
 
@@ -26,7 +25,6 @@ public class ReadJadwalZoom {
 
     private String link;
 
-    private LocalDateTime waktu;
-
-    private String namaPengajar;
+    // @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private List<ReadJadwalZoom> jadwalPemakaian;
 }
