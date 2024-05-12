@@ -5,8 +5,12 @@ import java.util.UUID;
 
 import com.nakahama.simpenbackend.Kelas.model.SesiKelas;
 import com.nakahama.simpenbackend.Platform.dto.Ruangan.CreateRuanganRequest;
+import com.nakahama.simpenbackend.Platform.dto.Ruangan.ReadDetailRuangan;
+import com.nakahama.simpenbackend.Platform.dto.Ruangan.ReadRuangan;
 import com.nakahama.simpenbackend.Platform.dto.Ruangan.UpdateRuanganRequest;
 import com.nakahama.simpenbackend.Platform.dto.Zoom.CreateZoomRequest;
+import com.nakahama.simpenbackend.Platform.dto.Zoom.ReadDetailZoom;
+import com.nakahama.simpenbackend.Platform.dto.Zoom.ReadZoom;
 import com.nakahama.simpenbackend.Platform.dto.Zoom.UpdateZoomRequest;
 import com.nakahama.simpenbackend.Platform.model.JadwalRuangan;
 import com.nakahama.simpenbackend.Platform.model.JadwalZoom;
@@ -19,9 +23,9 @@ public interface PlatformService {
 
         public Platform save(CreateRuanganRequest CreateRuanganRequest);
 
-        public List<Zoom> getAllZoom();
+        public List<ReadZoom> getAllZoom();
 
-        public List<Ruangan> getAllRuangan();
+        public List<ReadRuangan> getAllRuangan();
 
         public Platform getById(UUID id);
 
@@ -42,4 +46,8 @@ public interface PlatformService {
         public List<String> getDistinctCabang();
 
         public List<Platform> getByCabang(String cabang);
+
+        public ReadDetailZoom getDetailZoom(UUID id);
+
+        public ReadDetailRuangan getDetailRuangan(UUID id);
 }
