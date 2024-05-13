@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.nakahama.simpenbackend.Auth.service.AuthService;
+import com.nakahama.simpenbackend.Feedback.dto.FeedbackResponseDTO;
 import com.nakahama.simpenbackend.Feedback.dto.FillFeedbackRequestDTO;
 import com.nakahama.simpenbackend.Feedback.model.Feedback;
 import com.nakahama.simpenbackend.Feedback.service.FeedbackService;
@@ -39,7 +40,22 @@ public class FeedbackController {
     @GetMapping("/{id}")
     public ResponseEntity<Object> getFeedbackById(@PathVariable("id") String id) {
         Feedback feedback = feedbackService.getFeedbackById(UUID.fromString(id));
-        return ResponseUtil.okResponse(feedback, "Success");
+        FeedbackResponseDTO feedbackResponseDTO = new FeedbackResponseDTO();
+        feedbackResponseDTO.setDeleted(feedback.isDeleted());
+        feedbackResponseDTO.setFinished(feedback.isFinished());
+        feedbackResponseDTO.setId(feedback.getId());
+        feedbackResponseDTO.setIdPengajar(feedback.getPengajar().getId());
+        feedbackResponseDTO.setNamaPengajar(feedback.getNamaPengajar());
+        feedbackResponseDTO.setNamaProgram(feedback.getNamaProgram());
+        feedbackResponseDTO.setRating(feedback.getRating());
+        feedbackResponseDTO.setTanggalPembuatan(feedback.getTanggalPembuatan());
+        return ResponseUtil.okResponse(feedbackResponseDTO, "Success");
+    }
+
+    @GetMapping("/user/{id}")
+    public ResponseEntity<Object> getFeedbackByUSerId(@PathVariable("id") String id) {
+        List<Feedback> listFeedbacks = feedbackService.feedbackByUserId(UUID.fromString(id));
+        return ResponseUtil.okResponse(listFeedbacks, "Success");
 
         // if (authService.checkOwnership(request, UUID.fromString(id))) {
         // List<Feedback> listFeedback =
