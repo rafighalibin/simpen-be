@@ -8,6 +8,7 @@ import com.nakahama.simpenbackend.Kelas.model.Kelas;
 import com.nakahama.simpenbackend.Kelas.model.MuridKelas;
 import com.nakahama.simpenbackend.Kelas.model.Program;
 import com.nakahama.simpenbackend.Kelas.model.SesiKelas;
+import com.nakahama.simpenbackend.Platform.dto.Ruangan.RuanganMapper;
 import com.nakahama.simpenbackend.Platform.dto.Zoom.ZoomMapper;
 import com.nakahama.simpenbackend.User.model.Pengajar;
 import com.nakahama.simpenbackend.User.model.UserModel;
@@ -72,6 +73,10 @@ public class KelasMapper {
         response.setMuridKelas(listMurid);
         response.setJumlahMurid(request.getListMurid().size());
         response.setLevel(request.getLevel());
+
+        for (SesiKelas sesiKelas : response.getListsesiKelas()) {
+            sesiKelas.setPengajar(pengajar);
+        }
         return response;
     }
 
@@ -93,10 +98,16 @@ public class KelasMapper {
         response.setLinkPlaylist(createdKelas.getLinkPlaylist());
         response.setListMurid(MuridMapper.toListMuridKelas(listMurid));
         response.setLevel(createdKelas.getLevel());
+        response.setModaPertemuan(createdKelas.getJenisKelas().getModaPertemuan());
         response.setStatus(createdKelas.getStatus());
         // TODO: IMPLEMENT AVERAGE RATING
         // TODO: IMPLEMENT PLATFORM
-        response.setZoom(ZoomMapper.toReadZoom(createdKelas.getListsesiKelas().get(0).getJadwalZoom().getZoom()));
+        if (createdKelas.getJenisKelas().getModaPertemuan().equals("OFFLINE")) {
+            response.setRuangan(RuanganMapper
+                    .toReadRuangan(createdKelas.getListsesiKelas().get(0).getJadwalRuangan().getRuangan()));
+        } else {
+            response.setZoom(ZoomMapper.toReadZoom(createdKelas.getListsesiKelas().get(0).getJadwalZoom().getZoom()));
+        }
         return response;
 
     }

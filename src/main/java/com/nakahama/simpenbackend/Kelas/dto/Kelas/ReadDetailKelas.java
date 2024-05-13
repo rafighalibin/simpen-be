@@ -4,6 +4,7 @@ import java.util.*;
 
 import com.nakahama.simpenbackend.Kelas.dto.Murid.ReadMurid;
 import com.nakahama.simpenbackend.Kelas.dto.SesiKelas.SesiKelasDTO;
+import com.nakahama.simpenbackend.Platform.dto.Ruangan.ReadRuangan;
 import com.nakahama.simpenbackend.Platform.dto.Zoom.ReadZoom;
 
 import lombok.AllArgsConstructor;
@@ -46,6 +47,10 @@ public class ReadDetailKelas {
     private int level;
 
     private ReadZoom zoom; // need to delete after platform model created (sprint 2)
+
+    private ReadRuangan ruangan; // need to delete after platform model created (sprint 2)
+
+    private String modaPertemuan;
 
     private String status;
 
