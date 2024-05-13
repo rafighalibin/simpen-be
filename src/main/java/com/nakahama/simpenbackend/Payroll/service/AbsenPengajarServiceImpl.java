@@ -25,8 +25,8 @@ import com.nakahama.simpenbackend.User.service.UserService;
 import com.nakahama.simpenbackend.exception.BadRequestException;
 
 @Service
-public class AbsenPengajarServiceImpl implements AbsenPengajarService{
-    
+public class AbsenPengajarServiceImpl implements AbsenPengajarService {
+
     @Autowired
     AbsenPengajarDb absenPengajarDb;
 
@@ -55,9 +55,13 @@ public class AbsenPengajarServiceImpl implements AbsenPengajarService{
     @Override
     public AbsenPengajar createAbsen(createAbsenPengajarDTO absenPengajarDTO) {
         SesiKelas sesiKelas = sesiKelasService.getById(absenPengajarDTO.getIdSesiKelas());
-        if(absenPengajarDTO.getPengajar().getId() != sesiKelas.getPengajar().getId()){
+        if (sesiKelas.getPengajarPengganti() != null
+                && sesiKelas.getPengajarPengganti().getId() != absenPengajarDTO.getPengajar().getId()) {
+            throw new BadRequestException("Pengajar hanya boleh absen pada sesi kelas yang dia ajar");
+        } else if (absenPengajarDTO.getPengajar().getId() != sesiKelas.getPengajar().getId()) {
             throw new BadRequestException("Pengajar hanya boleh absen pada sesi kelas yang dia ajar");
         }
+
         AbsenPengajar absenPengajar = new AbsenPengajar();
         absenPengajar.setPengajar(absenPengajarDTO.getPengajar());
         absenPengajar.setTanggalUpdate(LocalDateTime.now());
@@ -65,11 +69,13 @@ public class AbsenPengajarServiceImpl implements AbsenPengajarService{
         absenPengajar.setPeriodePayroll(periodePayroll);
         absenPengajar.setSesiKelas(sesiKelas);
         absenPengajar.setKelas(sesiKelas.getKelas());
-        FeeModel fee = feeService.getByProgramAndJenisKelas(sesiKelas.getKelas().getProgram().getId(), sesiKelas.getKelas().getJenisKelas().getId());
+        FeeModel fee = feeService.getByProgramAndJenisKelas(sesiKelas.getKelas().getProgram().getId(),
+                sesiKelas.getKelas().getJenisKelas().getId());
         absenPengajar.setFee(fee);
-        absenPengajar.setJumlahFee(fee.getBaseFee() + (fee.getStudentMultiplier() * sesiKelas.getKelas().getJumlahMurid()));
+        absenPengajar
+                .setJumlahFee(fee.getBaseFee() + (fee.getStudentMultiplier() * sesiKelas.getKelas().getJumlahMurid()));
         sesiKelasService.updateStatus(sesiKelas);
-        
+
         absenPengajarDb.save(absenPengajar);
         periodePayroll.getListAbsenPengajar().add(absenPengajar);
         return absenPengajar;
@@ -77,7 +83,7 @@ public class AbsenPengajarServiceImpl implements AbsenPengajarService{
 
     @Override
     public List<AbsenPengajar> getAllAbsenPengajar(UserModel userModel) {
-        return absenPengajarDb.findAllByPengajar((Pengajar) userModel);    
+        return absenPengajarDb.findAllByPengajar((Pengajar) userModel);
     }
 
     @Override
@@ -90,10 +96,10 @@ public class AbsenPengajarServiceImpl implements AbsenPengajarService{
         int bulan = date.getMonthValue();
         int tahun = date.getYear();
         String namaBulan = "";
-    
+
         LocalDateTime tanggalMulai;
         LocalDateTime tanggalSelesai;
-    
+
         if (date.getDayOfMonth() <= 14) {
             namaBulan = Month.of(bulan - 1).name();
             tanggalMulai = LocalDateTime.of(tahun, bulan - 1, 15, 0, 0);
@@ -103,12 +109,12 @@ public class AbsenPengajarServiceImpl implements AbsenPengajarService{
             tanggalMulai = LocalDateTime.of(tahun, bulan, 15, 0, 0);
             tanggalSelesai = LocalDateTime.of(tahun, bulan + 1, 14, 23, 59);
         }
-    
+
         Date mulaiDate = Timestamp.valueOf(tanggalMulai);
         Date selesaiDate = Timestamp.valueOf(tanggalSelesai);
-    
+
         PeriodePayroll periodePayroll = periodePayrollDb.findByTanggalMulaiAndTanggalSelesai(mulaiDate, selesaiDate);
-    
+
         if (periodePayroll == null) {
             // Jika tidak ada periode payroll, buat periode baru
             periodePayroll = new PeriodePayroll();
@@ -121,8 +127,8 @@ public class AbsenPengajarServiceImpl implements AbsenPengajarService{
             // Simpan periode payroll baru ke dalam database
             periodePayrollDb.save(periodePayroll);
         }
-    
+
         return periodePayroll;
     }
-    
+
 }
