@@ -80,21 +80,31 @@ public class GantiPengajarController {
         // Generate Notification for requestee
         for (UpdateGantiPengajar request : listGantiPengajarRequest) {
             GenerateNotifDTO notification = new GenerateNotifDTO();
+            GenerateNotifDTO notification1 = new GenerateNotifDTO();
             PengajarMenggantikan pengajarMenggantikan = gantiPengajarService.getById(request.getId());
-            String namaPengajarMenggantikan = userService.getUserById(pengajarMenggantikan.getId()).getNama();
+            String namaPengajarMenggantikan = userService
+                    .getUserById(pengajarMenggantikan.getPengajarPenganti().getId()).getNama();
             UUID idPengajarRequest = pengajarMenggantikan.getSesiKelas().getPengajar().getId();
 
             notification.setAkunPenerima(idPengajarRequest);
+            notification1.setAkunPenerima(pengajarMenggantikan.getPengajarPenganti().getId());
             notification.setTipe(4);
+            notification1.setTipe(0);
 
             // Content of Notification
             if (request.getPengajarPenggantiId() != null) {
                 notification.setJudul("Permintaan pengajar pengganti disetujui");
+                notification1.setJudul("Anda mendapatkan jadwal sesi kelas baru");
                 notification.getIsi().put("status", "disetujui");
                 notification.getIsi().put("sesiKelas", String.valueOf(pengajarMenggantikan.getSesiKelas().getId()));
                 notification.getIsi().put("pengganti", String.valueOf(namaPengajarMenggantikan));
+                notification1.getIsi().put("idKelas",
+                        String.valueOf(pengajarMenggantikan.getSesiKelas().getKelas().getKelasId()));
+                notification1.getIsi().put("waktuSesi",
+                        String.valueOf(pengajarMenggantikan.getSesiKelas().getWaktuPelaksanaan()));
 
                 notificationService.generateNotification(notification);
+                notificationService.generateNotification(notification1);
             } else {
                 notification.getIsi().put("status", "ditolak");
                 notification.setJudul("Permintaan pengajar pengganti ditolak");
@@ -104,6 +114,22 @@ public class GantiPengajarController {
             }
 
         }
+
+        // // Generate Notification for assigned
+        // for (UpdateGantiPengajar request : listGantiPengajarRequest) {
+        // GenerateNotifDTO notification = new GenerateNotifDTO();
+        // PengajarMenggantikan pengajarMenggantikan =
+        // gantiPengajarService.getById(request.getId());
+        // String namaPengajarMenggantikan = userService
+        // .getUserById(pengajarMenggantikan.getKelas().getPengajar().getId()).getNama();
+        // UUID idPengajarRequest =
+        // pengajarMenggantikan.getSesiKelas().getPengajar().getId();
+
+        // notification.setAkunPenerima(idPengajarRequest);
+        // notification.setTipe(4);
+
+        // }
+
         return ResponseUtil.okResponse(null, listGantiPengajarRequest.size() + " Ganti Pengajar Request changed");
     }
 

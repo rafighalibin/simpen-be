@@ -34,7 +34,7 @@ public class SesiKelas {
     private Integer nomorPertemuan;
 
     @NotNull
-    @ManyToOne(cascade = { CascadeType.ALL })
+    @ManyToOne(cascade = { CascadeType.ALL }, fetch = FetchType.EAGER)
     @JsonIgnore
     private Pengajar pengajar; // need to change after Pengajar model is created
 

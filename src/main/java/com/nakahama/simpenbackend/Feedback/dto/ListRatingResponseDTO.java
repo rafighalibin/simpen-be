@@ -2,6 +2,7 @@ package com.nakahama.simpenbackend.Feedback.dto;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import com.nakahama.simpenbackend.User.model.Pengajar;
 
@@ -20,7 +21,10 @@ import lombok.Setter;
 public class ListRatingResponseDTO {
 
     @NotBlank(message = "Pengajar required")
-    Pengajar pengajar;
+    UUID idPengajar;
+
+    @NotBlank(message = "Pengajar required")
+    String namaPengajar;
 
     List<RatingMuridResponseDTO> listRatingMurid = new ArrayList<RatingMuridResponseDTO>();
 }
