@@ -73,6 +73,10 @@ public class KelasMapper {
         response.setMuridKelas(listMurid);
         response.setJumlahMurid(request.getListMurid().size());
         response.setLevel(request.getLevel());
+
+        for (SesiKelas sesiKelas : response.getListsesiKelas()) {
+            sesiKelas.setPengajar(pengajar);
+        }
         return response;
     }
 
@@ -98,9 +102,10 @@ public class KelasMapper {
         response.setStatus(createdKelas.getStatus());
         // TODO: IMPLEMENT AVERAGE RATING
         // TODO: IMPLEMENT PLATFORM
-        if (createdKelas.getJenisKelas().getModaPertemuan().equals("OFFLINE")){
-            response.setRuangan(RuanganMapper.toReadRuangan(createdKelas.getListsesiKelas().get(0).getJadwalRuangan().getRuangan()));
-        } else{
+        if (createdKelas.getJenisKelas().getModaPertemuan().equals("OFFLINE")) {
+            response.setRuangan(RuanganMapper
+                    .toReadRuangan(createdKelas.getListsesiKelas().get(0).getJadwalRuangan().getRuangan()));
+        } else {
             response.setZoom(ZoomMapper.toReadZoom(createdKelas.getListsesiKelas().get(0).getJadwalZoom().getZoom()));
         }
         return response;
