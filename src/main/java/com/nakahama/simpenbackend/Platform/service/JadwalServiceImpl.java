@@ -9,9 +9,11 @@ import org.springframework.stereotype.Service;
 import com.nakahama.simpenbackend.Kelas.model.SesiKelas;
 import com.nakahama.simpenbackend.Kelas.service.SesiKelasService;
 import com.nakahama.simpenbackend.PerubahanKelas.model.Reschedule;
+import com.nakahama.simpenbackend.Platform.dto.ReadJadwal;
 import com.nakahama.simpenbackend.Platform.model.JadwalRuangan;
 import com.nakahama.simpenbackend.Platform.model.JadwalZoom;
 import com.nakahama.simpenbackend.Platform.model.Platform;
+import com.nakahama.simpenbackend.Platform.model.Ruangan;
 import com.nakahama.simpenbackend.Platform.model.Zoom;
 import com.nakahama.simpenbackend.Platform.repository.JadwalRuanganDb;
 import com.nakahama.simpenbackend.Platform.repository.JadwalZoomDb;
@@ -81,6 +83,32 @@ public class JadwalServiceImpl implements JadwalService {
     }
 
     @Override
+    public Ruangan findAvailableRuanganByDateTime(List<LocalDateTime> listWaktu, String cabang) {
+        LocalDateTime waktu = listWaktu.get(0);
+        List<Platform> listRuangan = jadwalRuanganDb.checkJadwal(waktu, waktu.plusMinutes(90), cabang);
+        List<Platform> platformToRemove = new ArrayList<>();
+        for (LocalDateTime dateTime : listWaktu) {
+            for (Platform ruangan : listRuangan) {
+                try{
+                    List<JadwalRuangan> listJadwalRuangan = jadwalRuanganDb.checkJadwalForRuangan(dateTime,
+                        dateTime.plusMinutes(90), (Ruangan) ruangan);
+                    if (listJadwalRuangan.size() != 0)
+                        platformToRemove.add(ruangan);
+                } catch (Exception e) {
+                    continue;
+                }
+            }
+            for (Platform platform : platformToRemove)
+                listRuangan.remove(platform);
+        }
+
+        if (listRuangan.size() == 0)
+            throw new BadRequestException("Tidak ada ruangan yang tersedia");
+
+        return (Ruangan) listRuangan.get(0);
+    }
+
+    @Override
     public void save(JadwalZoom jadwalZoom) {
         jadwalZoomDb.save(jadwalZoom);
     }
@@ -114,6 +142,32 @@ public class JadwalServiceImpl implements JadwalService {
     public void deleteById(UUID jadwalZoomId) {
         jadwalZoomDb.deleteById(jadwalZoomId);
         jadwalZoomDb.flush();
+    }
+
+    @Override
+    public List<ReadJadwal> getAllJadwal() {
+        List<JadwalZoom> listJadwalZoom = jadwalZoomDb.findAll();
+        List<ReadJadwal> result = new ArrayList<>();
+        for (JadwalZoom jadwalZoom : listJadwalZoom) {
+            ReadJadwal readJadwal = new ReadJadwal();
+            readJadwal.setId(jadwalZoom.getId());
+            readJadwal.setTitle(jadwalZoom.getZoom().getNama());
+            readJadwal.setStart(jadwalZoom.getWaktu());
+            readJadwal.setEnd(jadwalZoom.getWaktu().plusMinutes(60));
+            readJadwal.setDescription(jadwalZoom.getSesiKelas().getPengajar().getNama());
+            result.add(readJadwal);
+        }
+        List<JadwalRuangan> listJadwalRuangan = jadwalRuanganDb.findAll();
+        for (JadwalRuangan jadwalRuangan : listJadwalRuangan) {
+            ReadJadwal readJadwal = new ReadJadwal();
+            readJadwal.setId(jadwalRuangan.getId());
+            readJadwal.setTitle(jadwalRuangan.getRuangan().getNama());
+            readJadwal.setStart(jadwalRuangan.getWaktu());
+            readJadwal.setEnd(jadwalRuangan.getWaktu().plusMinutes(60));
+            readJadwal.setDescription(jadwalRuangan.getSesiKelas().getPengajar().getNama());
+            result.add(readJadwal);
+        }
+        return result;
     }
 
 }

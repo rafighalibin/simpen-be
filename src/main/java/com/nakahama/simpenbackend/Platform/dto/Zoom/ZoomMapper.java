@@ -24,6 +24,7 @@ public class ZoomMapper {
         response.setHostKey(request.getZoom().getHostKey());
         response.setLink(request.getZoom().getLink());
         response.setWaktu(request.getWaktu());
+        response.setNamaPengajar(request.getSesiKelas().getPengajar().getNama());
         return response;
     }
 
@@ -53,6 +54,21 @@ public class ZoomMapper {
             response.add(listReadZoom);
 
         }
+        return response;
+    }
+
+    public static ReadDetailZoom toReadDetailZoom(Zoom request, List<JadwalZoom> jadwalZoom) {
+        ReadDetailZoom response = new ReadDetailZoom();
+        response.setId(request.getId());
+        response.setNama(request.getNama());
+        response.setHostKey(request.getHostKey());
+        response.setLink(request.getLink());
+        List<ReadJadwalZoom> jadwalPemakaian = new ArrayList<>();
+        for (JadwalZoom jadwal : jadwalZoom) {
+            ReadJadwalZoom readJadwalZoom = toReadJadwalZoom(jadwal);
+            jadwalPemakaian.add(readJadwalZoom);
+        }
+        response.setJadwalPemakaian(jadwalPemakaian);
         return response;
     }
 }

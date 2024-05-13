@@ -4,6 +4,7 @@ import java.util.*;
 
 import com.nakahama.simpenbackend.Kelas.dto.Murid.MuridMapper;
 import com.nakahama.simpenbackend.Kelas.model.SesiKelas;
+import com.nakahama.simpenbackend.Platform.dto.Ruangan.RuanganMapper;
 import com.nakahama.simpenbackend.Platform.dto.Zoom.ZoomMapper;
 
 public class SesiKelasMapper {
@@ -22,7 +23,11 @@ public class SesiKelasMapper {
         response.setSesi_id(request.getId());
         response.setStatus(request.getStatus());
         response.setWaktuPelaksanaan(request.getWaktuPelaksanaan());
-        response.setZoom(ZoomMapper.toReadZoom(request.getJadwalZoom().getZoom()));
+        if(request.getKelas().getJenisKelas().getModaPertemuan().equals("OFFLINE")){
+            response.setRuangan(RuanganMapper.toReadRuangan(request.getJadwalRuangan().getRuangan()));
+        } else {
+            response.setZoom(ZoomMapper.toReadZoom(request.getJadwalZoom().getZoom()));
+        }
         return response;
     }
 
