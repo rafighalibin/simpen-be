@@ -99,11 +99,11 @@ public class Pengajar extends UserModel {
     @JoinTable(name = "pengajar_tag", joinColumns = @JoinColumn(name = "idPengajar"), inverseJoinColumns = @JoinColumn(name = "id"))
     private List<Tag> listTag;
 
-    @OneToMany(cascade = { CascadeType.ALL })
+    @OneToMany(cascade = { CascadeType.ALL }, fetch = FetchType.LAZY)
     @JsonIgnore
     private List<SesiKelas> sesiKelas;
 
-    @OneToMany(cascade = { CascadeType.ALL })
+    @OneToMany(cascade = { CascadeType.ALL }, fetch = FetchType.LAZY)
     @JsonIgnore
     private List<Kelas> kelas;
 }
