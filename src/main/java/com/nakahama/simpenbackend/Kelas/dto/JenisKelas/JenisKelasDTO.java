@@ -21,4 +21,10 @@ public class JenisKelasDTO {
 
     private String nama;
 
+    private String bahasa;
+
+    private String pertemuan;
+
+    private String tipe;
+
 }

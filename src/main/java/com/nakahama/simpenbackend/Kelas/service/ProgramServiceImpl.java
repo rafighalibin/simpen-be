@@ -59,14 +59,6 @@ public class ProgramServiceImpl implements ProgramService {
 
         programDb.save(program);
 
-        for(JenisKelas jenisKelas : program.getJenisKelas()) {
-            if(jenisKelas.getProgram().size() == 0) {
-                jenisKelas.setProgram(new ArrayList<Program>());
-            }
-            jenisKelas.getProgram().add(program);
-            jenisKelasDb.save(jenisKelas);
-        }
-
         return program;
     }
 
@@ -86,9 +78,11 @@ public class ProgramServiceImpl implements ProgramService {
             jenisKelas.getProgram().remove(programRequest);
             jenisKelasDb.save(jenisKelas);
         });
+
+        // Save all changes to jenisKelasDb before proceeding
+        jenisKelasDb.flush();
         
         programDb.deleteById(programRequest.getId());
-        
     }
 
     @Override
