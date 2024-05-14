@@ -2,6 +2,9 @@ package com.nakahama.simpenbackend.Platform.controller;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -128,5 +131,21 @@ public class PlatformController {
     @GetMapping(value = "", params = "jadwal")
     public ResponseEntity<Object> getAllJadwal(){
         return ResponseUtil.okResponse(jadwalService.getAllJadwal(), "Success");
+    }
+
+    @PostMapping(value = "/zoom/find")
+    public ResponseEntity<Object> findAvailableZoomByDateTime(@RequestBody List<String> listWaktu){
+        List<LocalDateTime> listWaktuLocal = convertStringsToLocalDateTimes(listWaktu);
+        Platform zoom = jadwalService.findAvailableZoomByDateTime(listWaktuLocal);
+        if (zoom == null)
+            return ResponseUtil.okResponse(null, "Tidak ada zoom yang tersedia");
+        return ResponseUtil.okResponse(zoom, "Success");
+    }
+
+    private List<LocalDateTime> convertStringsToLocalDateTimes(List<String> listWaktu) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM-dd-yyyy HH:mm:ss");
+        return listWaktu.stream()
+                .map(dateTimeString -> LocalDateTime.parse(dateTimeString, formatter))
+                .collect(Collectors.toList());
     }
 }
