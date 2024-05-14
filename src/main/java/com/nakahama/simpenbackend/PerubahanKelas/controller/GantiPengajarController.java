@@ -67,7 +67,7 @@ public class GantiPengajarController {
     }
 
     @GetMapping("/{kelasId}")
-    public ResponseEntity<Object> getAllRescheduleByKelas(@PathVariable int kelasId) {
+    public ResponseEntity<Object> getAllRescheduleByKelas(@PathVariable(value= "kelasId") int kelasId) {
         List<SesiKelas> response = sesiKelasService.getByKelasId(kelasId);
         return ResponseUtil.okResponse(GantiPengajarMapper.toReadDetailGantiPengajar(response), "Success");
     }
