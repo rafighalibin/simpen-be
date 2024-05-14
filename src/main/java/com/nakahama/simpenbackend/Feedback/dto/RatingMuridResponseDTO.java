@@ -1,5 +1,7 @@
 package com.nakahama.simpenbackend.Feedback.dto;
 
+import java.util.Date;
+
 import com.nakahama.simpenbackend.Kelas.model.JenisKelas;
 import com.nakahama.simpenbackend.Kelas.model.Program;
 
@@ -30,4 +32,7 @@ public class RatingMuridResponseDTO {
 
     @NotBlank(message = "Link playlist required")
     String linkPlaylist;
+
+    @NotBlank(message = "Tanggal selesai required")
+    Date tanggalSelesai;
 }
