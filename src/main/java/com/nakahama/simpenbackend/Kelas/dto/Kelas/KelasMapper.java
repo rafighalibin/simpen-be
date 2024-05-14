@@ -100,8 +100,6 @@ public class KelasMapper {
         response.setLevel(createdKelas.getLevel());
         response.setModaPertemuan(createdKelas.getJenisKelas().getModaPertemuan());
         response.setStatus(createdKelas.getStatus());
-        // TODO: IMPLEMENT AVERAGE RATING
-        // TODO: IMPLEMENT PLATFORM
         if (createdKelas.getJenisKelas().getModaPertemuan().equals("OFFLINE")) {
             response.setRuangan(RuanganMapper
                     .toReadRuangan(createdKelas.getListsesiKelas().get(0).getJadwalRuangan().getRuangan()));
