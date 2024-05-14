@@ -11,6 +11,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
+
 @Data
 @Setter
 @Getter
@@ -30,4 +32,6 @@ public class RatingMuridResponseDTO {
 
     @NotBlank(message = "Link playlist required")
     String linkPlaylist;
+
+    LocalDateTime tanggalSelesai;
 }
