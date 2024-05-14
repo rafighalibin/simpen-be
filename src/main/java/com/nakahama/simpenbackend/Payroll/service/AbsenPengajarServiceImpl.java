@@ -55,15 +55,21 @@ public class AbsenPengajarServiceImpl implements AbsenPengajarService {
     @Override
     public AbsenPengajar createAbsen(createAbsenPengajarDTO absenPengajarDTO) {
         SesiKelas sesiKelas = sesiKelasService.getById(absenPengajarDTO.getIdSesiKelas());
+        AbsenPengajar absenPengajar = new AbsenPengajar();
+        // buat handle pengajar pengganti hanya bisa absen pada sesi kelas yang dia ajar
         if (sesiKelas.getPengajarPengganti() != null
-                && sesiKelas.getPengajarPengganti().getId() != absenPengajarDTO.getPengajar().getId()) {
-            throw new BadRequestException("Pengajar hanya boleh absen pada sesi kelas yang dia ajar");
-        } else if (absenPengajarDTO.getPengajar().getId() != sesiKelas.getPengajar().getId()) {
+                && sesiKelas.getPengajarPengganti().getId() == absenPengajarDTO.getPengajar().getId()) {
+            absenPengajar.setPengajar(sesiKelas.getPengajarPengganti());
+        }
+        else if(sesiKelas.getPengajarPengganti() != null && sesiKelas.getPengajarPengganti().getId() != absenPengajarDTO.getPengajar().getId()){
+            throw new BadRequestException("Pengajar pengganti hanya boleh absen pada sesi kelas yang dia ajar");
+        }
+        else if (absenPengajarDTO.getPengajar().getId() != sesiKelas.getPengajar().getId()) {
             throw new BadRequestException("Pengajar hanya boleh absen pada sesi kelas yang dia ajar");
         }
-
-        AbsenPengajar absenPengajar = new AbsenPengajar();
-        absenPengajar.setPengajar(absenPengajarDTO.getPengajar());
+        else{
+            absenPengajar.setPengajar(absenPengajarDTO.getPengajar());
+        }
         absenPengajar.setTanggalUpdate(LocalDateTime.now());
         PeriodePayroll periodePayroll = getCurrentPeriodePayroll(absenPengajar.getTanggalUpdate());
         absenPengajar.setPeriodePayroll(periodePayroll);
