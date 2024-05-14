@@ -13,13 +13,15 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.nakahama.simpenbackend.Platform.dto.Ruangan.CreateRuanganRequest;
+import com.nakahama.simpenbackend.Platform.dto.Ruangan.ReadDetailRuangan;
+import com.nakahama.simpenbackend.Platform.dto.Ruangan.ReadRuangan;
 import com.nakahama.simpenbackend.Platform.dto.Ruangan.UpdateRuanganRequest;
 import com.nakahama.simpenbackend.Platform.dto.Zoom.CreateZoomRequest;
+import com.nakahama.simpenbackend.Platform.dto.Zoom.ReadDetailZoom;
+import com.nakahama.simpenbackend.Platform.dto.Zoom.ReadZoom;
 import com.nakahama.simpenbackend.Platform.dto.Zoom.UpdateZoomRequest;
 import com.nakahama.simpenbackend.Platform.dto.Zoom.ZoomMapper;
 import com.nakahama.simpenbackend.Platform.model.Platform;
-import com.nakahama.simpenbackend.Platform.model.Ruangan;
-import com.nakahama.simpenbackend.Platform.model.Zoom;
 import com.nakahama.simpenbackend.Platform.service.JadwalService;
 import com.nakahama.simpenbackend.Platform.service.PlatformService;
 import com.nakahama.simpenbackend.util.ResponseUtil;
@@ -58,13 +60,13 @@ public class PlatformController {
 
     @GetMapping(value = "", params = "zoom")
     public ResponseEntity<Object> getAllZoom(@RequestParam("zoom") String tipe) {
-        List<Zoom> listZoom = platformService.getAllZoom();
+        List<ReadZoom> listZoom = platformService.getAllZoom();
         return ResponseUtil.okResponse(listZoom, "Success");
     }
 
     @GetMapping(value = "", params = "ruangan")
     public ResponseEntity<Object> getAllRuangan(@RequestParam("ruangan") String tipe) {
-        List<Ruangan> listRuangan = platformService.getAllRuangan();
+        List<ReadRuangan> listRuangan = platformService.getAllRuangan();
         return ResponseUtil.okResponse(listRuangan, "Success");
     }
 
@@ -109,5 +111,22 @@ public class PlatformController {
     public ResponseEntity<Object> getAllRuanganByCabang(@PathVariable("cabang") String cabang){
         List<Platform> listRuangan = platformService.getByCabang(cabang);
         return ResponseUtil.okResponse(listRuangan, "Success");
+    }
+
+    @GetMapping(value = "", params = {"zoom", "id"})
+    public ResponseEntity<Object> getDetailZoom(@RequestParam("zoom") String tipe, @RequestParam("id") String id){
+        ReadDetailZoom readDetailZoom = platformService.getDetailZoom(UUID.fromString(id));
+        return ResponseUtil.okResponse(readDetailZoom, "Success");
+    }
+
+    @GetMapping(value = "", params = {"ruangan", "id"})
+    public ResponseEntity<Object> getDetailRuangan(@RequestParam("ruangan") String tipe, @RequestParam("id") String id){
+        ReadDetailRuangan ruangan = platformService.getDetailRuangan(UUID.fromString(id));
+        return ResponseUtil.okResponse(ruangan, "Success");
+    }
+
+    @GetMapping(value = "", params = "jadwal")
+    public ResponseEntity<Object> getAllJadwal(){
+        return ResponseUtil.okResponse(jadwalService.getAllJadwal(), "Success");
     }
 }

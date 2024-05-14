@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.*;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.nakahama.simpenbackend.Platform.dto.Ruangan.ReadRuangan;
 import com.nakahama.simpenbackend.Platform.dto.Zoom.ReadZoom;
 
 import lombok.AllArgsConstructor;
@@ -27,4 +28,6 @@ public class SesiKelasDTO {
     private LocalDateTime waktuPelaksanaan;
 
     private ReadZoom zoom;
+
+    private ReadRuangan ruangan;
 }

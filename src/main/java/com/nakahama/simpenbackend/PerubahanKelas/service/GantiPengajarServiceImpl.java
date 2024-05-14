@@ -76,6 +76,9 @@ public class GantiPengajarServiceImpl implements GantiPengajarService {
             PengajarMenggantikan pengajarMenggantikan = getById(request.getId());
             if (request.getPengajarPenggantiId() != null) {
                 Pengajar pengajarPengganti = (Pengajar) userService.getUserById(request.getPengajarPenggantiId());
+                if (pengajarPengganti.getId() == pengajarMenggantikan.getSesiKelas().getPengajar().getId()) {
+                    continue;
+                }
                 pengajarMenggantikan.getSesiKelas().setPengajarPengganti(pengajarPengganti);
                 pengajarMenggantikan.setPengajarPenganti(pengajarPengganti);
                 pengajarMenggantikan.getSesiKelas().setStatus("Scheduled");
