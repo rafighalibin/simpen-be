@@ -15,8 +15,6 @@ import com.nakahama.simpenbackend.Kelas.dto.SesiKelas.SesiKelasMapper;
 import com.nakahama.simpenbackend.Kelas.service.SesiKelasService;
 import com.nakahama.simpenbackend.util.ResponseUtil;
 
-import jakarta.validation.Valid;
-
 import java.util.List;
 import java.util.UUID;
 
@@ -28,14 +26,14 @@ public class SesiKelasController {
     SesiKelasService sesiKelasService;
 
     @GetMapping("/{idKelas}")
-    public ResponseEntity<Object> getSesiByKelasId(@PathVariable(value="idKelas") int idKelas) {
+    public ResponseEntity<Object> getSesiByKelasId(@PathVariable(value = "idKelas") int idKelas) {
         List<ReadDetailSesiKelas> response = SesiKelasMapper
                 .toListReadDetailDto(sesiKelasService.getByKelasId(idKelas));
         return ResponseUtil.okResponse(response, "Success");
     }
 
     @PutMapping("/absen/{idSesi}")
-    public ResponseEntity<Object> update(@Valid @RequestBody List<UpdateAbsensiMurid> updateAbsensiMurid,
+    public ResponseEntity<Object> update(@RequestBody List<UpdateAbsensiMurid> updateAbsensiMurid,
             @PathVariable(value = "idSesi") String idSesi) {
         sesiKelasService.uppdateAbsenSesi(UUID.fromString(idSesi), updateAbsensiMurid);
         return ResponseUtil.okResponse(null, "Success");
