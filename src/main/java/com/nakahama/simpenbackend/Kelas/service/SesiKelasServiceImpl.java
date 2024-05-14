@@ -209,9 +209,9 @@ public class SesiKelasServiceImpl implements SesiKelasService {
     @Override
     public void updateStatus(SesiKelas sesiKelas) {
         sesiKelas.setStatus("Finished");
-        if(sesiKelas.getKelas().getListsesiKelas().stream().allMatch(s -> s.getStatus().equals("Finished"))){
+        if (sesiKelas.getKelas().getListsesiKelas().stream().allMatch(s -> s.getStatus().equals("Finished"))) {
             sesiKelas.getKelas().setStatus("Finished");
-        }else{
+        } else {
             sesiKelas.getKelas().setStatus("Ongoing");
         }
         save(sesiKelas);
@@ -233,7 +233,7 @@ public class SesiKelasServiceImpl implements SesiKelasService {
             List<MuridKelas> newlistMurid) {
         List<SesiKelas> listSesiKelas = getByKelasId(updatedKelas.getKelasId());
         for (SesiKelas sesiKelas : listSesiKelas) {
-            if (sesiKelas.getStatus() != "Scheduled")
+            if (!sesiKelas.getStatus().equals("Scheduled"))
                 continue;
 
             sesiKelas.setPengajar(newpengajar);
