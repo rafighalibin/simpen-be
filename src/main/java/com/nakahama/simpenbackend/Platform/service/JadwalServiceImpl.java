@@ -77,7 +77,7 @@ public class JadwalServiceImpl implements JadwalService {
         }
 
         if (listZoom.size() == 0)
-            throw new BadRequestException("Tidak ada zoom yang tersedia");
+            return null;
 
         return (Zoom) listZoom.get(0);
     }

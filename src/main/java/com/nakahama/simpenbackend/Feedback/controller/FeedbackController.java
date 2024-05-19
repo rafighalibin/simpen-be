@@ -44,16 +44,18 @@ public class FeedbackController {
         feedbackResponseDTO.setDeleted(feedback.isDeleted());
         feedbackResponseDTO.setFinished(feedback.isFinished());
         feedbackResponseDTO.setId(feedback.getId());
+        feedbackResponseDTO.setIsi(feedback.getIsi());
         feedbackResponseDTO.setIdPengajar(feedback.getPengajar().getId());
         feedbackResponseDTO.setNamaPengajar(feedback.getNamaPengajar());
         feedbackResponseDTO.setNamaProgram(feedback.getNamaProgram());
         feedbackResponseDTO.setRating(feedback.getRating());
+        feedbackResponseDTO.setIsi(feedback.getIsi());
         feedbackResponseDTO.setTanggalPembuatan(feedback.getTanggalPembuatan());
         return ResponseUtil.okResponse(feedbackResponseDTO, "Success");
     }
 
     @GetMapping("/user/{id}")
-    public ResponseEntity<Object> getFeedbackByUSerId(@PathVariable("id") String id) {
+    public ResponseEntity<Object> getFeedbackByUserId(@PathVariable("id") String id) {
         List<Feedback> listFeedbacks = feedbackService.feedbackByUserId(UUID.fromString(id));
         return ResponseUtil.okResponse(listFeedbacks, "Success");
 

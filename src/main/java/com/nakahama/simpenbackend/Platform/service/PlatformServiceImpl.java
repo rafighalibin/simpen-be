@@ -185,9 +185,28 @@ public class PlatformServiceImpl implements PlatformService {
     }
 
     @Override
+    public List<JadwalZoom> assignZoom(List<SesiKelas> listSesiKelas, String idZoom) {
+        Zoom zoom = zoomDb.findById(UUID.fromString(idZoom)).get();
+        List<JadwalZoom> listJadwalZoom = new ArrayList<>();
+        for (SesiKelas sesiKelas : listSesiKelas) {
+
+            JadwalZoom jadwalZoom = new JadwalZoom();
+            jadwalZoom.setWaktu(sesiKelas.getWaktuPelaksanaan());
+            jadwalZoom.setZoom(zoom);
+            jadwalService.save(jadwalZoom);
+            jadwalZoom.setSesiKelas(sesiKelas);
+            sesiKelas.setJadwalZoom(jadwalZoom);
+            listJadwalZoom.add(jadwalZoom);
+
+            jadwalService.save(jadwalZoom);
+            sesiKelasService.updateJadwal(sesiKelas);
+        }
+        return listJadwalZoom;
+    }
+
+    @Override
     public List<JadwalRuangan> assignRuangan(List<SesiKelas> listSesiKelas, String idRuangan) {
         Ruangan ruangan = ruanganDb.findById(UUID.fromString(idRuangan)).get();
-        System.out.println(ruangan);
         List<JadwalRuangan> listJadwalRuangan = new ArrayList<>();
         for (SesiKelas sesiKelas : listSesiKelas) {
 

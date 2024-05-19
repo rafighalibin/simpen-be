@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.nakahama.simpenbackend.Feedback.dto.ListRatingResponseDTO;
 import com.nakahama.simpenbackend.Feedback.service.RatingService;
-import com.nakahama.simpenbackend.Kelas.model.Kelas;
 import com.nakahama.simpenbackend.User.model.Pengajar;
 import com.nakahama.simpenbackend.User.service.UserService;
 import com.nakahama.simpenbackend.util.ResponseUtil;

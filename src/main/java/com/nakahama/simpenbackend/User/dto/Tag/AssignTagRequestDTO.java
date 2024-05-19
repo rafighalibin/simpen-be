@@ -3,7 +3,6 @@ package com.nakahama.simpenbackend.User.dto.Tag;
 import java.util.List;
 import java.util.UUID;
 
-import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;

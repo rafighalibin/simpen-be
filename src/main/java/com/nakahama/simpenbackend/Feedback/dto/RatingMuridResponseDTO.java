@@ -1,5 +1,7 @@
 package com.nakahama.simpenbackend.Feedback.dto;
 
+import java.util.Date;
+
 import com.nakahama.simpenbackend.Kelas.model.JenisKelas;
 import com.nakahama.simpenbackend.Kelas.model.Program;
 
@@ -10,6 +12,8 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.time.LocalDateTime;
 
 @Data
 @Setter
@@ -30,4 +34,6 @@ public class RatingMuridResponseDTO {
 
     @NotBlank(message = "Link playlist required")
     String linkPlaylist;
+
+    LocalDateTime tanggalSelesai;
 }

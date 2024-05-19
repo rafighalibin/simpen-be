@@ -88,15 +88,15 @@ public class RescheduleController {
             // Content of Notification
             if (request.getZoomId() != null) {
                 notification.setJudul("permintaan perubahan jadwal diterima");
-                notification.getIsi().put("sesiKelas",
-                        String.valueOf(sesiKelasId));
+                notification.getIsi().put("idKelas",
+                        String.valueOf(reschedule.getKelas().getKelasId()));
                 notification.getIsi().put("status",
                         "disetujui");
                 notificationService.generateNotification(notification);
             } else {
                 notification.setJudul("permintaan pengajar pengganti ditolak");
-                notification.getIsi().put("sesiKelas",
-                        String.valueOf(sesiKelasId));
+                notification.getIsi().put("idKelas",
+                        String.valueOf(reschedule.getKelas().getKelasId()));
                 notification.getIsi().put("status",
                         "ditolak");
                 notificationService.generateNotification(notification);
