@@ -131,7 +131,7 @@ public class SesiKelasServiceImpl implements SesiKelasService {
 
     @Override
     public List<SesiKelas> createListSesiKelas(List<LocalDateTime> jadwalKelas, Kelas createdKelas, Pengajar pengajar,
-            List<MuridKelas> listMurid, String idRuangan) {
+            List<MuridKelas> listMurid, String idPlatform) {
         List<SesiKelas> listSesiKelas = new ArrayList<>();
         int nomorPertemuan = 1;
         for (LocalDateTime e : jadwalKelas) {
@@ -157,10 +157,14 @@ public class SesiKelasServiceImpl implements SesiKelasService {
             nomorPertemuan++;
         }
 
-        if (createdKelas.getJenisKelas().getModaPertemuan().equals("ONLINE") || idRuangan == null){
-            platformService.assignZoom(listSesiKelas);
+        if (createdKelas.getJenisKelas().getModaPertemuan().equals("ONLINE")){
+            if(idPlatform == null || idPlatform.equals("")){
+                platformService.assignZoom(listSesiKelas);
+            } else {
+                platformService.assignZoom(listSesiKelas, idPlatform);
+            }
         } else {
-            platformService.assignRuangan(listSesiKelas, idRuangan);
+            platformService.assignRuangan(listSesiKelas, idPlatform);
         }
 
         return listSesiKelas;
@@ -204,11 +208,10 @@ public class SesiKelasServiceImpl implements SesiKelasService {
 
     @Override
     public void updateStatus(SesiKelas sesiKelas) {
-        // TODO: adapt lagi
         sesiKelas.setStatus("Finished");
-        if(sesiKelas.getKelas().getListsesiKelas().stream().allMatch(s -> s.getStatus().equals("Finished"))){
+        if (sesiKelas.getKelas().getListsesiKelas().stream().allMatch(s -> s.getStatus().equals("Finished"))) {
             sesiKelas.getKelas().setStatus("Finished");
-        }else{
+        } else {
             sesiKelas.getKelas().setStatus("Ongoing");
         }
         save(sesiKelas);
@@ -230,7 +233,7 @@ public class SesiKelasServiceImpl implements SesiKelasService {
             List<MuridKelas> newlistMurid) {
         List<SesiKelas> listSesiKelas = getByKelasId(updatedKelas.getKelasId());
         for (SesiKelas sesiKelas : listSesiKelas) {
-            if (sesiKelas.getStatus() != "Scheduled")
+            if (!sesiKelas.getStatus().equals("Scheduled"))
                 continue;
 
             sesiKelas.setPengajar(newpengajar);

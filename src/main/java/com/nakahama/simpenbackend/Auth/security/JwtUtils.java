@@ -21,6 +21,7 @@ import org.slf4j.LoggerFactory;
 // a02-simp.app.jwtSecret=simpenqwertyuiopasdfgghjkllzcxvbcmefniswfineiwfni1234556789
 // a02-simp.app.jwtExpirationMs=86400000
 
+@SuppressWarnings("deprecation")
 @Component
 public class JwtUtils {
 

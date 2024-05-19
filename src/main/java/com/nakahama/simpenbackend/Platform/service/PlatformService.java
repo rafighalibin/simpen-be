@@ -41,6 +41,8 @@ public interface PlatformService {
 
         public List<JadwalZoom> assignZoom(List<SesiKelas> sesiKelas);
 
+        public List<JadwalZoom> assignZoom(List<SesiKelas> listSesiKelas, String idZoom);
+
         public List<JadwalRuangan> assignRuangan(List<SesiKelas> listSesiKelas, String idRuangan);
 
         public List<String> getDistinctCabang();

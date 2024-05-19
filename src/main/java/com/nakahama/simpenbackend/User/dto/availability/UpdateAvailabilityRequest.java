@@ -1,10 +1,8 @@
 package com.nakahama.simpenbackend.User.dto.availability;
 
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.nakahama.simpenbackend.User.model.Pengajar;
 
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;

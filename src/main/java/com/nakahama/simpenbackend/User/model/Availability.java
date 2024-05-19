@@ -1,9 +1,6 @@
 package com.nakahama.simpenbackend.User.model;
 
-import java.sql.Time;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.UUID;
 
 import jakarta.persistence.Entity;

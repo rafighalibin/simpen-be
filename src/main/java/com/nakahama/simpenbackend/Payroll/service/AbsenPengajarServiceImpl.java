@@ -2,7 +2,6 @@ package com.nakahama.simpenbackend.Payroll.service;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import java.time.Month;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -55,15 +54,21 @@ public class AbsenPengajarServiceImpl implements AbsenPengajarService {
     @Override
     public AbsenPengajar createAbsen(createAbsenPengajarDTO absenPengajarDTO) {
         SesiKelas sesiKelas = sesiKelasService.getById(absenPengajarDTO.getIdSesiKelas());
+        AbsenPengajar absenPengajar = new AbsenPengajar();
+        // buat handle pengajar pengganti hanya bisa absen pada sesi kelas yang dia ajar
         if (sesiKelas.getPengajarPengganti() != null
-                && sesiKelas.getPengajarPengganti().getId() != absenPengajarDTO.getPengajar().getId()) {
-            throw new BadRequestException("Pengajar hanya boleh absen pada sesi kelas yang dia ajar");
-        } else if (absenPengajarDTO.getPengajar().getId() != sesiKelas.getPengajar().getId()) {
+                && sesiKelas.getPengajarPengganti().getId() == absenPengajarDTO.getPengajar().getId()) {
+            absenPengajar.setPengajar(sesiKelas.getPengajarPengganti());
+        }
+        else if(sesiKelas.getPengajarPengganti() != null && sesiKelas.getPengajarPengganti().getId() != absenPengajarDTO.getPengajar().getId()){
+            throw new BadRequestException("Pengajar pengganti hanya boleh absen pada sesi kelas yang dia ajar");
+        }
+        else if (absenPengajarDTO.getPengajar().getId() != sesiKelas.getPengajar().getId()) {
             throw new BadRequestException("Pengajar hanya boleh absen pada sesi kelas yang dia ajar");
         }
-
-        AbsenPengajar absenPengajar = new AbsenPengajar();
-        absenPengajar.setPengajar(absenPengajarDTO.getPengajar());
+        else{
+            absenPengajar.setPengajar(absenPengajarDTO.getPengajar());
+        }
         absenPengajar.setTanggalUpdate(LocalDateTime.now());
         PeriodePayroll periodePayroll = getCurrentPeriodePayroll(absenPengajar.getTanggalUpdate());
         absenPengajar.setPeriodePayroll(periodePayroll);
@@ -95,17 +100,14 @@ public class AbsenPengajarServiceImpl implements AbsenPengajarService {
     public PeriodePayroll getCurrentPeriodePayroll(LocalDateTime date) {
         int bulan = date.getMonthValue();
         int tahun = date.getYear();
-        String namaBulan = "";
 
         LocalDateTime tanggalMulai;
         LocalDateTime tanggalSelesai;
 
         if (date.getDayOfMonth() <= 14) {
-            namaBulan = Month.of(bulan - 1).name();
             tanggalMulai = LocalDateTime.of(tahun, bulan - 1, 15, 0, 0);
             tanggalSelesai = LocalDateTime.of(tahun, bulan, 14, 23, 59);
         } else {
-            namaBulan = Month.of(bulan).name();
             tanggalMulai = LocalDateTime.of(tahun, bulan, 15, 0, 0);
             tanggalSelesai = LocalDateTime.of(tahun, bulan + 1, 14, 23, 59);
         }

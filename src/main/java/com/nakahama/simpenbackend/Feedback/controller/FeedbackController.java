@@ -49,6 +49,7 @@ public class FeedbackController {
         feedbackResponseDTO.setNamaPengajar(feedback.getNamaPengajar());
         feedbackResponseDTO.setNamaProgram(feedback.getNamaProgram());
         feedbackResponseDTO.setRating(feedback.getRating());
+        feedbackResponseDTO.setIsi(feedback.getIsi());
         feedbackResponseDTO.setTanggalPembuatan(feedback.getTanggalPembuatan());
         return ResponseUtil.okResponse(feedbackResponseDTO, "Success");
     }

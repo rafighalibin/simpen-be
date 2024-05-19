@@ -67,7 +67,7 @@ public class GantiPengajarController {
     }
 
     @GetMapping("/{kelasId}")
-    public ResponseEntity<Object> getAllRescheduleByKelas(@PathVariable int kelasId) {
+    public ResponseEntity<Object> getAllRescheduleByKelas(@PathVariable(value= "kelasId") int kelasId) {
         List<SesiKelas> response = sesiKelasService.getByKelasId(kelasId);
         return ResponseUtil.okResponse(GantiPengajarMapper.toReadDetailGantiPengajar(response), "Success");
     }
@@ -88,7 +88,7 @@ public class GantiPengajarController {
 
             notification.setAkunPenerima(idPengajarRequest);
             notification1.setAkunPenerima(pengajarMenggantikan.getPengajarPenganti().getId());
-            notification.setTipe(4);
+            notification.setTipe(3);
             notification1.setTipe(0);
 
             // Content of Notification
@@ -98,6 +98,10 @@ public class GantiPengajarController {
                 notification.getIsi().put("status", "disetujui");
                 notification.getIsi().put("sesiKelas", String.valueOf(pengajarMenggantikan.getSesiKelas().getId()));
                 notification.getIsi().put("pengganti", String.valueOf(namaPengajarMenggantikan));
+                notification.getIsi().put("idKelas",
+                        String.valueOf(pengajarMenggantikan.getSesiKelas().getKelas().getKelasId()));
+                notification.getIsi().put("waktuSesi",
+                        String.valueOf(pengajarMenggantikan.getSesiKelas().getWaktuPelaksanaan()));
                 notification1.getIsi().put("idKelas",
                         String.valueOf(pengajarMenggantikan.getSesiKelas().getKelas().getKelasId()));
                 notification1.getIsi().put("waktuSesi",
