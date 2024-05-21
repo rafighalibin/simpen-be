@@ -145,7 +145,6 @@ public class SecurityConfig {
                                                         "pengajar", "operasional");
                                         auth.requestMatchers(HttpMethod.GET, "/availability/**").hasAnyAuthority(
                                                         "pengajar", "operasional");
-                                        // TODO: set the appropriate authorities for the corresponding endpoints
                                         auth.anyRequest().permitAll();
 
                                 })

@@ -17,7 +17,6 @@ import com.nakahama.simpenbackend.User.dto.Tag.AssignedTagResponse;
 import com.nakahama.simpenbackend.User.dto.Tag.CreateTagRequest;
 import com.nakahama.simpenbackend.User.dto.Tag.UpdateTagRequest;
 import com.nakahama.simpenbackend.User.dto.Tag.mapper.AssignedTagMapper;
-import com.nakahama.simpenbackend.User.model.Pengajar;
 import com.nakahama.simpenbackend.User.model.Tag;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -62,7 +61,7 @@ public class TagController {
 
     @PostMapping("/assign")
     public ResponseEntity<Object> assignTag(@Valid @RequestBody AssignTagRequestDTO assignTagRequestDTO) {
-        Pengajar pengajar = tagService.assignTag(assignTagRequestDTO);
+        tagService.assignTag(assignTagRequestDTO);
         //Tag tag = tagService.assignTag(assignTagRequestDTO);
         return ResponseUtil.okResponse(null, "Success");
     }
@@ -75,7 +74,7 @@ public class TagController {
 
     @DeleteMapping("/assign")
     public ResponseEntity<Object> unassignTag(@RequestBody AssignTagRequestDTO unassignTagRequestDTO) {
-        Pengajar pengajar = tagService.unassignTag(unassignTagRequestDTO);
+        tagService.unassignTag(unassignTagRequestDTO);
         // Tag tag = tagService.assignTag(unassignTagRequestDTO);
         return ResponseUtil.okResponse(null, "Success");
     }
