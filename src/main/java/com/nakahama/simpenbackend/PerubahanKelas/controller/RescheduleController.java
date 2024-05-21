@@ -92,6 +92,8 @@ public class RescheduleController {
                         String.valueOf(reschedule.getKelas().getKelasId()));
                 notification.getIsi().put("status",
                         "disetujui");
+                notification.getIsi().put("waktuSesi",
+                        String.valueOf(reschedule.getSesiKelas().getWaktuPelaksanaan()));
                 notificationService.generateNotification(notification);
             } else {
                 notification.setJudul("permintaan pengajar pengganti ditolak");
