@@ -44,9 +44,9 @@ public class SecurityConfig {
                                         auth.requestMatchers(HttpMethod.DELETE, "user/**").hasAuthority("superadmin");
                                         auth.requestMatchers(HttpMethod.PUT, "user/**").hasAnyAuthority("operasional",
                                                         "superadmin");
-                                        auth.requestMatchers(HttpMethod.GET, "user/**").hasAnyAuthority("operasional",
+                                        auth.requestMatchers(HttpMethod.GET, "user/**").hasAnyAuthority("operasional", "akademik",
                                                         "superadmin");
-                                        auth.requestMatchers(HttpMethod.POST, "tag").hasAnyAuthority("operasional",
+                                        auth.requestMatchers(HttpMethod.POST, "tag").hasAnyAuthority("operasional", 
                                                         "akademik");
                                         auth.requestMatchers(HttpMethod.GET, "tag").hasAnyAuthority("operasional",
                                                         "akademik");
